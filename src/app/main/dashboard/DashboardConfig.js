@@ -1,6 +1,6 @@
-import Example from './Example';
+import Example from './Dashboard';
 
-export const ExampleConfig = {
+export const DashboardConfig = {
     settings: {
         layout: {
             config: {}
@@ -8,7 +8,7 @@ export const ExampleConfig = {
     },
     routes  : [
         {
-            path     : '/example',
+            path     : '/home',
             component: Example
         }
     ]
@@ -20,7 +20,7 @@ export const ExampleConfig = {
 /*
 import FuseLoadable from '@fuse/components/FuseLoadable/FuseLoadable';
 
-export const ExampleConfig = {
+export const DashboardConfig = {
     settings: {
         layout: {
             config: {}
@@ -28,7 +28,7 @@ export const ExampleConfig = {
     },
     routes  : [
         {
-            path     : '/example',
+            path     : '/dashboard',
             component: FuseLoadable({
                 loader: () => import('./Example')
             })

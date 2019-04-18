@@ -19,7 +19,7 @@ View the full documentation at https://tailwindcss.com.
 |
 | This variable contains the default Tailwind config. You don't have
 | to use it, but it can sometimes be helpful to have available. For
-| example, you may choose to merge your custom configuration
+| dashboard, you may choose to merge your custom configuration
 | values with some of the Tailwind defaults.
 |
 */
@@ -138,7 +138,7 @@ module.exports = {
     |
     | The color palette defined above is also assigned to the "colors" key of
     | your Tailwind config. This makes it easy to access them in your CSS
-    | using Tailwind's config helper. For example:
+    | using Tailwind's config helper. For dashboard:
     |
     | .error { color: config('colors.red') }
     |
