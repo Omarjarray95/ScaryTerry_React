@@ -77,8 +77,10 @@ class jwtService extends FuseUtils.EventEmitter {
                 {
                     if ( response.status === 202 )
                     {
-                        //this.setSession(response.data.access_token);
-                        resolve(response.data);
+                        var user = response.data;
+                        var fullname = user.firstName + " " + user.lastName;
+                        this.setSession(user.token, user.username, fullname, user.role);
+                        resolve(user);
                     }
                     else if ( response.status === 200 )
                     {
@@ -119,21 +121,27 @@ class jwtService extends FuseUtils.EventEmitter {
         });
     };
 
-    setSession = access_token => {
-        if ( access_token )
+    setSession = (access_token, username, name, role) => {
+        if ( access_token && username && name && role )
         {
             localStorage.setItem('jwt_access_token', access_token);
+            localStorage.setItem('username', username);
+            localStorage.setItem('name', name);
+            localStorage.setItem('role', role);
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + access_token;
         }
         else
         {
             localStorage.removeItem('jwt_access_token');
+            localStorage.removeItem('username');
+            localStorage.removeItem('name');
+            localStorage.setItem('role', "Guest");
             delete axios.defaults.headers.common['Authorization'];
         }
     };
 
     logout = () => {
-        this.setSession(null);
+        this.setSession(null, null, null, null);
     };
 
     isAuthTokenValid = access_token => {

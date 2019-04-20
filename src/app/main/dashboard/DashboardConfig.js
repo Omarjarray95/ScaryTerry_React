@@ -1,15 +1,19 @@
-import Example from './Dashboard';
+import Dashboard from './Dashboard';
 
 export const DashboardConfig = {
     settings: {
         layout: {
-            config: {}
+            config: {
+                footer        : {
+                    display: false
+                }
+                }
         }
     },
     routes  : [
         {
             path     : '/home',
-            component: Example
+            component: Dashboard
         }
     ]
 };

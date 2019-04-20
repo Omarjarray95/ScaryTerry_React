@@ -1,5 +1,5 @@
 import history from 'history.js';
-import {setDefaultSettings, setInitialSettings} from 'app/store/actions/fuse';
+import {setInitialSettings} from 'app/store/actions/fuse';
 import _ from '@lodash';
 import store from 'app/store';
 import * as Actions from 'app/store/actions';
@@ -95,7 +95,7 @@ export function setUserData(user)
         /*
         Set User Settings
          */
-        dispatch(setDefaultSettings(user.data.settings));
+        //dispatch(setDefaultSettings(user.data.settings));
 
         /*
         Set User Data
@@ -163,10 +163,10 @@ export function logoutUser()
 
         const user = getState().auth.user;
 
-        if ( user.role === 'guest' )
+        /*if ( user.role === 'Guest' )
         {
             return null;
-        }
+        }*/
 
         history.push({
             pathname: '/'

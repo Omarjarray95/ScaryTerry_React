@@ -30,7 +30,7 @@ const styles = theme => ({
     }
 });
 
-const UserNavbarHeader = ({user, classes}) => {
+const UserNavbarHeader = ({user, username, fullname, classes}) => {
     return (
         <AppBar
             position="static"
@@ -39,12 +39,12 @@ const UserNavbarHeader = ({user, classes}) => {
             classes={{root: classes.root}}
             className="user relative flex flex-col items-center justify-center pt-24 pb-64 mb-32 z-0"
         >
-            <Typography className="username text-16 whitespace-no-wrap" color="inherit">{user.data.displayName}</Typography>
-            <Typography className="email text-13 mt-8 opacity-50 whitespace-no-wrap" color="inherit">{user.data.email}</Typography>
+            <Typography className="username text-16 whitespace-no-wrap" color="inherit">{fullname}</Typography>
+            <Typography className="email text-13 mt-8 opacity-50 whitespace-no-wrap" color="inherit">{username}</Typography>
             <Avatar
                 className={classNames(classes.avatar, "avatar")}
                 alt="user photo"
-                src={user.data.photoURL && user.data.photoURL !== '' ? user.data.photoURL : "assets/images/avatars/profile.jpg"}
+                src={user.data.PhotoURL && user.data.PhotoURL !== '' ? user.data.PhotoURL : "assets/images/avatars/profile.jpg"}
             />
         </AppBar>
     );
@@ -53,7 +53,9 @@ const UserNavbarHeader = ({user, classes}) => {
 function mapStateToProps({fuse, auth})
 {
     return {
-        user: auth.user
+        user: auth.user,
+        username: localStorage.getItem('username'),
+        fullname: localStorage.getItem('name')
     }
 }
 

@@ -41,6 +41,8 @@ class FuseAuthorization extends Component {
 
         const accessGranted = (matched && matched.route.auth && matched.route.auth.length > 0) ? matched.route.auth.includes(user.role) : true;
 
+        console.log(accessGranted);
+
         return {
             accessGranted
         };
@@ -55,14 +57,15 @@ class FuseAuthorization extends Component {
     {
         const {location, user, history} = props;
         const {pathname, state} = location;
+
         /*
         User is guest
         Redirect to Login Page
         */
-        if ( user.role === 'guest' )
+        if ( user.role === 'Guest' )
         {
             history.push({
-                pathname: '/login',
+                pathname: '/',
                 state   : {redirectUrl: pathname}
             });
         }
@@ -85,7 +88,7 @@ class FuseAuthorization extends Component {
     {
         const {children} = this.props;
         const {accessGranted} = this.state;
-        // console.info('Fuse Authorization rendered', accessGranted);
+        //console.info('Fuse Authorization rendered', accessGranted);
         return accessGranted ? <React.Fragment>{children}</React.Fragment> : null;
     }
 }

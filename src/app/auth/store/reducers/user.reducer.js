@@ -1,17 +1,11 @@
 import * as Actions from '../actions';
 
 const initialState = {
-    role: 'guest',
+    role: 'Guest',
     data: {
-        'displayName': 'John Doe',
-        'photoURL'   : 'assets/images/avatars/Velazquez.jpg',
-        'email'      : 'johndoe@withinpixels.com',
-        shortcuts    : [
-            'calendar',
-            'mail',
-            'contacts',
-            'todo'
-        ]
+        'FullName': 'John Doe',
+        'PhotoURL': 'assets/images/avatars/Velazquez.jpg',
+        'Username': 'johndoe'
     }
 };
 
@@ -21,8 +15,7 @@ const user = function (state = initialState, action) {
         case Actions.SET_USER_DATA:
         {
             return {
-                ...initialState,
-                ...action.payload
+                ...initialState
             };
         }
         case Actions.REMOVE_USER_DATA:

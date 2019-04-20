@@ -1,18 +1,50 @@
 const navigationConfig = [
     {
-        'id'      : 'applications',
-        'title'   : 'Applications',
-        'type'    : 'group',
-        'icon'    : 'apps',
-        'children': [
-            {
-                'id'   : 'dashboard-component',
-                'title': 'Example',
-                'type' : 'item',
-                'icon' : 'whatshot',
-                'url'  : '/dashboard'
-            }
-        ]
+        'id': 'modules',
+        'title': 'Browse',
+        'type': 'group',
+        'icon': 'apps',
+        'children': [{
+            'id'      : 'users',
+            'title'   : 'Users',
+            'type'    : 'collapse',
+            'icon'    : 'account_box',
+            'children': [
+                {
+                    'id'   : 'add-user',
+                    'title': 'Add New User',
+                    'type' : 'item',
+                    'icon' : 'add_box',
+                    'url'  : '/users/add',
+                    'exact': true
+                },
+                {
+                    'id'   : 'read-users',
+                    'title': 'Consult Users',
+                    'type' : 'item',
+                    'icon' : 'list',
+                    'url'  : '#',
+                    'exact': true
+                }
+            ]
+        }]
+    },
+    {
+        'type': 'divider',
+        'id'  : 'divider-1'
+    },
+    {
+        'id': 'account',
+        'title': 'Account',
+        'type': 'group',
+        'icon': 'apps',
+        'children': [{
+            'id'   : 'logout',
+            'title': 'Logout',
+            'type' : 'item',
+            'icon' : 'directions_run',
+            'url'  : '#'
+        }]
     }
 ];
 

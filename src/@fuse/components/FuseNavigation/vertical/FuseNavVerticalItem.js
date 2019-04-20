@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import * as Actions from 'app/store/actions';
+import * as authActions from '../../../../app/auth/store/actions';
 import FuseNavBadge from './../FuseNavBadge';
 
 const propTypes = {
@@ -49,9 +49,9 @@ const styles = theme => ({
     }
 });
 
-function FuseNavVerticalItem({item, classes, nestedLevel, userRole, navbarCloseMobile, active})
+function FuseNavVerticalItem({item, classes, nestedLevel, userRole, logOut, active})
 {
-    if ( item.auth && (!item.auth.includes(userRole) || (userRole !== 'guest' && item.auth.length === 1 && item.auth.includes('guest'))) )
+    if ( item.auth && (!item.auth.includes(userRole) || (userRole !== 'Guest' && item.auth.length === 1 && item.auth.includes('Guest'))) )
     {
         return null;
     }
@@ -66,7 +66,7 @@ function FuseNavVerticalItem({item, classes, nestedLevel, userRole, navbarCloseM
             to={item.url}
             activeClassName="active"
             className={classNames(classes.item, listItemPadding, 'list-item', active)}
-            onClick={navbarCloseMobile}
+            onClick={item.title === "Logout" ?  logOut : console.log(item.title)}
             exact={item.exact}
         >
             {item.icon && (
@@ -83,7 +83,7 @@ function FuseNavVerticalItem({item, classes, nestedLevel, userRole, navbarCloseM
 function mapDispatchToProps(dispatch)
 {
     return bindActionCreators({
-        navbarCloseMobile: Actions.navbarCloseMobile
+        logOut: authActions.logoutUser
     }, dispatch);
 }
 

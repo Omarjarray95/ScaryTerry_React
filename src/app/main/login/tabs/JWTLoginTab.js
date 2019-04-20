@@ -6,14 +6,14 @@ import {bindActionCreators} from 'redux';
 import {withRouter} from 'react-router-dom';
 import connect from 'react-redux/es/connect/connect';
 import * as authActions from 'app/auth/store/actions';
+import { Redirect } from 'react-router-dom';
 
 class JWTLoginTab extends Component {
 
     state = {
         canSubmit: false,
         username: '',
-        password: '',
-        message: ''
+        password: ''
     };
 
     form = React.createRef();
@@ -34,6 +34,12 @@ class JWTLoginTab extends Component {
         const password = this.state.password;
 
         this.props.submitLogin({username, password});
+
+        this.setState(
+            {
+                username: '',
+                password: '',
+            });
     };
 
     handleUsernameChange = event =>
@@ -44,6 +50,14 @@ class JWTLoginTab extends Component {
     handlePasswordChange = event =>
     {
         this.setState({password: event.target.value});
+    };
+
+    renderRedirect = () =>
+    {
+        if (this.props.success)
+        {
+            return <Redirect to='/home' />
+        }
     };
 
     /*componentDidUpdate(prevProps, prevState)
@@ -67,6 +81,7 @@ class JWTLoginTab extends Component {
 
         return (
             <div className="w-full">
+                {this.renderRedirect()}
                 <Formsy
                     onValidSubmit={this.onSubmit}
                     onValid={this.enableButton}
@@ -159,7 +174,8 @@ function mapDispatchToProps(dispatch)
 function mapStateToProps({auth})
 {
     return {
-        message: auth.login.error
+        message: auth.login.error,
+        success: auth.login.success
     }
 }
 
