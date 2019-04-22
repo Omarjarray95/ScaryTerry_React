@@ -5,6 +5,10 @@ import connect from 'react-redux/es/connect/connect';
 import {withRouter} from 'react-router-dom';
 import NavbarMobileToggleButton from 'app/fuse-layouts/shared-components/NavbarMobileToggleButton';
 import QuickPanelToggleButton from 'app/fuse-layouts/shared-components/quickPanel/QuickPanelToggleButton';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
+import HomeIcon from '@material-ui/icons/Home';
+import {Link} from 'react-router-dom';
 
 const styles = theme => ({
     separator: {
@@ -30,8 +34,14 @@ const ToolbarLayout1 = ({classes, settings, toolbarTheme}) => {
                         </Hidden>
                     )}
 
-                    <div className="flex flex-1">
-
+                    <div className="flex flex-1 ml-4">
+                        <Link to="/home">
+                            <Tooltip title="Home">
+                                <IconButton aria-label="Home">
+                                    <HomeIcon />
+                                </IconButton>
+                            </Tooltip>
+                        </Link>
                     </div>
 
                     <div className="flex">

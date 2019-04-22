@@ -41,8 +41,6 @@ class FuseAuthorization extends Component {
 
         const accessGranted = (matched && matched.route.auth && matched.route.auth.length > 0) ? matched.route.auth.includes(user.role) : true;
 
-        console.log(accessGranted);
-
         return {
             accessGranted
         };

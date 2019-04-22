@@ -11,6 +11,29 @@ import jwtService from 'app/services/jwtService';
 export const SET_USER_DATA = '[USER] SET DATA';
 export const REMOVE_USER_DATA = '[USER] REMOVE DATA';
 export const USER_LOGGED_OUT = '[USER] LOGGED OUT';
+export const USERNAME_AVAILABLE = 'USERNAME_AVAILABLE';
+export const USERNAME_UNAVAILABLE = 'USERNAME_UNAVAILABLE';
+
+export function checkUsername({username})
+{
+    return (dispatch) =>
+        jwtService.checkUsername(username)
+            .then((res) =>
+                {
+                    return dispatch({
+                        type: USERNAME_AVAILABLE,
+                        payload: res
+                    });
+                }
+            )
+            .catch(res =>
+            {
+                return dispatch({
+                    type   : USERNAME_UNAVAILABLE,
+                    payload: res
+                });
+            });
+}
 
 /**
  * Set user data from Auth0 token data

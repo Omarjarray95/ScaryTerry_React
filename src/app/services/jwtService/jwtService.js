@@ -47,18 +47,41 @@ class jwtService extends FuseUtils.EventEmitter {
         }
     };
 
-    createUser = (data) => {
-        return new Promise((resolve, reject) => {
-            axios.post('/api/auth/register', data)
-                .then(response => {
-                    if ( response.data.user )
+    createUser = (data) =>
+    {
+        return new Promise((resolve, reject) =>
+        {
+            axios.post('http://localhost:3001/users/adduser', data)
+                .then(response =>
+                {
+                    if ( response.status === 202 )
                     {
-                        this.setSession(response.data.access_token);
-                        resolve(response.data.user);
+                        resolve(response.data);
                     }
                     else
                     {
-                        reject(response.data.error);
+                        reject(response.data);
+                    }
+                });
+        });
+    };
+
+    checkUsername = (username) =>
+    {
+        return new Promise((resolve, reject) =>
+        {
+            axios.post('http://localhost:3001/users/checkusername', {username: username})
+                .then(response =>
+                {
+                    if ( response.status === 202 )
+                    {
+                        var res = { status: true, message: response.data };
+                        resolve(res);
+                    }
+                    else
+                    {
+                        res = { status: false, message: response.data };
+                        reject(res);
                     }
                 });
         });

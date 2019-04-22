@@ -6,22 +6,20 @@ import jwtService from 'app/services/jwtService';
 export const REGISTER_ERROR = 'REGISTER_ERROR';
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 
-export function submitRegister({displayName, password, email})
+export function submitRegister({user})
 {
     return (dispatch) =>
-        jwtService.createUser({
-            displayName,
-            password,
-            email
-        })
-            .then((user) => {
-                    dispatch(UserActions.setUserData(user));
+        jwtService.createUser(user)
+            .then((data) =>
+                {
                     return dispatch({
-                        type: REGISTER_SUCCESS
+                        type: REGISTER_SUCCESS,
+                        payload: data
                     });
                 }
             )
-            .catch(error => {
+            .catch(error =>
+            {
                 return dispatch({
                     type   : REGISTER_ERROR,
                     payload: error

@@ -66,7 +66,7 @@ function FuseNavVerticalItem({item, classes, nestedLevel, userRole, logOut, acti
             to={item.url}
             activeClassName="active"
             className={classNames(classes.item, listItemPadding, 'list-item', active)}
-            onClick={item.title === "Logout" ?  logOut : console.log(item.title)}
+            onClick={item.title === "Logout" ?  logOut : null}
             exact={item.exact}
         >
             {item.icon && (
