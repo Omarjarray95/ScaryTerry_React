@@ -45,6 +45,7 @@ class AddUsersForm extends Component
         super(props);
         this.state = {
             canSubmit: false,
+            valid: false,
             showPassword: false,
             expandedEnterprise: false,
             openPopOver: false,
@@ -54,7 +55,7 @@ class AddUsersForm extends Component
             firstName: "",
             lastName: "",
             enterprise: "",
-            field: null,
+            field: "",
             enterpriseName: "",
             fieldName: ""
         };
@@ -78,9 +79,40 @@ class AddUsersForm extends Component
         this.setState({canSubmit: true});
     };
 
+    validate = () =>
+    {
+        var b = null;
+
+        if (this.props.name.status)
+        {
+            if (this.state.enterprise !== "")
+            {
+                b = true;
+            }
+            else if (this.state.enterpriseName !== "")
+            {
+                if (this.state.field !== "")
+                {
+                    b = true;
+                }
+                else b = this.state.fieldName !== "";
+            }
+            else
+            {
+                b = false;
+            }
+        }
+        else
+        {
+            b = false;
+        }
+
+        this.setState({valid: b});
+    };
+
     onSubmit = () =>
     {
-        /*var user = {
+        var user = {
             username: this.state.username,
             password: this.state.password,
             role: this.state.role,
@@ -92,10 +124,9 @@ class AddUsersForm extends Component
             fieldName: this.state.fieldName
         };
         this.props.submitRegister({user});
-        if (this.props.register.success)
-        {*/
-            this.setState({openPopOver: true});
-        //}
+        this.reset();
+        this.resetSettings();
+        this.setState({openPopOver: true});
     };
 
     handleEnterprisePanel = panel => (event, expanded) =>
@@ -159,7 +190,7 @@ class AddUsersForm extends Component
 
     resetSettings = () =>
     {
-        this.setState({enterpriseName: null, field: null, fieldName: null})
+        this.setState({enterpriseName: "", field: "", fieldName: ""})
     };
 
     handleEnterpriseNameChange = event =>
@@ -179,15 +210,6 @@ class AddUsersForm extends Component
     componentDidMount()
     {
         this.props.readEnterprises();
-        this.props.enterprises.map((enterprise) =>
-        {
-           if (enterprise.name === "Be-Softilys")
-           {
-               this.setState({enterprise: enterprise._id});
-           }
-
-           return null;
-        });
         this.props.readFields();
     }
 
@@ -200,6 +222,7 @@ class AddUsersForm extends Component
                     onValidSubmit={this.onSubmit}
                     onValid={this.enableButton}
                     onInvalid={this.disableButton}
+                    onChange={this.validate}
                     ref={(form) => this.form = form}
                     className="flex flex-col justify-center w-2/3"
                 >
@@ -274,7 +297,6 @@ class AddUsersForm extends Component
                         label="Enterprise"
                         value={this.state.enterprise}
                         onChange={this.handleEnterpriseChange}
-                        required
                     >
                         {this.props.enterprises.map((enterprise) =>
                             (
@@ -361,7 +383,7 @@ class AddUsersForm extends Component
                             color="primary"
                             className="my-16"
                             aria-label="LOG IN"
-                            disabled={!this.state.canSubmit || !this.props.name.status}
+                            disabled={!this.state.canSubmit || !this.state.valid}
                         >
                             Add User
                         </Button>
