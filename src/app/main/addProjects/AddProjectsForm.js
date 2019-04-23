@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Button, MenuItem, withStyles} from '@material-ui/core';
-import {TextFieldFormsy, CheckboxFormsy, SelectFormsy} from '@fuse';
+import {TextFieldFormsy, SelectFormsy} from '@fuse';
 import Formsy from 'formsy-react';
 import {bindActionCreators} from "redux";
 import * as authActions from 'app/auth/store/actions';
@@ -38,18 +38,18 @@ function Transition(props)
     return <Slide direction="up" {...props} />;
 }
 
-class AddUsersForm extends Component
+class AddProjectsForm extends Component
 {
     constructor(props)
     {
         super(props);
         this.state = {
             canSubmit: true,
-            showPassword: false,
             expandedEnterprise: false,
             openPopOver: false,
-            username: "",
-            password: "",
+            program: "",
+            title: "",
+            description: "",
             role: "",
             firstName: "",
             lastName: "",
@@ -60,9 +60,9 @@ class AddUsersForm extends Component
         };
 
         this.handleShowPasswordChange = this.handleShowPasswordChange.bind(this);
-        this.handleUsernameChange = this.handleUsernameChange.bind(this);
-        this.handlePasswordChange = this.handlePasswordChange.bind(this);
-        this.handleRoleChange = this.handleRoleChange.bind(this);
+        this.handleProgramChange = this.handleProgramChange.bind(this);
+        this.handleTitleChange = this.handleTitleChange.bind(this);
+        this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
         this.handleFirstNameChange = this.handleFirstNameChange.bind(this);
         this.handleLastNameChange = this.handleLastNameChange.bind(this);
         this.handleEnterpriseChange = this.handleEnterpriseChange.bind(this);
@@ -136,21 +136,21 @@ class AddUsersForm extends Component
         this.setState({ openPopOver: false });
     };
 
-    handleUsernameChange = event =>
+    handleProgramChange = event =>
     {
-        this.setState({username: event.target.value});
-        var username = event.target.value;
-        this.props.verifyUsername({username});
+        this.setState({program: event.target.value});
     };
 
-    handlePasswordChange = event =>
+    handleTitleChange = event =>
     {
-        this.setState({password: event.target.value});
+        this.setState({title: event.target.value});
+        var title = event.target.value;
+        this.props.verifyTitle({title});
     };
 
-    handleRoleChange = event =>
+    handleDescriptionChange = event =>
     {
-        this.setState({role: event.target.value});
+        this.setState({description: event.target.value});
     };
 
     handleFirstNameChange = event =>
@@ -202,6 +202,7 @@ class AddUsersForm extends Component
     {
         this.props.readEnterprises();
         this.props.readFields();
+        this.props.readPrograms();
     }
 
     render()
@@ -214,17 +215,41 @@ class AddUsersForm extends Component
                     ref={(form) => this.form = form}
                     className="flex flex-col justify-center w-2/3"
                 >
+                    <SelectFormsy
+                        className="my-4"
+                        name="program"
+                        label="Program"
+                        value={this.state.program}
+                        onChange={this.handleProgramChange}
+                    >
+                        {this.props.programs.map((program) =>
+                            (
+                                <MenuItem value={program._id} key={program._id}>{program.name}</MenuItem>
+                            ))}
+
+                    </SelectFormsy>
 
                     <TextField
-                        className="mb-4 mt-4"
+                        className="my-4"
                         margin="normal"
                         type="text"
-                        name="username"
-                        label="Username"
-                        value={this.state.username}
-                        onChange={this.handleUsernameChange}
+                        name="title"
+                        label="Title"
+                        value={this.state.title}
+                        onChange={this.handleTitleChange}
                         helperText={this.props.name.status ? '' : this.props.name.message}
                         error={!this.props.name.status}
+                        required
+                    />
+
+                    <TextField
+                        className="my-4"
+                        margin="normal"
+                        label="Description"
+                        multiline
+                        rowsMax="4"
+                        value={this.state.description}
+                        onChange={this.handlePasswordChange}
                         required
                     />
 
@@ -237,27 +262,6 @@ class AddUsersForm extends Component
                         onChange={this.handlePasswordChange}
                         required
                     />
-                    <CheckboxFormsy
-                        className="my-4"
-                        name="show"
-                        label="Show Password"
-                        value={this.state.showPassword}
-                        onChange={this.handleShowPasswordChange}
-                    />
-
-                    <SelectFormsy
-                        className="my-4"
-                        name="role"
-                        label="Role"
-                        value={this.state.role}
-                        onChange={this.handleRoleChange}
-                        required
-                    >
-                        <MenuItem value="Administrator" key="Administrator">Administrator</MenuItem>
-                        <MenuItem value="Employee" key="Employee">Employee</MenuItem>
-                        <MenuItem value="Client" key="Client">Client</MenuItem>
-                        <MenuItem value="HR Manager" key="HR Manager">HR Manager</MenuItem>
-                    </SelectFormsy>
 
                     <TextFieldFormsy
                         className="mb-4"
@@ -278,20 +282,6 @@ class AddUsersForm extends Component
                         onChange={this.handleLastNameChange}
                         required
                     />
-
-                    <SelectFormsy
-                        className="my-4"
-                        name="enterprise"
-                        label="Enterprise"
-                        value={this.state.enterprise}
-                        onChange={this.handleEnterpriseChange}
-                    >
-                        {this.props.enterprises.map((enterprise) =>
-                            (
-                                <MenuItem value={enterprise._id} key={enterprise._id}>{enterprise.name}</MenuItem>
-                            ))}
-
-                    </SelectFormsy>
 
                     <ExpansionPanel className="my-16" expanded={this.state.expandedEnterprise} onChange={this.handleEnterprisePanel(true)}>
                         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
@@ -405,7 +395,8 @@ function mapDispatchToProps(dispatch)
     return bindActionCreators({
         readEnterprises: Actions.readEnterprises,
         readFields: Actions.readFields,
-        verifyUsername: authActions.checkUsername,
+        readPrograms: Actions.readPrograms,
+        verifyTitle: Actions.checkProjectTitle,
         verifyEnterpriseName: Actions.checkEnterpriseName,
         verifyFieldName: Actions.checkFieldName,
         submitRegister: authActions.submitRegister
@@ -417,6 +408,7 @@ function mapStateToProps({auth, scrum})
     return {
         enterprises: scrum.enterprises,
         fields: scrum.fields,
+        programs: scrum.programs,
         name: scrum.name,
         enterprisename: scrum.enterprisename,
         fieldname: scrum.fieldname,
@@ -424,4 +416,4 @@ function mapStateToProps({auth, scrum})
     }
 }
 
-export default withStyles(styles) (withRouter(connect(mapStateToProps, mapDispatchToProps) (AddUsersForm)));
+export default withStyles(styles) (withRouter(connect(mapStateToProps, mapDispatchToProps) (AddProjectsForm)));

@@ -27,7 +27,23 @@ const navigationConfig = [
                     'exact': true
                 }
             ]
-        }]
+        },
+            {
+                'id'      : 'projects',
+                'title'   : 'Projects',
+                'type'    : 'collapse',
+                'icon'    : 'apps',
+                'children': [
+                    {
+                        'id'   : 'add-project',
+                        'title': 'Add New Project',
+                        'type' : 'item',
+                        'icon' : 'add_box',
+                        'url'  : '/projects/add',
+                        'exact': true
+                    }
+                ]
+            }]
     },
     {
         'type': 'divider',

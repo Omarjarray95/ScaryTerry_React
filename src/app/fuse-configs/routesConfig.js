@@ -4,9 +4,11 @@ import {FuseUtils} from '@fuse/index';
 import {LoginConfig} from 'app/main/login/LoginConfig';
 import {DashboardConfig} from 'app/main/dashboard/DashboardConfig';
 import {AddUsersConfig} from 'app/main/addUsers/AddUsersConfig';
+import {AddProjectsConfig} from 'app/main/addProjects/AddProjectsConfig';
 
 const routeConfigs = [
     AddUsersConfig,
+    AddProjectsConfig,
     DashboardConfig,
     LoginConfig
 ];

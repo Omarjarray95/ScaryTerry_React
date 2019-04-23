@@ -102,7 +102,7 @@ class jwtService extends FuseUtils.EventEmitter {
                     {
                         var user = response.data;
                         var fullname = user.firstName + " " + user.lastName;
-                        this.setSession(user.token, user.username, fullname, user.role);
+                        this.setSession(user.token, user.id, user.username, fullname, user.role);
                         resolve(user);
                     }
                     else if ( response.status === 200 )
@@ -144,10 +144,11 @@ class jwtService extends FuseUtils.EventEmitter {
         });
     };
 
-    setSession = (access_token, username, name, role) => {
+    setSession = (access_token, id, username, name, role) => {
         if ( access_token && username && name && role )
         {
             localStorage.setItem('jwt_access_token', access_token);
+            localStorage.setItem('id', id);
             localStorage.setItem('username', username);
             localStorage.setItem('name', name);
             localStorage.setItem('role', role);
@@ -156,6 +157,7 @@ class jwtService extends FuseUtils.EventEmitter {
         else
         {
             localStorage.removeItem('jwt_access_token');
+            localStorage.removeItem('id');
             localStorage.removeItem('username');
             localStorage.removeItem('name');
             localStorage.setItem('role', "Guest");
@@ -164,7 +166,7 @@ class jwtService extends FuseUtils.EventEmitter {
     };
 
     logout = () => {
-        this.setSession(null, null, null, null);
+        this.setSession(null, null, null, null, null);
     };
 
     isAuthTokenValid = access_token => {
