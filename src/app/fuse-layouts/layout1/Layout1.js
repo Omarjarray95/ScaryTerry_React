@@ -187,6 +187,7 @@ const Layout1 = ({classes, settings, children}) => {
 
                                             {renderRoutes(routes)}
                                             {children}
+                                            test here
 
                                             {layoutConfig.footer.display && layoutConfig.footer.position === 'below' && layoutConfig.footer.style !== 'fixed' && (
                                                 <FooterLayout1/>

@@ -4,10 +4,11 @@ import {FuseUtils} from '@fuse/index';
 import {LoginConfig} from 'app/main/login/LoginConfig';
 import {DashboardConfig} from 'app/main/dashboard/DashboardConfig';
 import {AddUsersConfig} from 'app/main/addUsers/AddUsersConfig';
-
+import {TodoAppConfig} from 'app/main/ImpedimentsHub/TodoAppConfig';
 const routeConfigs = [
     AddUsersConfig,
     DashboardConfig,
+    TodoAppConfig,
     LoginConfig
 ];
 
