@@ -3,6 +3,7 @@ import enterprises from './enterprises.reducer';
 import fields from './fields.reducer';
 import programs from './programs.reducer';
 import projects from './projects.reducer';
+import employees from './employees.reducer';
 import name from './name.reducer';
 import fieldname from "./fieldname.reducer";
 import enterprisename from "./enterprisename.reducer";
@@ -15,6 +16,7 @@ const Reducers = combineReducers({
     fields,
     programs,
     projects,
+    employees,
     project,
     name,
     enterprisename,

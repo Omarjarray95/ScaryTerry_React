@@ -11,6 +11,8 @@ import jwtService from 'app/services/jwtService';
 export const SET_USER_DATA = '[USER] SET DATA';
 export const REMOVE_USER_DATA = '[USER] REMOVE DATA';
 export const USER_LOGGED_OUT = '[USER] LOGGED OUT';
+export const READ_EMPLOYEES = 'READ_EMPLOYEES';
+export const REQUEST_ERROR = 'REQUEST_ERROR';
 export const USERNAME_AVAILABLE = 'USERNAME_AVAILABLE';
 export const USERNAME_UNAVAILABLE = 'USERNAME_UNAVAILABLE';
 
@@ -31,6 +33,27 @@ export function checkUsername({username})
                 return dispatch({
                     type   : USERNAME_UNAVAILABLE,
                     payload: res
+                });
+            });
+}
+
+export function readEmployees()
+{
+    return (dispatch) =>
+        jwtService.getEmployees()
+            .then((employees) =>
+                {
+                    return dispatch({
+                        type: READ_EMPLOYEES,
+                        payload: employees
+                    });
+                }
+            )
+            .catch(error =>
+            {
+                return dispatch({
+                    type   : REQUEST_ERROR,
+                    payload: error
                 });
             });
 }

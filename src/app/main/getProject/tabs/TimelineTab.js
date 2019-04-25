@@ -9,6 +9,10 @@ import Grid from "@material-ui/core/Grid/Grid";
 import {bindActionCreators} from "redux";
 import connect from "react-redux/es/connect/connect";
 import {withRouter} from "react-router-dom";
+import * as authActions from 'app/auth/store/actions';
+import * as Actions from 'app/store/actions/scrum';
+import Button from "@material-ui/core/Button/Button";
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const styles = {
     card: {
@@ -17,6 +21,7 @@ const styles = {
     },
     addCard: {
         maxWidth: 260,
+        maxHeight: 150,
         margin: 20
     },
     title: {
@@ -41,20 +46,88 @@ const styles = {
     }
 };
 
-class TimelineTab extends Component {
+class TimelineTab extends Component
+{
+    constructor(props)
+    {
+        super(props);
 
-    state = {
-        sum: 1
+        this.state = {
+            scrumMaster: "",
+            productOwner: "",
+            member: "",
+            addedMember: ""
+        };
+
+        this.handleScrumMasterChange = this.handleScrumMasterChange.bind(this);
+        this.handleProductOwnerChange = this.handleProductOwnerChange.bind(this);
+        this.handleAddedMemberChange = this.handleAddedMemberChange.bind(this);
+        this.handleDeleteMember = this.handleDeleteMember.bind(this);
+    }
+
+
+    handleScrumMasterChange = event =>
+    {
+        var devmembers = [];
+        this.props.project.developmentTeam.map((member) =>
+            (
+                devmembers.push(member._id)
+            ));
+        var data = {
+            scrumMaster: event.target.value,
+            productOwner: this.props.project.productOwner ? this.props.project.productOwner._id : null,
+            developmentTeam: devmembers
+        };
+        this.props.submitAffect(data, this.props.match.params.id);
+        this.setState({scrumMaster: ""});
+    };
+
+    handleProductOwnerChange = event =>
+    {
+        var devmembers = [];
+        this.props.project.developmentTeam.map((member) =>
+            (
+                devmembers.push(member._id)
+            ));
+        var data = {
+            scrumMaster: this.props.project.scrumMaster ? this.props.project.scrumMaster._id : null,
+            productOwner: event.target.value,
+            developmentTeam: devmembers
+        };
+        this.props.submitAffect(data, this.props.match.params.id);
+        this.setState({productOwner: ""});
+    };
+
+    handleAddedMemberChange = event =>
+    {
+        var devmembers = [];
+        this.props.project.developmentTeam.map((member) =>
+            (
+                devmembers.push(member._id)
+            ));
+        devmembers.push(event.target.value);
+        var data = {
+            scrumMaster: this.props.project.scrumMaster ? this.props.project.scrumMaster._id : null,
+            productOwner: this.props.project.productOwner ? this.props.project.productOwner._id : null,
+            developmentTeam: devmembers
+        };
+        this.props.submitAffect(data, this.props.match.params.id);
+        this.setState({addedMember: ""});
+    };
+
+    handleDeleteMember = (id) =>
+    {
+        console.log(id);
     };
 
     componentDidMount()
     {
-
+        this.props.readEmployees();
     }
 
     render()
     {
-        const { classes, project } = this.props;
+        const { classes, project, employees } = this.props;
 
         return (
             <div className="md:flex max-w-2xl">
@@ -87,9 +160,35 @@ class TimelineTab extends Component {
                                         <MenuItem value="">
                                             <em>Choose The Scrum Master</em>
                                         </MenuItem>
-                                        <MenuItem value={10}>Ten</MenuItem>
-                                        <MenuItem value={20}>Twenty</MenuItem>
-                                        <MenuItem value={30}>Thirty</MenuItem>
+                                        {employees.length > 0 && (employees.map((employee) =>
+                                        {
+                                            var b = true;
+                                            if (project.scrumMaster && (employee._id === project.scrumMaster._id))
+                                            {
+                                                b = false;
+                                            }
+                                            if (project.productOwner && (employee._id === project.productOwner._id))
+                                            {
+                                                b = false;
+                                            }
+                                            if (project.developmentTeam.length > 0)
+                                            {
+                                                project.developmentTeam.map((member) =>
+                                                {
+                                                    if (employee._id === member._id)
+                                                    {
+                                                        b = false;
+                                                    }
+                                                });
+                                            }
+                                            if (b === true)
+                                            {
+                                                return <MenuItem value={employee._id} key={employee._id}>
+                                                    {employee.firstName + " " + employee.lastName}
+                                                </MenuItem>
+                                            }
+                                        }
+                                        ))}
                                     </Select>
                                 </FormControl>
                             </CardActions>
@@ -121,80 +220,125 @@ class TimelineTab extends Component {
                                         <MenuItem value="">
                                             <em>Choose The Product Owner</em>
                                         </MenuItem>
-                                        <MenuItem value={10}>Ten</MenuItem>
-                                        <MenuItem value={20}>Twenty</MenuItem>
-                                        <MenuItem value={30}>Thirty</MenuItem>
+                                        {employees.length > 0 && (employees.map((employee) =>
+                                            {
+                                                var b = true;
+                                                if (project.scrumMaster && (employee._id === project.scrumMaster._id))
+                                                {
+                                                    b = false;
+                                                }
+                                                if (project.productOwner && (employee._id === project.productOwner._id))
+                                                {
+                                                    b = false;
+                                                }
+                                                if (project.developmentTeam.length > 0)
+                                                {
+                                                    project.developmentTeam.map((member) =>
+                                                    {
+                                                        if (employee._id === member._id)
+                                                        {
+                                                            b = false;
+                                                        }
+                                                    });
+                                                }
+                                                if (b === true)
+                                                {
+                                                    return <MenuItem value={employee._id} key={employee._id}>
+                                                        {employee.firstName + " " + employee.lastName}
+                                                    </MenuItem>
+                                                }
+                                            }
+                                        ))}
                                     </Select>
                                 </FormControl>
                             </CardActions>
                         </Card>
                     </Grid>
 
-                    {project.developmentTeam.length > 0 && (project.developmentTeam.map((member) =>
-                        (<Card className={classes.card}>
+                    <Grid container direction="row" wrap="wrap" justify="center">
+                        {project.developmentTeam.length > 0 && (project.developmentTeam.map((member) =>
+                            (<Card key={member._id} className={classes.card}>
+                                <CardContent>
+                                    <Grid container alignItems="center" direction="column">
+                                        <Typography className={classes.title} color="textPrimary">
+                                            Member {(project.developmentTeam.indexOf(member)+1)}
+                                        </Typography>
+                                        <Avatar alt="Remy Sharp" src="assets/images/avatars/Velazquez.jpg"
+                                                className={classes.bigAvatar}/>
+                                        <Typography className={classes.fullName} color="textSecondary">
+                                            {member.firstName + " " + member.lastName}
+                                        </Typography>
+                                    </Grid>
+                                </CardContent>
+                                <CardActions className="flex justify-center">
+                                    <Button
+                                        type="button"
+                                        onClick={() => this.handleDeleteMember(member._id)}
+                                        variant="contained"
+                                        color="default">
+                                        Delete
+                                        <DeleteIcon />
+                                    </Button>
+                                </CardActions>
+                            </Card>)))
+                        }
+
+                        <Card className={classes.addCard}>
                             <CardContent>
                                 <Grid container alignItems="center" direction="column">
                                     <Typography className={classes.title} color="textPrimary">
-                                        Member + { " " + this.state.sum}
-                                    </Typography>
-                                    <Avatar alt="Remy Sharp" src="assets/images/avatars/Velazquez.jpg"
-                                            className={classes.bigAvatar}/>
-                                    <Typography className={classes.fullName} color="textSecondary">
-                                        {member.firstName + " " + member.lastName}
+                                        Add Member
                                     </Typography>
                                 </Grid>
                             </CardContent>
                             <CardActions className="flex justify-center">
                                 <FormControl className={classes.formControl}>
-                                    <InputLabel htmlFor={"member"+this.state.sum}>Replace Her/Him With ...</InputLabel>
+                                    <InputLabel htmlFor="addMember">Add Member</InputLabel>
                                     <Select
-                                        value={this.state.member}
-                                        onChange={this.handleMemberChange}
+                                        value={this.state.addedMember}
+                                        onChange={this.handleAddedMemberChange}
                                         inputProps={{
-                                            name: "member"+this.state.sum,
-                                            id: "member"+this.state.sum,
+                                            name: 'addMember',
+                                            id: 'addMember',
                                         }}
                                     >
                                         <MenuItem value="">
-                                            <em>Replace Her/Him With ...</em>
+                                            <em>Add Member</em>
                                         </MenuItem>
-                                        <MenuItem value={10}>Ten</MenuItem>
-                                        <MenuItem value={20}>Twenty</MenuItem>
-                                        <MenuItem value={30}>Thirty</MenuItem>
+                                        {employees.length > 0 && (employees.map((employee) =>
+                                            {
+                                                var b = true;
+                                                if (project.scrumMaster && (employee._id === project.scrumMaster._id))
+                                                {
+                                                    b = false;
+                                                }
+                                                if (project.productOwner && (employee._id === project.productOwner._id))
+                                                {
+                                                    b = false;
+                                                }
+                                                if (project.developmentTeam.length > 0)
+                                                {
+                                                    project.developmentTeam.map((member) =>
+                                                    {
+                                                        if (employee._id === member._id)
+                                                        {
+                                                            b = false;
+                                                        }
+                                                    });
+                                                }
+                                                if (b === true)
+                                                {
+                                                    return <MenuItem value={employee._id} key={employee._id}>
+                                                        {employee.firstName + " " + employee.lastName}
+                                                    </MenuItem>
+                                                }
+                                            }
+                                        ))}
                                     </Select>
                                 </FormControl>
                             </CardActions>
-                        </Card>)))}
-
-                    <Card className={classes.addCard}>
-                        <CardContent>
-                            <Grid container alignItems="center" direction="column">
-                                <Typography className={classes.title} color="textPrimary">
-                                    Add Member
-                                </Typography>
-                            </Grid>
-                        </CardContent>
-                        <CardActions className="flex justify-center">
-                            <FormControl className={classes.formControl}>
-                                <InputLabel htmlFor="addMember">Add Member</InputLabel>
-                                <Select
-                                    value={this.state.addedMember}
-                                    onChange={this.handleAddedMemberChange}
-                                    inputProps={{
-                                        name: 'addMember',
-                                        id: 'addMember',
-                                    }}
-                                >
-                                    <MenuItem value="">
-                                        <em>Add Member</em>
-                                    </MenuItem>
-                                    <MenuItem value={10}>Ten</MenuItem>
-                                    <MenuItem value={20}>Twenty</MenuItem>
-                                    <MenuItem value={30}>Thirty</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </CardActions>
-                    </Card>
+                        </Card>
+                    </Grid>
                 </Grid>
             </div>
         );
@@ -204,13 +348,17 @@ class TimelineTab extends Component {
 function mapDispatchToProps(dispatch)
 {
     return bindActionCreators({
+        readEmployees: authActions.readEmployees,
+        submitAffect: Actions.affectTeam,
+        readProject: Actions.readProject
     }, dispatch);
 }
 
 function mapStateToProps({scrum})
 {
     return {
-        project: scrum.project
+        project: scrum.project,
+        employees: scrum.employees
     }
 }
 

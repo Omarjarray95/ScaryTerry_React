@@ -60,6 +60,25 @@ class projectsService extends FuseUtils.EventEmitter
         });
     };
 
+    affectTeam = (data, id) =>
+    {
+        return new Promise((resolve, reject) =>
+        {
+            axios.post('http://localhost:3001/projects/affectteam/' + id, data)
+                .then(response =>
+                {
+                    if ( response.status === 202 )
+                    {
+                        resolve(response.data);
+                    }
+                    else
+                    {
+                        reject(response.data);
+                    }
+                });
+        });
+    };
+
     checkTitle = (title) =>
     {
         return new Promise((resolve, reject) =>

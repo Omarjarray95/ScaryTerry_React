@@ -87,6 +87,25 @@ class jwtService extends FuseUtils.EventEmitter {
         });
     };
 
+    getEmployees = () =>
+    {
+        return new Promise((resolve, reject) =>
+        {
+            axios.get('http://localhost:3001/users/getusers')
+                .then(response =>
+                {
+                    if ( response.status === 202 )
+                    {
+                        resolve(response.data);
+                    }
+                    else
+                    {
+                        reject(response.data);
+                    }
+                });
+        });
+    };
+
     signInWithEmailAndPassword = (username, password) =>
     {
         return new Promise((resolve, reject) =>

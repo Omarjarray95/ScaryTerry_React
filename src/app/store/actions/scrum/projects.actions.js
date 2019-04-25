@@ -71,6 +71,27 @@ export function readProject(id)
             });
 }
 
+export function affectTeam(data, id)
+{
+    return (dispatch) =>
+        projectsService.affectTeam(data, id)
+            .then((project) =>
+                {
+                    return dispatch({
+                        type: READ_PROJECT,
+                        payload: project
+                    });
+                }
+            )
+            .catch(error =>
+            {
+                return dispatch({
+                    type   : REQUEST_ERROR,
+                    payload: error
+                });
+            });
+}
+
 export function checkProjectTitle({title})
 {
     return (dispatch) =>
