@@ -5,57 +5,77 @@ const navigationConfig = [
         'type': 'group',
         'icon': 'apps',
         'children': [{
-            'id'      : 'users',
-            'title'   : 'Users',
-            'type'    : 'collapse',
-            'icon'    : 'account_box',
+            'id': 'users',
+            'title': 'Users',
+            'type': 'collapse',
+            'icon': 'account_box',
             'children': [
                 {
-                    'id'   : 'add-user',
+                    'id': 'add-user',
                     'title': 'Add New User',
-                    'type' : 'item',
-                    'icon' : 'add_box',
-                    'url'  : '/users/add',
+                    'type': 'item',
+                    'icon': 'add_box',
+                    'url': '/users/add',
                     'exact': true
                 },
                 {
-                    'id'   : 'read-users',
+                    'id': 'read-users',
                     'title': 'Consult Users',
-                    'type' : 'item',
-                    'icon' : 'list',
-                    'url'  : '#',
+                    'type': 'item',
+                    'icon': 'list',
+                    'url': '#',
                     'exact': true
                 }
             ]
         },
-            {
-                'id'      : 'projects',
-                'title'   : 'Projects',
-                'type'    : 'collapse',
-                'icon'    : 'apps',
-                'children': [
-                    {
-                        'id'   : 'add-project',
-                        'title': 'Add New Project',
-                        'type' : 'item',
-                        'icon' : 'add_box',
-                        'url'  : '/projects/add',
-                        'exact': true
-                    },
-                    {
-                        'id'   : 'get-projects',
-                        'title': 'My Projects',
-                        'type' : 'item',
-                        'icon' : 'list',
-                        'url'  : '/projects/get',
-                        'exact': true
-                    }
-                ]
-            }]
+        {
+            'id': 'projects',
+            'title': 'Projects',
+            'type': 'collapse',
+            'icon': 'apps',
+            'children': [
+                {
+                    'id': 'add-project',
+                    'title': 'Add New Project',
+                    'type': 'item',
+                    'icon': 'add_box',
+                    'url': '/projects/add',
+                    'exact': true
+                },
+                {
+                    'id': 'get-projects',
+                    'title': 'My Projects',
+                    'type': 'item',
+                    'icon': 'list',
+                    'url': '/projects/get',
+                    'exact': true
+                }
+            ]
+        },
+        {
+            'id'      : 'dashboards',
+            'title'   : 'Dashboards',
+            'type'    : 'collapse',
+            'icon'    : 'dashboard',
+            'children': [
+                {
+                    'id'   : 'analytics-dashboard',
+                    'title': 'Analytics',
+                    'type' : 'item',
+                    'url'  : '/apps/dashboards/analytics'
+                },
+                {
+                    'id'   : 'project-dashboard',
+                    'title': 'Project',
+                    'type' : 'item',
+                    'url'  : '/apps/dashboards/project'
+                }
+            ]
+        }]
     },
     {
         'type': 'divider',
-        'id'  : 'divider-1'
+        'id': 'divider-1'
     },
     {
         'id': 'account',
@@ -63,11 +83,11 @@ const navigationConfig = [
         'type': 'group',
         'icon': 'apps',
         'children': [{
-            'id'   : 'logout',
+            'id': 'logout',
             'title': 'Logout',
-            'type' : 'item',
-            'icon' : 'directions_run',
-            'url'  : '#'
+            'type': 'item',
+            'icon': 'directions_run',
+            'url': '#'
         }]
     }
 ];
