@@ -1,6 +1,6 @@
 import programsService from 'app/services/programsService';
 
-export const READ_PROGRAMS = 'READ_FIELDS';
+export const READ_PROGRAMS = 'READ_PROGRAMS';
 export const REQUEST_ERROR = 'REQUEST_ERROR';
 export const PROGRAM_NAME_AVAILABLE = 'PROGRAM_NAME_AVAILABLE';
 export const PROGRAM_NAME_UNAVAILABLE = 'PROGRAM_NAME_UNAVAILABLE';

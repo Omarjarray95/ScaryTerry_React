@@ -145,7 +145,7 @@ class jwtService extends FuseUtils.EventEmitter {
     };
 
     setSession = (access_token, id, username, name, role) => {
-        if ( access_token && username && name && role )
+        if ( access_token && username && name && role && id )
         {
             localStorage.setItem('jwt_access_token', access_token);
             localStorage.setItem('id', id);

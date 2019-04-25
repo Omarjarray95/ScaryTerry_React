@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import {Button, MenuItem, withStyles} from '@material-ui/core';
-import {TextFieldFormsy, SelectFormsy} from '@fuse';
+import {SelectFormsy} from '@fuse';
 import Formsy from 'formsy-react';
 import {bindActionCreators} from "redux";
-import * as authActions from 'app/auth/store/actions';
 import * as Actions from 'app/store/actions/scrum';
 import connect from "react-redux/es/connect/connect";
 import {withRouter} from 'react-router-dom';
@@ -17,6 +16,12 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
+import DateFnsUtils from '@date-io/date-fns';
+import Grid from '@material-ui/core/Grid';
+import { MuiPickersUtilsProvider, DatePicker } from 'material-ui-pickers';
+import red from '@material-ui/core/colors/red';
+import blue from '@material-ui/core/colors/blue';
+import moment from 'moment';
 
 const styles = theme => ({
     root: {
@@ -31,7 +36,43 @@ const styles = theme => ({
         fontSize: theme.typography.pxToRem(15),
         color: theme.palette.text.secondary,
     },
+    textField: {
+        marginLeft: theme.spacing.unit,
+        marginRight: theme.spacing.unit,
+        width: 200,
+    },
+    sendButtonError: {
+        color: theme.palette.getContrastText(red[500]),
+        backgroundColor: red[500],
+        '&:hover': {
+            backgroundColor: red[700],
+        },
+        margin: theme.spacing.unit
+    },
+    sendButtonValid: {
+        color: theme.palette.getContrastText(blue[500]),
+        backgroundColor: blue[500],
+        '&:hover': {
+            backgroundColor: blue[700],
+        },
+        margin: theme.spacing.unit
+    },
 });
+
+const units = [
+    {
+        value: 'days',
+        label: 'Days',
+    },
+    {
+        value: 'months',
+        label: 'Months',
+    },
+    {
+        value: 'years',
+        label: 'Years',
+    }
+];
 
 function Transition(props)
 {
@@ -44,28 +85,40 @@ class AddProjectsForm extends Component
     {
         super(props);
         this.state = {
-            canSubmit: true,
+            canSubmit: false,
             expandedEnterprise: false,
             openPopOver: false,
+            validDates: true,
             program: "",
             title: "",
             description: "",
-            role: "",
-            firstName: "",
-            lastName: "",
             enterprise: "",
             field: "",
+            startingDate: null,
+            endingDate: null,
+            duration: "",
+            unit: "days",
+            programName: "",
+            fieldName: "",
             enterpriseName: "",
-            fieldName: ""
+            field1: "",
+            fieldName1: ""
         };
 
-        this.handleShowPasswordChange = this.handleShowPasswordChange.bind(this);
         this.handleProgramChange = this.handleProgramChange.bind(this);
         this.handleTitleChange = this.handleTitleChange.bind(this);
         this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
-        this.handleFirstNameChange = this.handleFirstNameChange.bind(this);
-        this.handleLastNameChange = this.handleLastNameChange.bind(this);
         this.handleEnterpriseChange = this.handleEnterpriseChange.bind(this);
+        this.handleFieldChange = this.handleFieldChange.bind(this);
+        this.handleStartingDateChange = this.handleStartingDateChange.bind(this);
+        this.handleEndingDateChange = this.handleEndingDateChange.bind(this);
+        this.handleDurationChange = this.handleDurationChange.bind(this);
+        this.handleUnitChange = this.handleUnitChange.bind(this);
+        this.handleProgramNameChange = this.handleProgramNameChange.bind(this);
+        this.handleFieldNameChange = this.handleFieldNameChange.bind(this);
+        this.handleEnterpriseNameChange = this.handleEnterpriseNameChange.bind(this);
+        this.handleField1Change = this.handleField1Change.bind(this);
+        this.handleFieldName1Change = this.handleFieldName1Change.bind(this);
     }
 
     form = React.createRef();
@@ -74,20 +127,34 @@ class AddProjectsForm extends Component
     {
         var b = null;
 
-        if (this.state.username !== "" && this.state.password !== "" && this.state.role !== "" &&
-            this.state.firstName !== "" && this.state.lastName !== "" && this.props.name.status && this.state.enterprise !== "")
+        if (this.state.validDates === true)
         {
-            b = true;
-        }
-        else if (this.state.username !== "" && this.state.password !== "" && this.state.role !== "" && this.state.firstName !== ""
-            && this.state.lastName !== "" && this.props.name.status && this.state.enterpriseName !== "" && this.state.field !== "")
-        {
-            b = true;
-        }
-        else if (this.state.username !== "" && this.state.password !== "" && this.state.role !== "" && this.state.firstName !== ""
-            && this.state.lastName !== "" && this.props.name.status && this.state.enterpriseName !== "" && this.state.fieldName !== "")
-        {
-            b = true;
+            if (this.state.field !== "" || this.state.fieldname !== "")
+            {
+                if (this.state.enterprise !== "")
+                {
+                    b = true;
+                }
+                else
+                {
+                    if (this.state.enterpriseName !== "")
+                    {
+                        if (this.state.field1 !== "")
+                        {
+                            b = true;
+                        }
+                        else b = this.state.fieldName1 !== "";
+                    }
+                    else
+                    {
+                        b = false;
+                    }
+                }
+            }
+            else
+            {
+                b = false;
+            }
         }
         else
         {
@@ -101,21 +168,67 @@ class AddProjectsForm extends Component
     {
         if (this.validate())
         {
-            var user = {
-                username: this.state.username,
-                password: this.state.password,
-                role: this.state.role,
-                firstName: this.state.firstName,
-                lastName: this.state.lastName,
-                entreprise: this.state.enterprise,
-                name: this.state.enterpriseName,
-                field: this.state.field,
-                fieldName: this.state.fieldName
+            this.setState({canSubmit: true});
+            //if (this.state.program)
+
+            if (this.state.startingDate !== null && this.state.endingDate !== null && this.state.duration === "")
+            {
+                this.setState({duration: moment.duration(this.state.endingDate - this.state.startingDate, 'milliseconds')
+                        .asDays()});
+            }
+            if (this.state.startingDate !== null && this.state.duration !== "" && this.state.endingDate === null)
+            {
+                var date = moment(this.state.startingDate).add(this.state.duration, this.state.unit)
+                    .format("YYYY-MM-DDTHH:mm:ss").toString();
+                this.setState({endingDate: new Date(date)});
+                this.setState({duration: moment.duration(new Date(date) - this.state.startingDate, 'milliseconds')
+                        .asDays()});
+            }
+            if (this.state.endingDate !== null && this.state.duration !== "" && this.state.startingDate === null)
+            {
+                date = moment(this.state.endingDate).subtract(this.state.duration, this.state.unit)
+                    .format("YYYY-MM-DDTHH:mm:ss").toString();
+                this.setState({startingDate: new Date(date)});
+                this.setState({duration: moment.duration(this.state.endingDate - new Date(date), 'milliseconds')
+                        .asDays()});
+            }
+
+            var program = this.state.program !== "" ? this.state.program : null;
+            var field = this.state.field !== "" ? this.state.field : null;
+            var enterprise = this.state.enterprise !== "" ? this.state.enterprise : null;
+            var startingDate = this.state.startingDate !== "" ? this.state.startingDate : null;
+            var endingDate = this.state.endingDate !== "" ? this.state.endingDate : null;
+            var duration = this.state.duration !== "" ? this.state.duration : null;
+            var programName = this.state.programName !== "" ? this.state.programName : null;
+            var fieldName = this.state.fieldName !== "" ? this.state.fieldName : null;
+            var enterpriseName = this.state.enterpriseName !== "" ? this.state.enterpriseName : null;
+            var field1 = this.state.field1 !== "" ? this.state.field1 : null;
+            var fieldName1 = this.state.fieldName1 !== "" ? this.state.fieldName1 : null;
+
+            var project = {
+                program: program,
+                title: this.state.title,
+                description: this.state.description,
+                field: field,
+                entreprise: enterprise,
+                startDate: startingDate,
+                endDate: endingDate,
+                duration: duration,
+                programName: programName,
+                fieldName: fieldName,
+                entrepriseName: enterpriseName,
+                fieldName1: field1,
+                fieldName2: fieldName1,
+                scrumMaster: localStorage.getItem('id')
             };
-            this.props.submitRegister({user});
+            this.props.submitAddProject({project});
             this.reset();
             this.resetSettings();
             this.setState({openPopOver: true});
+        }
+        else
+        {
+            this.setState({canSubmit: false});
         }
     };
 
@@ -124,11 +237,6 @@ class AddProjectsForm extends Component
         this.setState({
             expandedEnterprise: expanded ? panel : false,
         });
-    };
-
-    handleShowPasswordChange = event =>
-    {
-        this.setState({showPassword: event.target.checked});
     };
 
     handleCloseDialog = event =>
@@ -153,16 +261,6 @@ class AddProjectsForm extends Component
         this.setState({description: event.target.value});
     };
 
-    handleFirstNameChange = event =>
-    {
-        this.setState({firstName: event.target.value});
-    };
-
-    handleLastNameChange = event =>
-    {
-        this.setState({lastName: event.target.value});
-    };
-
     handleEnterpriseChange = event =>
     {
         this.setState({enterprise: event.target.value});
@@ -173,27 +271,83 @@ class AddProjectsForm extends Component
         this.setState({field: event.target.value});
     };
 
+    handleStartingDateChange = event =>
+    {
+        this.setState({startingDate: event});
+        if (this.state.endingDate !== null)
+        {
+            this.setState({validDates: event < this.state.endingDate});
+        }
+        else
+        {
+            this.setState({validDates: true});
+        }
+    };
+
+    handleEndingDateChange = event =>
+    {
+        this.setState({endingDate: event});
+        if (this.state.startingDate !== null)
+        {
+            this.setState({validDates: event > this.state.startingDate});
+        }
+        else
+        {
+            this.setState({validDates: true});
+        }
+    };
+
+    handleDurationChange = event =>
+    {
+        this.setState({duration: event.target.value.trim()});
+    };
+
+    handleUnitChange = event =>
+    {
+        this.setState({unit: event.target.value});
+    };
+
     reset = () =>
     {
-        this.setState({username: "", password: "", role: "", firstName: "", lastName: "", enterprise: ""})
+        this.setState({program: "", title: "", description: "", field: "", enterprise: "", startingDate: null,
+            endingDate: null, duration: ""});
         this.props.name.status = true;
     };
 
     resetSettings = () =>
     {
-        this.setState({enterpriseName: "", field: "", fieldName: ""})
+        this.setState({programName: "", fieldName: "", enterpriseName: "", field1: "", fieldName1: ""});
     };
 
-    handleEnterpriseNameChange = event =>
+    handleProgramNameChange = event =>
     {
-        this.setState({enterpriseName: event.target.value});
+        this.setState({programName: event.target.value.trim()});
         //var name = event.target.value;
         //this.props.verifyEnterpriseName({name});
     };
 
     handleFieldNameChange = event =>
     {
-        this.setState({fieldName: event.target.value});
+        this.setState({fieldName: event.target.value.trim()});
+        //var name = event.target.value;
+        //this.props.verifyFieldName({name});
+    };
+
+    handleEnterpriseNameChange = event =>
+    {
+        this.setState({enterpriseName: event.target.value.trim()});
+        //var name = event.target.value;
+        //this.props.verifyEnterpriseName({name});
+    };
+
+    handleField1Change = event =>
+    {
+        this.setState({field1: event.target.value});
+    };
+
+    handleFieldName1Change = event =>
+    {
+        this.setState({fieldName1: event.target.value.trim()});
         //var name = event.target.value;
         //this.props.verifyFieldName({name});
     };
@@ -247,41 +401,78 @@ class AddProjectsForm extends Component
                         margin="normal"
                         label="Description"
                         multiline
-                        rowsMax="4"
+                        rows="4"
                         value={this.state.description}
-                        onChange={this.handlePasswordChange}
+                        onChange={this.handleDescriptionChange}
                         required
                     />
 
-                    <TextFieldFormsy
-                        className="mb-0"
-                        type={this.state.showPassword ? "text" : "password"}
-                        name="password"
-                        label="Password"
-                        value={this.state.password}
-                        onChange={this.handlePasswordChange}
-                        required
-                    />
+                    <SelectFormsy
+                        className="my-4"
+                        name="field"
+                        label="Field"
+                        value={this.state.field}
+                        onChange={this.handleFieldChange}
+                    >
+                        {this.props.fields.map((field) =>
+                            (
+                                <MenuItem value={field._id} key={field._id}>{field.name}</MenuItem>
+                            ))}
 
-                    <TextFieldFormsy
-                        className="mb-4"
-                        type="text"
-                        name="firstname"
-                        label="First Name"
-                        value={this.state.firstName}
-                        onChange={this.handleFirstNameChange}
-                        required
-                    />
+                    </SelectFormsy>
 
-                    <TextFieldFormsy
-                        className="mb-4"
-                        type="text"
-                        name="lastname"
-                        label="Last Name"
-                        value={this.state.lastName}
-                        onChange={this.handleLastNameChange}
-                        required
-                    />
+                    <SelectFormsy
+                        className="my-4"
+                        name="enterprise"
+                        label="Enterprise"
+                        value={this.state.enterprise}
+                        onChange={this.handleEnterpriseChange}
+                    >
+                        {this.props.enterprises.map((enterprise) =>
+                            (
+                                <MenuItem value={enterprise._id} key={enterprise._id}>{enterprise.name}</MenuItem>
+                            ))}
+
+                    </SelectFormsy>
+
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <Grid container justify="space-around">
+                            <DatePicker
+                                margin="normal"
+                                label="Starting Date"
+                                value={this.state.startingDate}
+                                onChange={this.handleStartingDateChange}
+                                error={!this.state.validDates}
+                            />
+                            <DatePicker
+                                margin="normal"
+                                label="Ending Date"
+                                value={this.state.endingDate}
+                                onChange={this.handleEndingDateChange}
+                                error={!this.state.validDates}
+                            />
+                            <div className="flex flex-col">
+                                <TextField
+                                    label="Duration"
+                                    value={this.state.duration}
+                                    onChange={this.handleDurationChange}
+                                    type="number"
+                                    margin="normal"
+                                />
+                                <TextField
+                                    select
+                                    label=""
+                                    value={this.state.unit}
+                                    onChange={this.handleUnitChange}
+                                    margin="normal"
+                                >
+                                    {units.map(unit => (
+                                        <MenuItem key={unit.value} value={unit.value}>{unit.label}</MenuItem>
+                                    ))}
+                                </TextField>
+                            </div>
+                        </Grid>
+                    </MuiPickersUtilsProvider>
 
                     <ExpansionPanel className="my-16" expanded={this.state.expandedEnterprise} onChange={this.handleEnterprisePanel(true)}>
                         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
@@ -292,23 +483,41 @@ class AddProjectsForm extends Component
                         <ExpansionPanelDetails className="flex flex-col">
 
                             <TextField
-                                className="mb-4 mt-4"
+                                className="my-4"
+                                margin="normal"
+                                type="text"
+                                name="programName"
+                                label="Program Name"
+                                value={this.state.programName}
+                                onChange={this.handleProgramNameChange}
+                            />
+
+                            <TextField
+                                className="my-4"
+                                margin="normal"
+                                type="text"
+                                name="fieldname"
+                                label="Field Name"
+                                value={this.state.fieldName}
+                                onChange={this.handleFieldNameChange}
+                            />
+
+                            <TextField
+                                className="my-4"
                                 margin="normal"
                                 type="text"
                                 name="enterprisename"
-                                label="Name"
+                                label="Enterprise Name"
                                 value={this.state.enterpriseName}
                                 onChange={this.handleEnterpriseNameChange}
-                                helperText={this.props.enterprisename.status ? '' : this.props.enterprisename.message}
-                                error={!this.props.enterprisename.status}
                             />
 
                             <SelectFormsy
                                 className="my-4"
-                                name="field"
+                                name="field1"
                                 label="Field"
-                                value={this.state.field}
-                                onChange={this.handleFieldChange}
+                                value={this.state.field1}
+                                onChange={this.handleField1Change}
                             >
                                 {this.props.fields.map((field) =>
                                     (
@@ -318,15 +527,13 @@ class AddProjectsForm extends Component
                             </SelectFormsy>
 
                             <TextField
-                                className="mb-4 mt-4"
+                                className="my-4"
                                 margin="normal"
                                 type="text"
-                                name="fieldname"
+                                name="fieldname1"
                                 label="Field Name"
-                                value={this.state.fieldName}
-                                onChange={this.handleFieldNameChange}
-                                helperText={this.props.fieldname.status ? '' : this.props.fieldname.message}
-                                error={!this.props.fieldname.status}
+                                value={this.state.fieldName1}
+                                onChange={this.handleFieldName1Change}
                             />
 
                             <Button
@@ -358,12 +565,10 @@ class AddProjectsForm extends Component
                         <Button
                             type="submit"
                             variant="contained"
-                            color="primary"
-                            className="my-16"
+                            className={this.state.canSubmit === true ? classes.sendButtonValid : classes.sendButtonError}
                             aria-label="LOG IN"
-                            disabled={!this.state.canSubmit}
                         >
-                            Add User
+                            ADD PROJECT
                         </Button>
                     </div>
 
@@ -375,8 +580,8 @@ class AddProjectsForm extends Component
                         aria-labelledby="alert-dialog-slide-title"
                         aria-describedby="alert-dialog-slide-description"
                     >
-                        <DialogTitle id="alert-dialog-slide-title">
-                            {this.props.register.message}
+                        <DialogTitle>
+                            {this.props.operation.message}
                         </DialogTitle>
                         <DialogActions>
                             <Button onClick={this.handleCloseDialog} color="primary">
@@ -399,11 +604,11 @@ function mapDispatchToProps(dispatch)
         verifyTitle: Actions.checkProjectTitle,
         verifyEnterpriseName: Actions.checkEnterpriseName,
         verifyFieldName: Actions.checkFieldName,
-        submitRegister: authActions.submitRegister
+        submitAddProject: Actions.submitAddProject
     }, dispatch);
 }
 
-function mapStateToProps({auth, scrum})
+function mapStateToProps({scrum})
 {
     return {
         enterprises: scrum.enterprises,
@@ -412,7 +617,7 @@ function mapStateToProps({auth, scrum})
         name: scrum.name,
         enterprisename: scrum.enterprisename,
         fieldname: scrum.fieldname,
-        register: auth.register
+        operation: scrum.operation
     }
 }
 

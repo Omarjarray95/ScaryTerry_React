@@ -41,6 +41,14 @@ const navigationConfig = [
                         'icon' : 'add_box',
                         'url'  : '/projects/add',
                         'exact': true
+                    },
+                    {
+                        'id'   : 'get-projects',
+                        'title': 'My Projects',
+                        'type' : 'item',
+                        'icon' : 'list',
+                        'url'  : '/projects/get',
+                        'exact': true
                     }
                 ]
             }]

@@ -3,11 +3,11 @@ import FuseUtils from '@fuse/FuseUtils';
 
 class projectsService extends FuseUtils.EventEmitter
 {
-    /*getProjects = () =>
+    createProject = (data) =>
     {
         return new Promise((resolve, reject) =>
         {
-            axios.get('http://localhost:3001/programs/getprograms')
+            axios.post('http://localhost:3001/projects/addproject', data)
                 .then(response =>
                 {
                     if ( response.status === 202 )
@@ -20,7 +20,45 @@ class projectsService extends FuseUtils.EventEmitter
                     }
                 });
         });
-    };*/
+    };
+
+    getProjects = () =>
+    {
+        return new Promise((resolve, reject) =>
+        {
+            axios.get('http://localhost:3001/projects/getprojects')
+                .then(response =>
+                {
+                    if ( response.status === 202 )
+                    {
+                        resolve(response.data);
+                    }
+                    else
+                    {
+                        reject(response.data);
+                    }
+                });
+        });
+    };
+
+    getProject = (id) =>
+    {
+        return new Promise((resolve, reject) =>
+        {
+            axios.get('http://localhost:3001/projects/getproject/' + id)
+                .then(response =>
+                {
+                    if ( response.status === 202 )
+                    {
+                        resolve(response.data);
+                    }
+                    else
+                    {
+                        reject(response.data);
+                    }
+                });
+        });
+    };
 
     checkTitle = (title) =>
     {
