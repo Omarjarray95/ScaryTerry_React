@@ -43,6 +43,29 @@ const navigationConfig = [
                         'exact': true
                     }
                 ]
+            },{
+                'id'      : 'recruitments',
+                'title'   : 'Recruitments',
+                'type'    : 'collapse',
+                'icon'    : 'assignment_ind',
+                'children': [
+                    {
+                        'id'   : 'quiz',
+                        'title': 'Quiz',
+                        'type' : 'collapse',
+                        'icon' : 'mouse',
+                        'children':[
+                            {
+                                'id'   : 'add-quiz',
+                                'title': 'Add Quiz',
+                                'type' : 'item',
+                                'icon' : 'add_box',
+                                'url':'/recruitments/quiz/add',
+                                'exact': true,
+                            },
+                        ]
+                    }
+                ]
             }]
     },
     {
