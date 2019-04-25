@@ -1,12 +1,12 @@
 import React from 'react';
-import {withStyles, Card, Icon, Typography} from '@material-ui/core';
-import {Bar} from 'react-chartjs-2';
+import { withStyles, Card, Icon, Typography } from '@material-ui/core';
+import { Bar } from 'react-chartjs-2';
 
-const Widget2 = ({data, theme}) => {
+const Widget2 = ({ data, theme }) => {
 
     const dataWithColors = data.datasets.map(obj => ({
         ...obj,
-        borderColor    : theme.palette.secondary.main,
+        borderColor: theme.palette.secondary.main,
         backgroundColor: theme.palette.secondary.main
     }));
 
@@ -39,12 +39,12 @@ const Widget2 = ({data, theme}) => {
 
             <div className="h-96 w-100-p">
                 <Bar data={{
-                    labels  : data.labels,
+                    labels: data.labels,
                     datasets: dataWithColors
-                }} options={data.options}/>
+                }} options={data.options} />
             </div>
         </Card>
     );
 };
 
-export default withStyles(null, {withTheme: true})(Widget2);
+export default withStyles(null, { withTheme: true })(Widget2);

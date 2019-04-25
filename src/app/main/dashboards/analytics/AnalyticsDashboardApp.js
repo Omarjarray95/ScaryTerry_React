@@ -24,10 +24,15 @@ class AnalyticsDashboardApp extends Component {
         this.props.getWidgetTest();
         this.props.getWidgetTest2();
         this.props.getWidgetTest3();
+        this.props.getWidgetTest5();
+        this.props.getWidgetTest6();
+        this.props.getWidgetTest7();
+        this.props.getWidgetTest8();
+        this.props.getWidgetTest9();
     }
 
     render() {
-        const { widgetPunc, widgetTest, widgetTest2, widgetTest3 } = this.props;
+        const { widgetPunc, widgetTest, widgetTest2, widgetTest3, widgetTest5, widgetTest6, widgetTest7, widgetTest8, widgetTest9 } = this.props;
         if (!widgetPunc) {
             return null;
         }
@@ -63,7 +68,7 @@ class AnalyticsDashboardApp extends Component {
                                 </div>
 
                             </div>
-                            {/*   
+
                             <FuseAnimate delay={600}>
                                 <Typography className="px-16 pb-8 text-18 font-300">
                                     How many pages your users visit?
@@ -71,7 +76,7 @@ class AnalyticsDashboardApp extends Component {
                             </FuseAnimate>
 
                             <div className="widget w-full p-16 pb-32">
-                                <Widget5 data={widgets.widget5} />
+                                <Widget5 data={widgetTest5.widget5} />
                             </div>
 
                             <FuseAnimate delay={600}>
@@ -81,11 +86,11 @@ class AnalyticsDashboardApp extends Component {
                             </FuseAnimate>
 
                             <div className="widget w-full p-16 pb-32">
-                                <Widget6 data={widgets.widget6} />
+                                <Widget6 data={widgetTest6.widget100} />
                             </div>
-                             */}
+
                         </div>
-                        {/*
+
                         <div className="flex flex-wrap w-full md:w-320 pt-16">
 
                             <div className="mb-32 w-full sm:w-1/2 md:w-full">
@@ -96,7 +101,7 @@ class AnalyticsDashboardApp extends Component {
                                 </FuseAnimate>
 
                                 <div className="widget w-full p-16">
-                                    <Widget7 data={widgets.widget7} />
+                                    <Widget7 data={widgetTest7.widget7} />
                                 </div>
                             </div>
 
@@ -109,7 +114,7 @@ class AnalyticsDashboardApp extends Component {
                                 </FuseAnimate>
 
                                 <div className="widget w-full p-16">
-                                    <Widget8 data={widgets.widget8} />
+                                    <Widget8 data={widgetTest8.widget8} />
                                 </div>
                             </div>
 
@@ -120,11 +125,11 @@ class AnalyticsDashboardApp extends Component {
                                     </Typography>
                                 </FuseAnimate>
                                 <div className="widget w-full p-16">
-                                    <Widget9 data={widgets.widget9} />
+                                    <Widget9 data={widgetTest9.widget9} />
                                 </div>
                             </div>
                         </div>
-                             */}
+
                     </div>
                 </FuseAnimate>
             </div>
@@ -137,7 +142,12 @@ function mapDispatchToProps(dispatch) {
         getWidgetPunc: Actions.getWidgetPunc,
         getWidgetTest: Actions.getWidgetTest,
         getWidgetTest2: Actions.getWidgetTest2,
-        getWidgetTest3: Actions.getWidgetTest3
+        getWidgetTest3: Actions.getWidgetTest3,
+        getWidgetTest5: Actions.getWidgetTest5,
+        getWidgetTest6: Actions.getWidgetTest6,
+        getWidgetTest7: Actions.getWidgetTest7,
+        getWidgetTest8: Actions.getWidgetTest8,
+        getWidgetTest9: Actions.getWidgetTest9
     }, dispatch);
 }
 
@@ -146,7 +156,12 @@ function mapStateToProps({ analyticsDashboardApp }) {
         widgetPunc: analyticsDashboardApp.widgetPunc.data,
         widgetTest: analyticsDashboardApp.widgetPunc.test,
         widgetTest2: analyticsDashboardApp.widgetPunc.test2,
-        widgetTest3: analyticsDashboardApp.widgetPunc.test3
+        widgetTest3: analyticsDashboardApp.widgetPunc.test3,
+        widgetTest5: analyticsDashboardApp.widgetPunc.test5,
+        widgetTest6: analyticsDashboardApp.widgetPunc.test6,
+        widgetTest7: analyticsDashboardApp.widgetPunc.test7,
+        widgetTest8: analyticsDashboardApp.widgetPunc.test8,
+        widgetTest9: analyticsDashboardApp.widgetPunc.test9
     }
 }
 

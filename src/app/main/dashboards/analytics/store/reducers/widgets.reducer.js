@@ -26,6 +26,31 @@ const widgetsReducer = function (state = initialState, action) {
                 ...state,
                 test3: { ...action.payload }
             };
+        case Actions.GET_WIDGETS_TEST5:
+            return {
+                ...state,
+                test5: { ...action.payload }
+            };
+        case Actions.GET_WIDGETS_TEST6:
+            return {
+                ...state,
+                test6: { ...action.payload }
+            };
+        case Actions.GET_WIDGETS_TEST7:
+            return {
+                ...state,
+                test7: { ...action.payload }
+            };
+        case Actions.GET_WIDGETS_TEST8:
+            return {
+                ...state,
+                test8: { ...action.payload }
+            };
+        case Actions.GET_WIDGETS_TEST9:
+            return {
+                ...state,
+                test9: { ...action.payload }
+            };
         default:
             return state;
     }

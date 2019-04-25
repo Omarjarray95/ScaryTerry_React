@@ -4,6 +4,11 @@ export const GET_WIDGETS = '[ANALYTICS DASHBOARD APP] GET WIDGETS';
 export const GET_WIDGETS_TEST = '[ANALYTICS DASHBOARD APP] GET WIDGETS TEST';
 export const GET_WIDGETS_TEST2 = '[ANALYTICS DASHBOARD APP] GET WIDGETS TEST2';
 export const GET_WIDGETS_TEST3 = '[ANALYTICS DASHBOARD APP] GET WIDGETS TEST3';
+export const GET_WIDGETS_TEST5 = '[ANALYTICS DASHBOARD APP] GET WIDGETS TEST5';
+export const GET_WIDGETS_TEST6 = '[ANALYTICS DASHBOARD APP] GET WIDGETS TEST6';
+export const GET_WIDGETS_TEST7 = '[ANALYTICS DASHBOARD APP] GET WIDGETS TEST7';
+export const GET_WIDGETS_TEST8 = '[ANALYTICS DASHBOARD APP] GET WIDGETS TEST8';
+export const GET_WIDGETS_TEST9 = '[ANALYTICS DASHBOARD APP] GET WIDGETS TEST9';
 
 //export function getWidgets() {
 export function getWidgetPunc() {
@@ -109,7 +114,7 @@ export function getWidgetPunc() {
         );
 }
 export function getWidgetTest() {
-    const request = axios.get('/api/analytics-dashboard-app/widgets');
+    //const request = axios.get('/api/analytics-dashboard-app/widgets');
     //const request = axios.get('http://localhost:3001/motivation/userPunctualityNoteStats/2017-01-01/2020-01-01/5c926640db149e155096dfa9');
 
     return (dispatch) => {
@@ -168,7 +173,7 @@ export function getWidgetTest() {
     }
 }
 export function getWidgetTest2() {
-    const request = axios.get('/api/analytics-dashboard-app/widgets');
+
     //const request = axios.get('http://localhost:3001/motivation/userPunctualityNoteStats/2017-01-01/2020-01-01/5c926640db149e155096dfa9');
 
     return (dispatch) => {
@@ -239,7 +244,7 @@ export function getWidgetTest2() {
     }
 }
 export function getWidgetTest3() {
-    const request = axios.get('/api/analytics-dashboard-app/widgets');
+
     //const request = axios.get('http://localhost:3001/motivation/userPunctualityNoteStats/2017-01-01/2020-01-01/5c926640db149e155096dfa9');
 
     return (dispatch) => {
@@ -293,6 +298,444 @@ export function getWidgetTest3() {
 
         dispatch({
             type: GET_WIDGETS_TEST3,
+            payload: tt
+        })
+    }
+}
+export function getWidgetTest5() {
+    //const request = axios.get('http://localhost:3001/motivation/userPunctualityNoteStats/2017-01-01/2020-01-01/5c926640db149e155096dfa9');
+
+    return (dispatch) => {
+        const tt = {
+            widget5: {
+                chartType: 'line',
+                datasets: {
+                    'yesterday': [
+                        {
+                            label: 'Visitors',
+                            data: [190, 300, 340, 220, 290, 390, 250, 380, 410, 380, 320, 290],
+                            fill: 'start'
+                        },
+                        {
+                            label: 'Page views',
+                            data: [2200, 2900, 3900, 2500, 3800, 3200, 2900, 1900, 3000, 3400, 4100, 3800],
+                            fill: 'start'
+                        }
+                    ],
+                    'today': [
+                        {
+                            label: 'Visitors',
+                            data: [410, 380, 320, 290, 190, 390, 250, 380, 300, 340, 220, 290],
+                            fill: 'start'
+                        },
+                        {
+                            label: 'Page Views',
+                            data: [3000, 3400, 4100, 3800, 2200, 3200, 2900, 1900, 2900, 3900, 2500, 3800],
+                            fill: 'start'
+                        }
+                    ]
+                },
+                labels: ['12am', '2am', '4am', '6am', '8am', '10am', '12pm', '2pm', '4pm', '6pm', '8pm', '10pm'],
+                options: {
+                    spanGaps: false,
+                    legend: {
+                        display: false
+                    },
+                    maintainAspectRatio: false,
+                    tooltips: {
+                        position: 'nearest',
+                        mode: 'index',
+                        intersect: false
+                    },
+                    layout: {
+                        padding: {
+                            left: 24,
+                            right: 32
+                        }
+                    },
+                    elements: {
+                        point: {
+                            radius: 4,
+                            borderWidth: 2,
+                            hoverRadius: 4,
+                            hoverBorderWidth: 2
+                        }
+                    },
+                    scales: {
+                        xAxes: [
+                            {
+                                gridLines: {
+                                    display: false
+                                },
+                                ticks: {
+                                    fontColor: 'rgba(0,0,0,0.54)'
+                                }
+                            }
+                        ],
+                        yAxes: [
+                            {
+                                gridLines: {
+                                    tickMarkLength: 16
+                                },
+                                ticks: {
+                                    stepSize: 1000
+                                }
+                            }
+                        ]
+                    },
+                    plugins: {
+                        filler: {
+                            propagate: false
+                        }
+                    }
+                }
+            }
+        }
+
+        dispatch({
+            type: GET_WIDGETS_TEST5,
+            payload: tt
+        })
+    }
+}
+export function getWidgetTest6() {
+
+    //const request = axios.get('http://localhost:3001/motivation/userPunctualityNoteStats/2017-01-01/2020-01-01/5c926640db149e155096dfa9');
+
+    return (dispatch) => {
+        const tt = {
+            widget100: {
+                markers: [
+                    {
+                        lat: 52,
+                        lng: -73,
+                        label: '120'
+                    },
+                    {
+                        lat: 37,
+                        lng: -104,
+                        label: '498'
+                    },
+                    {
+                        lat: 21,
+                        lng: -7,
+                        label: '443'
+                    },
+                    {
+                        lat: 55,
+                        lng: 75,
+                        label: '332'
+                    },
+                    {
+                        lat: 51,
+                        lng: 7,
+                        label: '50'
+                    },
+                    {
+                        lat: 31,
+                        lng: 12,
+                        label: '221'
+                    },
+                    {
+                        lat: 45,
+                        lng: 44,
+                        label: '455'
+                    },
+                    {
+                        lat: -26,
+                        lng: 134,
+                        label: '231'
+                    },
+                    {
+                        lat: -9,
+                        lng: -60,
+                        label: '67'
+                    },
+                    {
+                        lat: 33,
+                        lng: 104,
+                        label: '665'
+                    }
+                ],
+                styles: [
+                    {
+                        'featureType': 'administrative',
+                        'elementType': 'labels.text.fill',
+                        'stylers': [
+                            {
+                                'color': '#444444'
+                            }
+                        ]
+                    },
+                    {
+                        'featureType': 'landscape',
+                        'elementType': 'all',
+                        'stylers': [
+                            {
+                                'color': '#f2f2f2'
+                            }
+                        ]
+                    },
+                    {
+                        'featureType': 'poi',
+                        'elementType': 'all',
+                        'stylers': [
+                            {
+                                'visibility': 'off'
+                            }
+                        ]
+                    },
+                    {
+                        'featureType': 'road',
+                        'elementType': 'all',
+                        'stylers': [
+                            {
+                                'saturation': -100
+                            },
+                            {
+                                'lightness': 45
+                            }
+                        ]
+                    },
+                    {
+                        'featureType': 'road.highway',
+                        'elementType': 'all',
+                        'stylers': [
+                            {
+                                'visibility': 'simplified'
+                            }
+                        ]
+                    },
+                    {
+                        'featureType': 'road.arterial',
+                        'elementType': 'labels.icon',
+                        'stylers': [
+                            {
+                                'visibility': 'off'
+                            }
+                        ]
+                    },
+                    {
+                        'featureType': 'transit',
+                        'elementType': 'all',
+                        'stylers': [
+                            {
+                                'visibility': 'off'
+                            }
+                        ]
+                    },
+                    {
+                        'featureType': 'water',
+                        'elementType': 'all',
+                        'stylers': [
+                            {
+                                'color': '#039be5'
+                            },
+                            {
+                                'visibility': 'on'
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+
+        dispatch({
+            type: GET_WIDGETS_TEST6,
+            payload: tt
+        })
+    }
+}
+export function getWidgetTest7() {
+
+    //const request = axios.get('http://localhost:3001/motivation/userPunctualityNoteStats/2017-01-01/2020-01-01/5c926640db149e155096dfa9');
+
+    return (dispatch) => {
+        const tt = {
+            widget7: {
+                labels: [
+                    'Desktop',
+                    'Mobile',
+                    'Tablet'
+                ],
+                datasets: {
+                    'Today': [
+                        {
+                            data: [92.8, 6.1, 1.1],
+                            change: [-0.6, 0.7, 0.1]
+                        }
+                    ],
+                    'Yesterday': [
+                        {
+                            data: [77.2, 8.4, 14.4],
+                            change: [-2.3, 0.3, -0.2]
+                        }
+                    ],
+                    'Last 7 days': [
+                        {
+                            data: [88.2, 9.2, 2.6],
+                            change: [1.9, -0.4, 0.3]
+                        }
+                    ],
+                    'Last 28 days': [
+                        {
+                            data: [65.2, 2.6, 32.2],
+                            change: [-12.6, -0.7, 4.2]
+                        }
+                    ],
+                    'Last 90 days': [
+                        {
+                            data: [93.5, 4.2, 2.3],
+                            change: [2.6, -0.7, 2.1]
+                        }
+                    ]
+                },
+                options: {
+                    cutoutPercentage: 75,
+                    spanGaps: false,
+                    legend: {
+                        display: false
+                    },
+                    maintainAspectRatio: false
+                }
+            }
+        }
+
+        dispatch({
+            type: GET_WIDGETS_TEST7,
+            payload: tt
+        })
+    }
+}
+export function getWidgetTest8() {
+
+    //const request = axios.get('http://localhost:3001/motivation/userPunctualityNoteStats/2017-01-01/2020-01-01/5c926640db149e155096dfa9');
+
+    return (dispatch) => {
+        const tt = {
+            widget8: {
+                datasets: [
+                    [
+                        {
+                            label: '1Day',
+                            data: [72, 65, 70, 78, 85, 82, 88],
+                            fill: false,
+                            borderColor: '#5c84f1'
+                        }
+                    ],
+                    [
+                        {
+                            label: '1Week',
+                            data: [540, 539, 527, 548, 540, 552, 566],
+                            fill: false,
+                            borderColor: '#5c84f1'
+                        }
+                    ],
+                    [
+                        {
+                            label: '1Month',
+                            data: [1520, 1529, 1567, 1588, 1590, 1652, 1622],
+                            fill: false,
+                            borderColor: '#5c84f1'
+                        }
+                    ]
+                ],
+                labels: ['1', '2', '3', '4', '5', '6', '7'],
+                options: {
+                    spanGaps: true,
+                    legend: {
+                        display: false
+                    },
+                    maintainAspectRatio: true,
+                    elements: {
+                        point: {
+                            radius: 2,
+                            borderWidth: 1,
+                            hoverRadius: 2,
+                            hoverBorderWidth: 1
+                        },
+                        line: {
+                            tension: 0
+                        }
+                    },
+                    layout: {
+                        padding: {
+                            top: 24,
+                            left: 16,
+                            right: 16,
+                            bottom: 16
+                        }
+                    },
+                    scales: {
+                        xAxes: [
+                            {
+                                display: false
+                            }
+                        ],
+                        yAxes: [
+                            {
+                                display: true,
+                                ticks: {
+                                    // min: 100,
+                                    // max: 500
+                                }
+                            }
+                        ]
+                    }
+                },
+                today: '12,540',
+                change: {
+                    value: 321,
+                    percentage: 2.05
+                }
+            }
+        }
+
+        dispatch({
+            type: GET_WIDGETS_TEST8,
+            payload: tt
+        })
+    }
+}
+export function getWidgetTest9() {
+
+    //const request = axios.get('http://localhost:3001/motivation/userPunctualityNoteStats/2017-01-01/2020-01-01/5c926640db149e155096dfa9');
+
+    return (dispatch) => {
+        const tt = {
+            widget9: {
+                rows: [
+                    {
+                        title: 'Holiday Travel',
+                        clicks: 3621,
+                        conversion: 90
+                    },
+                    {
+                        title: 'Get Away Deals',
+                        clicks: 703,
+                        conversion: 7
+                    },
+                    {
+                        title: 'Airfare',
+                        clicks: 532,
+                        conversion: 0
+                    },
+                    {
+                        title: 'Vacation',
+                        clicks: 201,
+                        conversion: 8
+                    },
+                    {
+                        title: 'Hotels',
+                        clicks: 94,
+                        conversion: 4
+                    }
+                ]
+            }
+        }
+
+        dispatch({
+            type: GET_WIDGETS_TEST9,
             payload: tt
         })
     }
