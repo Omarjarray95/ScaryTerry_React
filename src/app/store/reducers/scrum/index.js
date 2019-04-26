@@ -9,6 +9,7 @@ import fieldname from "./fieldname.reducer";
 import enterprisename from "./enterprisename.reducer";
 import project from "./project.reducer";
 import operation from "./operation.reducer";
+import productBacklog from "./productBacklog.reducer";
 
 const Reducers = combineReducers({
     operation,
@@ -18,6 +19,7 @@ const Reducers = combineReducers({
     projects,
     employees,
     project,
+    productBacklog,
     name,
     enterprisename,
     fieldname

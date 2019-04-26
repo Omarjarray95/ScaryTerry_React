@@ -7,6 +7,7 @@ export const READ_PROJECT = 'READ_PROJECT';
 export const REQUEST_ERROR = 'REQUEST_ERROR';
 export const PROJECT_NAME_AVAILABLE = 'PROJECT_NAME_AVAILABLE';
 export const PROJECT_NAME_UNAVAILABLE = 'PROJECT_NAME_UNAVAILABLE';
+export const GET_PRODUCTBACKLOG = 'GET_PRODUCTBACKLOG';
 
 export function submitAddProject({project})
 {
@@ -80,6 +81,111 @@ export function affectTeam(data, id)
                     return dispatch({
                         type: READ_PROJECT,
                         payload: project
+                    });
+                }
+            )
+            .catch(error =>
+            {
+                return dispatch({
+                    type   : REQUEST_ERROR,
+                    payload: error
+                });
+            });
+}
+
+export function addSprint(data, id)
+{
+    return (dispatch) =>
+        projectsService.addSprint(data, id)
+            .then((project) =>
+                {
+                    return dispatch({
+                        type: READ_PROJECT,
+                        payload: project
+                    });
+                }
+            )
+            .catch(error =>
+            {
+                return dispatch({
+                    type   : REQUEST_ERROR,
+                    payload: error
+                });
+            });
+}
+
+export function deleteSprint(sprint, project)
+{
+    return (dispatch) =>
+        projectsService.deleteSprint(sprint, project)
+            .then((project) =>
+                {
+                    return dispatch({
+                        type: READ_PROJECT,
+                        payload: project
+                    });
+                }
+            )
+            .catch(error =>
+            {
+                return dispatch({
+                    type   : REQUEST_ERROR,
+                    payload: error
+                });
+            });
+}
+
+export function getProductBacklog(id)
+{
+    return (dispatch) =>
+        projectsService.getProductBacklog(id)
+            .then((productBacklog) =>
+                {
+                    return dispatch({
+                        type: GET_PRODUCTBACKLOG,
+                        payload: productBacklog
+                    });
+                }
+            )
+            .catch(error =>
+            {
+                return dispatch({
+                    type   : REQUEST_ERROR,
+                    payload: error
+                });
+            });
+}
+
+export function addItem(data, id)
+{
+    return (dispatch) =>
+        projectsService.addItem(data, id)
+            .then((productBacklog) =>
+                {
+                    return dispatch({
+                        type: GET_PRODUCTBACKLOG,
+                        payload: productBacklog
+                    });
+                }
+            )
+            .catch(error =>
+            {
+                return dispatch({
+                    type   : REQUEST_ERROR,
+                    payload: error
+                });
+            });
+}
+
+export function deleteItem(item, pB)
+{
+    return (dispatch) =>
+        projectsService.deleteItem(item, pB)
+            .then((productBacklog) =>
+                {
+                    return dispatch({
+                        type: GET_PRODUCTBACKLOG,
+                        payload: productBacklog
                     });
                 }
             )

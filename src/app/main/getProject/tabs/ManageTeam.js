@@ -46,7 +46,7 @@ const styles = {
     }
 };
 
-class TimelineTab extends Component
+class ManageTeam extends Component
 {
     constructor(props)
     {
@@ -117,7 +117,20 @@ class TimelineTab extends Component
 
     handleDeleteMember = (id) =>
     {
-        console.log(id);
+        var devmembers = [];
+        this.props.project.developmentTeam.map((member) =>
+        {
+            if (member._id !== id)
+            {
+                devmembers.push(member._id);
+            }
+        });
+        var data = {
+            scrumMaster: this.props.project.scrumMaster ? this.props.project.scrumMaster._id : null,
+            productOwner: this.props.project.productOwner ? this.props.project.productOwner._id : null,
+            developmentTeam: devmembers
+        };
+        this.props.submitAffect(data, this.props.match.params.id);
     };
 
     componentDidMount()
@@ -362,4 +375,4 @@ function mapStateToProps({scrum})
     }
 }
 
-export default withStyles(styles) (withRouter(connect(mapStateToProps, mapDispatchToProps) (TimelineTab)));
+export default withStyles(styles) (withRouter(connect(mapStateToProps, mapDispatchToProps) (ManageTeam)));

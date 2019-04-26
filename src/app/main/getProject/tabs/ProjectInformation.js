@@ -10,7 +10,7 @@ import * as Actions from 'app/store/actions/scrum';
 import Divider from '@material-ui/core/Divider';
 import moment from "moment";
 
-class AboutTab extends Component {
+class ProjectInformation extends Component {
 
     state = {
     };
@@ -100,6 +100,12 @@ class AboutTab extends Component {
                                 <Typography variant="subtitle1" color="inherit" className="flex-1">
                                     Sprints
                                 </Typography>
+                                <Button
+                                    className="normal-case"
+                                    color="inherit"
+                                    size="small">
+                                    Manage
+                                </Button>
                             </Toolbar>
                         </AppBar>
                         <CardContent>
@@ -125,7 +131,12 @@ class AboutTab extends Component {
                                 <Typography variant="subtitle1" color="inherit" className="flex-1">
                                     Scrum Team Members
                                 </Typography>
-                                <Button className="normal-case" color="inherit" size="small">Manage</Button>
+                                <Button
+                                    className="normal-case"
+                                    color="inherit"
+                                    size="small">
+                                    Manage
+                                </Button>
                             </Toolbar>
                         </AppBar>
                         <CardContent className="p-0">
@@ -274,4 +285,4 @@ function mapStateToProps({scrum})
     }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps) (AboutTab));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps) (ProjectInformation));

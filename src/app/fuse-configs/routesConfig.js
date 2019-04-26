@@ -7,12 +7,14 @@ import {AddUsersConfig} from 'app/main/addUsers/AddUsersConfig';
 import {AddProjectsConfig} from 'app/main/addProjects/AddProjectsConfig';
 import {GetProjectsConfig} from 'app/main/getProjects/GetProjectsConfig';
 import {GetProjectConfig} from 'app/main/getProject/GetProjectConfig';
+import {ShowProductBacklogConfig} from 'app/main/showProductBacklog/ShowProductBacklogConfig';
 
 const routeConfigs = [
     AddUsersConfig,
     AddProjectsConfig,
     GetProjectsConfig,
     GetProjectConfig,
+    ShowProductBacklogConfig,
     DashboardConfig,
     LoginConfig
 ];
