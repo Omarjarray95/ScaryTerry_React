@@ -2,23 +2,23 @@ import axios from 'axios';
 import {FuseUtils} from '@fuse';
 import {showMessage} from 'app/store/actions/fuse';
 
-export const GET_PRODUCT = '[E-COMMERCE APP] GET PRODUCT';
-export const SAVE_PRODUCT = '[E-COMMERCE APP] SAVE PRODUCT';
+export const GET_QUIZ = '[E-COMMERCE APP] GET QUIZ';
+export const SAVE_QUIZ = '[E-COMMERCE APP] SAVE QUIZ';
 
-export function getProduct(params)
+export function getQuiz(params)
 {
     const request = axios.get('', {params});
 
     return (dispatch) =>
         request.then((response) =>
             dispatch({
-                type   : GET_PRODUCT,
+                type   : GET_QUIZ,
                 payload: response.data
             })
         );
 }
 
-export function saveProduct(data)
+export function saveQuiz(data)
 {
     const request = axios.post('http://localhost:3001/quiz', data);
 
@@ -29,7 +29,7 @@ export function saveProduct(data)
                
                 dispatch(showMessage({message: 'Product Saved'}));
                 return dispatch({
-                    type   : SAVE_PRODUCT,
+                    type   : SAVE_QUIZ,
                     payload: response.data
                 })
             }
@@ -68,7 +68,7 @@ export function newProduct()
     };
 
     return {
-        type   : GET_PRODUCT,
+        type   : GET_QUIZ,
         payload: data
     }
 }

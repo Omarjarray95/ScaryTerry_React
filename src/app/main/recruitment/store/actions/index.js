@@ -5,3 +5,4 @@ export * from './jobs.actions';
 export * from './application.actions';
 export * from './jobOffer.actions';
 export * from './test.actions';
+export * from './applier.actions';

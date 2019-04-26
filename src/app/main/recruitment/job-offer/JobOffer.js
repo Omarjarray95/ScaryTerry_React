@@ -91,9 +91,9 @@ class JobOffer extends Component {
 function mapDispatchToProps(dispatch)
 {
     return bindActionCreators({
-        getProduct : Actions.getProduct,
+        getProduct : Actions.getOffer,
         newProduct : Actions.newProduct,
-        saveProduct: Actions.saveProduct,
+        saveProduct: Actions.saveOffer,
 
     }, dispatch);
 }

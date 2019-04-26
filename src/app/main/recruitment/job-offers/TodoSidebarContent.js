@@ -60,28 +60,26 @@ function TodoSidebarContent({classes, folders, filters, labels, openNewTodoDialo
                         color="primary"
                         className="w-full"
                     >
-                        ADD TASK
+                        ADD JOB-OFFER
                     </Button>
                 </div>
 
                 <div className={classes.listWrapper}>
 
                     <List>
-                        {folders.length > 0 && folders.map((folder) => (
-                            <ListItem
+                    <ListItem
                                 button
                                 component={NavLink}
-                                to={'/apps/todo/' + folder.handle} key={folder.id}
+                                to={'/apps/todo/all'} 
                                 activeClassName="active"
                                 className={classes.listItem}
                             >
-                                <Icon className="list-item-icon" color="action">{folder.icon}</Icon>
-                                <ListItemText primary={folder.title} disableTypography={true}/>
+                                <Icon className="list-item-icon" color="action">view_headline</Icon>
+                                <ListItemText primary="All" disableTypography={true}/>
                             </ListItem>
-                        ))}
                     </List>
 
-                    <List>
+                    {/* <List>
                         <ListSubheader className={classes.listSubheader} disableSticky>FILTERS</ListSubheader>
 
                         {filters.length > 0 && filters.map((filter) => (
@@ -97,7 +95,7 @@ function TodoSidebarContent({classes, folders, filters, labels, openNewTodoDialo
                                 <ListItemText primary={filter.title} disableTypography={true}/>
                             </ListItem>
                         ))}
-                    </List>
+                    </List> */}
 
                     <List>
 

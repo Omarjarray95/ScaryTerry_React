@@ -6,12 +6,13 @@ import {DashboardConfig} from 'app/main/dashboard/DashboardConfig';
 import {AddUsersConfig} from 'app/main/addUsers/AddUsersConfig';
 import {AddProjectsConfig} from 'app/main/addProjects/AddProjectsConfig';
 import {RecruitmentAppConfig} from 'app/main/recruitment/RecruitmentAppConfig';
-
+import {TestAppConfig} from 'app/main/recruitment/evaluation-test/TestAppConfig';
 const routeConfigs = [
     RecruitmentAppConfig,
     AddUsersConfig,
     AddProjectsConfig,
     DashboardConfig,
+    TestAppConfig,
     LoginConfig,
 
 ];

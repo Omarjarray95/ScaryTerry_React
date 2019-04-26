@@ -9,6 +9,7 @@ import classNames from 'classnames';
 import _ from '@lodash';
 import * as Actions from './store/actions';
 import TodoChip from './TodoChip';
+import { Redirect } from 'react-router-dom';
 
 const styles = theme => ({
     todoItem: {
@@ -30,49 +31,47 @@ function getRandomColor() {
     return color;
   }
 
+function redirect(url){
+    
+    console.log(url);
+    // history.push(url)
 
-const TodoListItem = ({todo, labels, classes, openEditTodoDialog, toggleImportant, toggleStarred, toggleCompleted}) => {
+}
+
+const TodoListItem = ({history,todo, labels, classes, openEditTodoDialog, toggleImportant, toggleStarred, toggleCompleted}) => {
     labels.forEach(element => {
         element.color = getRandomColor();
     });
     return (
-        <ListItem
-            onClick={(ev) => {
-                ev.preventDefault();
-                openEditTodoDialog(todo);
+       <ListItem
+            onClick={() => {
+                const url = '/recruitments/application/'+todo._id;
+                history.push(url);
             }}
             dense
+            disabled={todo.completed}
             button
             className={classNames(classes.todoItem, {"completed": todo.completed}, "border-solid border-b-1 py-16  px-0 sm:px-8")}
         >
+             <div className="flex flex-1 flex-col relative overflow-hidden pl-8">
 
-            {/* <Checkbox
-                tabIndex={-1}
-                disableRipple
-                checked={todo.completed}
-                onChange={() => toggleCompleted(todo)}
-                onClick={(ev) => ev.stopPropagation()}
-            /> */}
-
-            <div className="flex flex-1 flex-col relative overflow-hidden pl-8">
-
-                <Typography
+              {todo._job &&  <Typography
                     variant="subtitle1"
                     className="todo-title truncate"
                     color={todo.completed ? "textSecondary" : "default"}
                 >
                     {todo._job!==null ? todo._job.title : "Not Defined Yet"}
-                </Typography>
+                </Typography>}
 
                 <Typography
                     color="textSecondary"
                     className="todo-notes truncate"
                 >
-                    {_.truncate(todo.description.replace(/<(?:.|\n)*?>/gm, ''), {'length': 180})}
+                    {todo && _.truncate(todo.description.replace(/<(?:.|\n)*?>/gm, ''), {'length': 180})}
                 </Typography>
 
                 <div className={classNames(classes.labels, "flex mt-8")}>
-                    {todo.requirements.map(skill =>{ console.log(skill); return (
+                    {todo && todo.requirements.map(skill =>{ console.log(skill); return (
                         <TodoChip
 
                             className="mr-4"
@@ -86,7 +85,7 @@ const TodoListItem = ({todo, labels, classes, openEditTodoDialog, toggleImportan
                             color="textPrimary"
                             className="todo-notes truncate"
                         >
-                            Applications {todo._applications.length}
+                            Applications {todo && todo._applications.length}
                         </Typography>
                       
                 </div>
@@ -98,7 +97,7 @@ const TodoListItem = ({todo, labels, classes, openEditTodoDialog, toggleImportan
                     ev.stopPropagation();
                     toggleImportant(todo)
                 }}>
-                    {todo.important ? (
+                    {todo.completed ? (
                         <Icon style={{color: red[500]}}>error</Icon>
                     ) : (
                         <Icon>error_outline</Icon>

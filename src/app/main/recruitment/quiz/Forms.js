@@ -254,9 +254,9 @@ SimpleFormExample.propTypes = {
   {
       return bindActionCreators({
           getSkills: Actions.getSkills,
-          getProduct : Actions.getProduct,
+          getProduct : Actions.getQuiz,
           newProduct : Actions.newProduct,
-          saveProduct: Actions.saveProduct,
+          saveProduct: Actions.saveQuiz,
 
       }, dispatch);
   }

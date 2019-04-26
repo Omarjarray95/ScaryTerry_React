@@ -7,12 +7,15 @@ export const SAVE_APPLICATION = '[RECRUITMENT APP] SAVE APPLICATION';
 export function saveApplication(data)
 {
     const formData = new FormData();
-    formData.append('resume',data.resume)
+    formData.append('resume',data.resume);
+    
+    formData.append('email',data.applier);
     const config = {
         headers: {
             'content-type': 'multipart/form-data'
         }
     }
+    console.log(formData.get('email'));
     const request = axios.post('http://localhost:3001/applications/add/'+data.applier+'/'+data.offer, formData,config);
 
     console.info("submit",data);

@@ -6,6 +6,7 @@ import jobs from './jobs.reducer';
 import application from './application.reducer';
 import offer from './jobOffer.reducer';
 import test from './test.reducer';
+import applier from './applier.reducer';
 
 const reducer = combineReducers({
     skills,
@@ -15,6 +16,7 @@ const reducer = combineReducers({
     application,
     offer,
     test,
+    applier
 });
 
 export default reducer;

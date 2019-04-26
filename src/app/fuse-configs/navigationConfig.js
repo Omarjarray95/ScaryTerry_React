@@ -64,6 +64,17 @@ const navigationConfig = [
                                 'exact': true,
                             },
                         ]
+                    },
+                    {
+                            
+                        'id'   : 'get-offers',
+                        'title': 'Offers',
+                        'type' : 'item',
+                        'icon' : 'home',
+                        'url':'/apps/todo',
+                        'exact': true,
+                            
+                        
                     }
                 ]
             }]

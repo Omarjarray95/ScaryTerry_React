@@ -15,6 +15,13 @@ const testReducer = function (state = initialState, action) {
                 data: action.payload
             };
         }
+        case Actions.SAVE_TEST:
+        {
+            return {
+                ...state,
+                data: action.payload
+            };
+        }
         default:
         {
             return state;

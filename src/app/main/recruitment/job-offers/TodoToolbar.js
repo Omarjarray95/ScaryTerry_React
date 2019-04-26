@@ -30,9 +30,9 @@ class TodoToolbar extends Component {
                             <MenuItem value="">
                                 <em>Order by</em>
                             </MenuItem>
-                            <MenuItem value="startDate">Start Date</MenuItem>
-                            <MenuItem value="dueDate">Due Date</MenuItem>
-                            <MenuItem value="title">Title</MenuItem>
+                            <MenuItem value="_job.title">Title</MenuItem>
+                            <MenuItem value="date_posted">Date Posted</MenuItem>
+                            <MenuItem value="description">Description</MenuItem>
                         </Select>
                     </FormControl>
                     <IconButton onClick={toggleOrderDescending}>

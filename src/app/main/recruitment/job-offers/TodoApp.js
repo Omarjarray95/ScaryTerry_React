@@ -18,6 +18,7 @@ class TodoApp extends Component {
 
     componentDidMount()
     {
+        console.log(this.props.history);
         this.props.getData(this.props.match);
     }
 
@@ -45,7 +46,7 @@ class TodoApp extends Component {
                         <TodoToolbar/>
                     }
                     content={
-                        <TodoList/>
+                        <TodoList history={this.props.history}/>
                     }
                     leftSidebarHeader={
                         <TodoSidebarHeader/>

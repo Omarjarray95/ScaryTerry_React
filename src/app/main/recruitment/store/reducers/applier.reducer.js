@@ -4,17 +4,10 @@ const initialState = {
     data: null
 };
 
-const offerReducer = function (state = initialState, action) {
+const applierReducer = function (state = initialState, action) {
     switch ( action.type )
     {
-        case Actions.GET_OFFER:
-        {
-            return {
-                ...state,
-                data: action.payload
-            };
-        }
-        case Actions.SAVE_OFFER:
+        case Actions.SAVE_APPLIER:
         {
             return {
                 ...state,
@@ -28,4 +21,4 @@ const offerReducer = function (state = initialState, action) {
     }
 };
 
-export default offerReducer;
+export default applierReducer;

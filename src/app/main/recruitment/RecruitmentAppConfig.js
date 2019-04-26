@@ -67,10 +67,10 @@ export const RecruitmentAppConfig = {
             })
         },
         {
-            path     : '/test/:app',
+            path     : '/recruitments/applier/add',
             component: FuseLoadable({
-                loader: () => import('./evaluation-test/test')
+                loader: () => import('./applier/addApplier')
             })
-        }
+        },
     ]
 };

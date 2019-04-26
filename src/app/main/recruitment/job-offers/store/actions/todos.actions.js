@@ -93,16 +93,28 @@ export function toggleStarred(todo)
 
 export function toggleImportant(todo)
 {
-    const newTodo = {
-        ...todo,
-        important: !todo.important
-    };
+    const request = axios.get("http://localhost:3001/offers/complete/"+todo._id);
+    return (dispatch, getState) => {
 
-    return (dispatch) => (
-        Promise.all([
-            dispatch({type: TOGGLE_IMPORTANT})
-        ]).then(() => dispatch(updateTodo(newTodo)))
-    )
+        const {routeParams} = getState().todoApp.todos;
+
+
+        return request.then((response) =>
+        {const request2 = axios.get('http://localhost:3001/offers/', {
+            params: routeParams
+        });
+        request2.then(response=>{
+
+           
+            console.log(response.data);
+            dispatch({
+                type   : UPDATE_TODOS,
+                payload: response.data
+            })
+           })
+        }
+        );
+    }
 }
 
 export function updateTodo(todo)

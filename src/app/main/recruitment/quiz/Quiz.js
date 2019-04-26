@@ -26,7 +26,12 @@ class Quiz extends React.Component {
   };
 
   handleChange = event => {
-    this.setState({ selectedValue: event.target.value });
+    this.setState({ selectedValue: event.target.value }, function () {
+        this.props.quizHandler({
+            response:this.state.selectedValue,
+            id:this.props.quiz._id,
+        });
+    });
   };
 
   render() {

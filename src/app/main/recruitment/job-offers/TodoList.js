@@ -13,10 +13,11 @@ function getFilteredArray(entities, searchText)
     {
         return arr;
     }
+    console.log(searchText)
     return FuseUtils.filterArrayByString(arr, searchText);
 }
 
-const TodoList = ({todos, searchText, orderBy, orderDescending}) => {
+const TodoList = ({history,todos, searchText, orderBy, orderDescending}) => {
 
     const arr = _.orderBy(getFilteredArray(todos, searchText), [orderBy], [orderDescending ? 'desc' : 'asc']);
 
@@ -42,7 +43,7 @@ const TodoList = ({todos, searchText, orderBy, orderDescending}) => {
             >
                 {
                     arr.map((todo) => (
-                            <TodoListItem todo={todo} key={todo.id}/>
+                            <TodoListItem history={history} todo={todo} key={todo.id}/>
                         )
                     )
                 }

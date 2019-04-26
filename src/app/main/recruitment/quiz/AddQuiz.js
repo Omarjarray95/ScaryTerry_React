@@ -94,9 +94,9 @@ class FormsyDoc extends Component {
 function mapDispatchToProps(dispatch)
 {
     return bindActionCreators({
-        getProduct : Actions.getProduct,
+        getProduct : Actions.getQuiz,
         newProduct : Actions.newProduct,
-        saveProduct: Actions.saveProduct,
+        saveProduct: Actions.saveQuiz,
         getSkills: Actions.getSkills,
 
     }, dispatch);

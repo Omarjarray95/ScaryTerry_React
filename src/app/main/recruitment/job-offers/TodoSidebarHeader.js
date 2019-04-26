@@ -27,11 +27,11 @@ class TodoSidebarHeader extends Component {
                         <Icon className="text-32 mr-16">check_box</Icon>
                     </FuseAnimate>
                     <FuseAnimate animation="transition.slideLeftIn" delay={300}>
-                        <span className="text-24">To-Do</span>
+                        <span className="text-24">Job-Offers</span>
                     </FuseAnimate>
                 </div>
 
-                <FuseAnimate animation="transition.slideUpIn" delay={300}>
+                {/* <FuseAnimate animation="transition.slideUpIn" delay={300}>
                     <TextField
                         id="account-selection"
                         select
@@ -47,7 +47,7 @@ class TodoSidebarHeader extends Component {
                             </MenuItem>
                         ))}
                     </TextField>
-                </FuseAnimate>
+                </FuseAnimate> */}
             </div>
         );
     }

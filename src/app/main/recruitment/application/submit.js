@@ -10,7 +10,10 @@ import * as Actions from '../store/actions';
 import reducer from '../store/reducers';
 import {withRouter} from 'react-router-dom';
 import _ from '@lodash';
+import { lang } from 'moment';
 /* eslint import/no-webpack-loader-syntax: off */
+
+
 
 class SubmitApplication extends Component {
     state = {
@@ -40,7 +43,7 @@ class SubmitApplication extends Component {
     };
     onSubmit = (model) => {
         model.offer = this.props.match.params.id;
-        model.applier = '5ca6f9a4a993a71790a7fc11';
+        // model.applier = '5ca6f9a4a993a71790a7fc11';
         model.resume = this.state.resume;
         console.log(model);
         console.log("Hello");
@@ -90,10 +93,12 @@ class SubmitApplication extends Component {
                 required
                 variant="outlined"
                 onChange={this.saveFile}/>
+                
                 <TextFieldFormsy
                     className="my-16"
                     type="text"
                     name="applier"
+                    label="your email"
                     validations={{
                         minLength: 4
                     }}
@@ -110,7 +115,6 @@ class SubmitApplication extends Component {
                 className="mx-auto my-16"
                 aria-label="LOG IN"
                 disabled={!canSubmit}
-                
             >
                 Can submit
             </Button>
