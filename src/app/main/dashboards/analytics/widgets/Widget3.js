@@ -17,9 +17,9 @@ const Widget3 = ({ data, theme }) => {
             <div className="p-16 pb-0 flex flex-row items-end flex-wrap">
 
                 <div className="pr-16">
-                    <Typography className="h3" color="textSecondary">Impressions</Typography>
-                    <Typography className="text-56 font-300 leading-none mt-8">
-                        {data.impressions.value}
+                    <Typography className="h3" color="textSecondary">velocity</Typography>
+                    <Typography className="text-28 font-300 leading-none mt-8">
+                        {data.impressions.value} hours
                     </Typography>
                 </div>
 

@@ -1,4 +1,4 @@
-import {Chart} from 'react-chartjs-2';
+import { Chart } from 'react-chartjs-2';
 
 Chart.pluginService.register({
     afterDatasetsDraw: function (chart, easing) {
@@ -7,8 +7,7 @@ Chart.pluginService.register({
         if (
             !chart.options.plugins.xLabelsOnTop ||
             (chart.options.plugins.xLabelsOnTop && chart.options.plugins.xLabelsOnTop.active === false)
-        )
-        {
+        ) {
             return;
         }
 
@@ -18,8 +17,7 @@ Chart.pluginService.register({
         chart.data.datasets.forEach(function (dataset, i) {
             const meta = chart.getDatasetMeta(i);
 
-            if ( !meta.hidden )
-            {
+            if (!meta.hidden) {
 
                 meta.data.forEach(function (element, index) {
 
@@ -31,7 +29,7 @@ Chart.pluginService.register({
                     ctx.font = Chart.helpers.fontString(fontSize, fontStyle, fontFamily);
 
                     // Just naively convert to string for now
-                    const dataString = dataset.data[index].toString() + 'k';
+                    const dataString = dataset.data[index].toString();
 
                     // Make sure alignment settings are correct
                     ctx.textAlign = 'center';

@@ -87,7 +87,7 @@ export function getWidgetPunc() {
                                     display: false,
                                     ticks: {
                                         min: 0,
-                                        max: 10,
+                                        max: 100,
                                         stepSize: 0.5
                                     }
                                 }
@@ -115,132 +115,139 @@ export function getWidgetPunc() {
 }
 export function getWidgetTest() {
     //const request = axios.get('/api/analytics-dashboard-app/widgets');
-    //const request = axios.get('http://localhost:3001/motivation/userPunctualityNoteStats/2017-01-01/2020-01-01/5c926640db149e155096dfa9');
+    const request = axios.get('http://localhost:3001/performance/getPerformanceStats/2018-10-01/2019-05-01/5c926640db149e155096dfa9');
 
     return (dispatch) => {
-        const tt = {
-            widget2: {
-                conversion: {
-                    value: 492,
-                    ofTarget: 13
-                },
-                chartType: 'bar',
-                datasets: [
-                    {
-                        label: 'Conversion',
-                        data: [221, 428, 492, 471, 413, 344, 294]
-                    }
-                ],
-                labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-                options: {
-                    spanGaps: false,
-                    legend: {
-                        display: false
+        request.then((response) => {
+            const tt = {
+                widget2: {
+                    conversion: {
+                        value: response.data.numberOfAllTasks,
+                        ofTarget: -(Number((1 - (response.data.numberOfAllTasksDone / response.data.numberOfAllTasks)) * 100).toFixed(1))
                     },
-                    maintainAspectRatio: false,
-                    layout: {
-                        padding: {
-                            top: 24,
-                            left: 16,
-                            right: 16,
-                            bottom: 16
+                    chartType: 'bar',
+                    datasets: [
+                        {
+                            label: 'Task Ratio',
+                            data: response.data.ratio
                         }
-                    },
-                    scales: {
-                        xAxes: [
-                            {
-                                display: false
+                    ],
+                    labels: ['october', 'november', 'december', 'january', 'february', 'march', 'april'],
+                    options: {
+                        spanGaps: false,
+                        legend: {
+                            display: false
+                        },
+                        maintainAspectRatio: false,
+                        layout: {
+                            padding: {
+                                top: 24,
+                                left: 16,
+                                right: 16,
+                                bottom: 16
                             }
-                        ],
-                        yAxes: [
-                            {
-                                display: false,
-                                ticks: {
-                                    min: 100,
-                                    max: 500
+                        },
+                        scales: {
+                            xAxes: [
+                                {
+                                    display: false
                                 }
-                            }
-                        ]
+                            ],
+                            yAxes: [
+                                {
+                                    display: false,
+                                    ticks: {
+                                        min: 0,
+                                        max: 100
+                                    }
+                                }
+                            ]
+                        }
                     }
                 }
             }
-        }
 
-        dispatch({
-            type: GET_WIDGETS_TEST,
-            payload: tt
-        })
+            dispatch({
+                type: GET_WIDGETS_TEST,
+                payload: tt
+            })
+        });
+
     }
+
 }
 export function getWidgetTest2() {
 
-    //const request = axios.get('http://localhost:3001/motivation/userPunctualityNoteStats/2017-01-01/2020-01-01/5c926640db149e155096dfa9');
+    const request = axios.get('http://localhost:3001/performance/getperformancevelocityStats/2018-10-03/2019-05-01/5c926640db149e155096dfa9');
 
     return (dispatch) => {
-        const tt = {
-            widget3: {
-                impressions: {
-                    value: '87k',
-                    ofTarget: 12
-                },
-                chartType: 'line',
-                datasets: [
-                    {
-                        label: 'Impression',
-                        data: [67000, 54000, 82000, 57000, 72000, 57000, 87000, 72000, 89000, 98700, 112000, 136000, 110000, 149000, 98000],
-                        fill: false
-                    }
-                ],
-                labels: ['Jan 1', 'Jan 2', 'Jan 3', 'Jan 4', 'Jan 5', 'Jan 6', 'Jan 7', 'Jan 8', 'Jan 9', 'Jan 10', 'Jan 11', 'Jan 12', 'Jan 13', 'Jan 14', 'Jan 15'],
-                options: {
-                    spanGaps: false,
-                    legend: {
-                        display: false
+        request.then(response => {
+            const tt = {
+                widget3: {
+                    impressions: {
+                        value: response.data.allDuration,
+                        ofTarget: -(Number((1 - (response.data.allDuration / response.data.allEstimated)) * 100).toFixed(1))
                     },
-                    maintainAspectRatio: false,
-                    elements: {
-                        point: {
-                            radius: 2,
-                            borderWidth: 1,
-                            hoverRadius: 2,
-                            hoverBorderWidth: 1
+                    chartType: 'line',
+                    datasets: [
+                        {
+                            label: 'Velocity',
+                            data: response.data.avg,
+                            fill: false
+                        }
+                    ],
+                    labels: ['october', 'november', 'december', 'january', 'february', 'march', 'april'],
+                    options: {
+                        spanGaps: false,
+                        legend: {
+                            display: false
                         },
-                        line: {
-                            tension: 0
-                        }
-                    },
-                    layout: {
-                        padding: {
-                            top: 24,
-                            left: 16,
-                            right: 16,
-                            bottom: 16
-                        }
-                    },
-                    scales: {
-                        xAxes: [
-                            {
-                                display: false
+                        maintainAspectRatio: false,
+                        elements: {
+                            point: {
+                                radius: 2,
+                                borderWidth: 1,
+                                hoverRadius: 2,
+                                hoverBorderWidth: 1
+                            },
+                            line: {
+                                tension: 0
                             }
-                        ],
-                        yAxes: [
-                            {
-                                display: false,
-                                ticks: {
-                                    // min: 100,
-                                    // max: 500
+                        },
+                        layout: {
+                            padding: {
+                                top: 24,
+                                left: 16,
+                                right: 16,
+                                bottom: 16
+                            }
+                        },
+                        scales: {
+                            xAxes: [
+                                {
+                                    display: false
                                 }
-                            }
-                        ]
+                            ],
+                            yAxes: [
+                                {
+                                    display: false,
+                                    ticks: {
+                                        // min: 100,
+                                        // max: 500
+                                    }
+                                }
+                            ]
+                        }
                     }
                 }
             }
-        }
 
-        dispatch({
-            type: GET_WIDGETS_TEST2,
-            payload: tt
-        })
+            dispatch({
+                type: GET_WIDGETS_TEST2,
+                payload: tt
+            })
+        });
+
     }
 }
 export function getWidgetTest3() {
@@ -303,99 +310,140 @@ export function getWidgetTest3() {
     }
 }
 export function getWidgetTest5() {
-    //const request = axios.get('http://localhost:3001/motivation/userPunctualityNoteStats/2017-01-01/2020-01-01/5c926640db149e155096dfa9');
+    const request = axios.get('http://localhost:3001/performance/gettechCommperformanceStats/2018-10-01/2019-05-01/5c926640db149e155096dfa9');
 
     return (dispatch) => {
-        const tt = {
-            widget5: {
-                chartType: 'line',
-                datasets: {
-                    'yesterday': [
-                        {
-                            label: 'Visitors',
-                            data: [190, 300, 340, 220, 290, 390, 250, 380, 410, 380, 320, 290],
-                            fill: 'start'
-                        },
-                        {
-                            label: 'Page views',
-                            data: [2200, 2900, 3900, 2500, 3800, 3200, 2900, 1900, 3000, 3400, 4100, 3800],
-                            fill: 'start'
-                        }
-                    ],
-                    'today': [
-                        {
-                            label: 'Visitors',
-                            data: [410, 380, 320, 290, 190, 390, 250, 380, 300, 340, 220, 290],
-                            fill: 'start'
-                        },
-                        {
-                            label: 'Page Views',
-                            data: [3000, 3400, 4100, 3800, 2200, 3200, 2900, 1900, 2900, 3900, 2500, 3800],
-                            fill: 'start'
-                        }
-                    ]
-                },
-                labels: ['12am', '2am', '4am', '6am', '8am', '10am', '12pm', '2pm', '4pm', '6pm', '8pm', '10pm'],
-                options: {
-                    spanGaps: false,
-                    legend: {
-                        display: false
-                    },
-                    maintainAspectRatio: false,
-                    tooltips: {
-                        position: 'nearest',
-                        mode: 'index',
-                        intersect: false
-                    },
-                    layout: {
-                        padding: {
-                            left: 24,
-                            right: 32
-                        }
-                    },
-                    elements: {
-                        point: {
-                            radius: 4,
-                            borderWidth: 2,
-                            hoverRadius: 4,
-                            hoverBorderWidth: 2
-                        }
-                    },
-                    scales: {
-                        xAxes: [
+        request.then(response => {
+            const tt = {
+                widget5: {
+                    chartType: 'line',
+                    datasets: {
+                        'Priority 1': [
                             {
-                                gridLines: {
-                                    display: false
-                                },
-                                ticks: {
-                                    fontColor: 'rgba(0,0,0,0.54)'
-                                }
+                                label: 'communication',
+                                data: response.data.rcomm[0],
+                                fill: 'start'
+                            },
+                            {
+                                label: 'technical',
+                                data: response.data.rtech[0],
+                                fill: 'start'
                             }
                         ],
-                        yAxes: [
+                        'Priority 2': [
                             {
-                                gridLines: {
-                                    tickMarkLength: 16
-                                },
-                                ticks: {
-                                    stepSize: 1000
-                                }
+                                label: 'communication',
+                                data: response.data.rcomm[1],
+                                fill: 'start'
+                            },
+                            {
+                                label: 'technical',
+                                data: response.data.rtech[1],
+                                fill: 'start'
+                            }
+                        ],
+                        'Priority 3': [
+                            {
+                                label: 'communication',
+                                data: response.data.rcomm[2],
+                                fill: 'start'
+                            },
+                            {
+                                label: 'technical',
+                                data: response.data.rtech[2],
+                                fill: 'start'
+                            }
+                        ],
+                        'Priority 4': [
+                            {
+                                label: 'communication',
+                                data: response.data.rcomm[3],
+                                fill: 'start'
+                            },
+                            {
+                                label: 'technical',
+                                data: response.data.rtech[3],
+                                fill: 'start'
+                            }
+                        ],
+                        'Priority 5': [
+                            {
+                                label: 'communication',
+                                data: response.data.rcomm[4],
+                                fill: 'start'
+                            },
+                            {
+                                label: 'technical',
+                                data: response.data.rtech[4],
+                                fill: 'start'
                             }
                         ]
                     },
-                    plugins: {
-                        filler: {
-                            propagate: false
+                    labels: ['OCT', 'NOV', 'DEC', 'JAN', 'FEB', 'MAR', 'APR'],
+                    options: {
+                        spanGaps: false,
+                        legend: {
+                            display: false
+                        },
+                        maintainAspectRatio: false,
+                        tooltips: {
+                            position: 'nearest',
+                            mode: 'index',
+                            intersect: false
+                        },
+                        layout: {
+                            padding: {
+                                left: 24,
+                                right: 32
+                            }
+                        },
+                        elements: {
+                            point: {
+                                radius: 4,
+                                borderWidth: 2,
+                                hoverRadius: 4,
+                                hoverBorderWidth: 2
+                            }
+                        },
+                        scales: {
+                            xAxes: [
+                                {
+                                    gridLines: {
+                                        display: false
+                                    },
+                                    ticks: {
+                                        fontColor: 'rgba(0,0,0,0.54)'
+                                    }
+                                }
+                            ],
+                            yAxes: [
+                                {
+                                    gridLines: {
+                                        tickMarkLength: 16
+                                    },
+                                    ticks: {
+                                        max: 10,
+                                        min: 0
+                                        //stepSize: 1000
+                                    }
+                                }
+                            ]
+                        },
+                        plugins: {
+                            filler: {
+                                propagate: false
+                            }
                         }
                     }
                 }
             }
-        }
 
-        dispatch({
-            type: GET_WIDGETS_TEST5,
-            payload: tt
-        })
+            dispatch({
+                type: GET_WIDGETS_TEST5,
+                payload: tt
+            })
+        });
+
     }
 }
 export function getWidgetTest6() {
@@ -548,63 +596,64 @@ export function getWidgetTest6() {
 }
 export function getWidgetTest7() {
 
-    //const request = axios.get('http://localhost:3001/motivation/userPunctualityNoteStats/2017-01-01/2020-01-01/5c926640db149e155096dfa9');
+    const request = axios.get('http://localhost:3001/motivation/getmotivationStats/5c926640db149e155096dfa9');
 
     return (dispatch) => {
-        const tt = {
-            widget7: {
-                labels: [
-                    'Desktop',
-                    'Mobile',
-                    'Tablet'
-                ],
-                datasets: {
-                    'Today': [
-                        {
-                            data: [92.8, 6.1, 1.1],
-                            change: [-0.6, 0.7, 0.1]
-                        }
+        request.then(response => {
+            const r1 = Number((response.data.result1 + response.data.result11) * 10 / 2).toFixed(1);
+            const r2 = Number((response.data.result2 + response.data.result22) * 10 / 2).toFixed(1);
+            const r3 = Number((response.data.result3 + response.data.result33) * 10 / 2).toFixed(1);
+            const r4 = Number((response.data.result4 + response.data.result44) * 10 / 2).toFixed(1);
+            const tt = {
+                widget7: {
+                    labels: [
+                        'motivation'
+
                     ],
-                    'Yesterday': [
-                        {
-                            data: [77.2, 8.4, 14.4],
-                            change: [-2.3, 0.3, -0.2]
-                        }
-                    ],
-                    'Last 7 days': [
-                        {
-                            data: [88.2, 9.2, 2.6],
-                            change: [1.9, -0.4, 0.3]
-                        }
-                    ],
-                    'Last 28 days': [
-                        {
-                            data: [65.2, 2.6, 32.2],
-                            change: [-12.6, -0.7, 4.2]
-                        }
-                    ],
-                    'Last 90 days': [
-                        {
-                            data: [93.5, 4.2, 2.3],
-                            change: [2.6, -0.7, 2.1]
-                        }
-                    ]
-                },
-                options: {
-                    cutoutPercentage: 75,
-                    spanGaps: false,
-                    legend: {
-                        display: false
+                    datasets: {
+
+                        'Yesterday': [
+                            {
+                                data: [r1, Number(100 - r1).toFixed(1)],
+                                change: [Number(r1 - r2).toFixed(1)]
+                            }
+                        ],
+                        'Last 7 days': [
+                            {
+                                data: [r2, Number(100 - r2).toFixed(1)],
+                                change: [Number(r2 - r3).toFixed(1)]
+                            }
+                        ],
+                        'Last 28 days': [
+                            {
+                                data: [r3, Number(100 - r3).toFixed(1)],
+                                change: [Number(r3 - r4).toFixed(1)]
+                            }
+                        ],
+                        'Last 90 days': [
+                            {
+                                data: [r4, Number(100 - r4).toFixed(1)],
+                                change: [0]
+                            }
+                        ]
                     },
-                    maintainAspectRatio: false
+                    options: {
+                        cutoutPercentage: 75,
+                        spanGaps: false,
+                        legend: {
+                            display: false
+                        },
+                        maintainAspectRatio: false
+                    }
                 }
             }
-        }
 
-        dispatch({
-            type: GET_WIDGETS_TEST7,
-            payload: tt
-        })
+            dispatch({
+                type: GET_WIDGETS_TEST7,
+                payload: tt
+            })
+        });
+
     }
 }
 export function getWidgetTest8() {

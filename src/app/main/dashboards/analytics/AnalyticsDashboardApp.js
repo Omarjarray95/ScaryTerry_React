@@ -49,7 +49,7 @@ class AnalyticsDashboardApp extends Component {
 
                             <FuseAnimate delay={600}>
                                 <Typography className="p-16 pb-8 text-18 font-300">
-                                    How are your active users trending over time?
+                                    How are this active user trending over time?
                                 </Typography>
                             </FuseAnimate>
 
@@ -62,16 +62,16 @@ class AnalyticsDashboardApp extends Component {
                                 <div className="widget flex w-full sm:w-1/3 p-16">
                                     <Widget3 data={widgetTest2.widget3} />
                                 </div>
-
+                                {/*
                                 <div className="widget w-full sm:w-1/3 p-16">
                                     <Widget4 data={widgetTest3.widget4} />
                                 </div>
-
+                                */}
                             </div>
 
                             <FuseAnimate delay={600}>
                                 <Typography className="px-16 pb-8 text-18 font-300">
-                                    How many pages your users visit?
+                                    Compare technical vs communication ?
                                 </Typography>
                             </FuseAnimate>
 
@@ -79,7 +79,7 @@ class AnalyticsDashboardApp extends Component {
                                 <Widget5 data={widgetTest5.widget5} />
                             </div>
 
-                            <FuseAnimate delay={600}>
+                            {/*<FuseAnimate delay={600}>
                                 <Typography className="px-16 pb-8 text-18 font-300">
                                     Where are your users?
                                 </Typography>
@@ -87,7 +87,7 @@ class AnalyticsDashboardApp extends Component {
 
                             <div className="widget w-full p-16 pb-32">
                                 <Widget6 data={widgetTest6.widget100} />
-                            </div>
+                            </div>*/}
 
                         </div>
 
@@ -96,7 +96,7 @@ class AnalyticsDashboardApp extends Component {
                             <div className="mb-32 w-full sm:w-1/2 md:w-full">
                                 <FuseAnimate delay={600}>
                                     <Typography className="px-16 pb-8 text-18 font-300">
-                                        What are your top devices?
+                                        feel motivated ?
                                     </Typography>
                                 </FuseAnimate>
 
@@ -104,7 +104,7 @@ class AnalyticsDashboardApp extends Component {
                                     <Widget7 data={widgetTest7.widget7} />
                                 </div>
                             </div>
-
+                            {/*
                             <div className="mb-32 w-full sm:w-1/2 md:w-full">
 
                                 <FuseAnimate delay={600}>
@@ -117,7 +117,8 @@ class AnalyticsDashboardApp extends Component {
                                     <Widget8 data={widgetTest8.widget8} />
                                 </div>
                             </div>
-
+                            */}
+                            {/*
                             <div className="mb-32 w-full sm:w-1/2 md:w-full">
                                 <FuseAnimate delay={600}>
                                     <Typography className="px-16 pb-8 text-18 font-300 lg:pt-0">
@@ -128,6 +129,7 @@ class AnalyticsDashboardApp extends Component {
                                     <Widget9 data={widgetTest9.widget9} />
                                 </div>
                             </div>
+                            */}
                         </div>
 
                     </div>
