@@ -7,6 +7,7 @@ import {bindActionCreators} from "redux";
 import connect from "react-redux/es/connect/connect";
 import {withRouter} from "react-router-dom";
 import * as Actions from 'app/store/actions/scrum';
+import * as fuseActions from 'app/store/actions/fuse';
 import Divider from '@material-ui/core/Divider';
 import moment from "moment";
 
@@ -74,7 +75,7 @@ class ProjectInformation extends Component {
 
                             <div className="mb-24">
                                 <Typography className="font-bold mb-4 text-15">About The Project</Typography>
-                                <Typography>{project.description}</Typography>
+                                <Typography align="justify">{project.description}</Typography>
                             </div>
 
                             {project.startDate && (<div className="mb-24">
@@ -103,7 +104,8 @@ class ProjectInformation extends Component {
                                 <Button
                                     className="normal-case"
                                     color="inherit"
-                                    size="small">
+                                    size="small"
+                                    onClick={() => {this.props.changeTab(2)}}>
                                     Manage
                                 </Button>
                             </Toolbar>
@@ -134,7 +136,8 @@ class ProjectInformation extends Component {
                                 <Button
                                     className="normal-case"
                                     color="inherit"
-                                    size="small">
+                                    size="small"
+                                    onClick={() => {this.props.changeTab(1)}}>
                                     Manage
                                 </Button>
                             </Toolbar>
@@ -274,14 +277,16 @@ class ProjectInformation extends Component {
 function mapDispatchToProps(dispatch)
 {
     return bindActionCreators({
-        readProject: Actions.readProject
+        readProject: Actions.readProject,
+        changeTab: fuseActions.changeTab
     }, dispatch);
 }
 
-function mapStateToProps({scrum})
+function mapStateToProps({fuse, scrum})
 {
     return {
-        project: scrum.project
+        project: scrum.project,
+        tab: fuse.tabs
     }
 }
 

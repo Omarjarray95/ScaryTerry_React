@@ -8,6 +8,7 @@ import connect from "react-redux/es/connect/connect";
 import {withRouter} from "react-router-dom";
 import {bindActionCreators} from "redux";
 import history from '../../../history';
+import * as Actions from 'app/store/actions/fuse';
 
 const styles = theme => ({
     layoutHeader : {
@@ -23,11 +24,11 @@ const styles = theme => ({
 class GetProject extends Component {
 
     state = {
-        value: 0
     };
 
-    handleChange = (event, value) => {
-        this.setState({value});
+    handleChange = (event, value) =>
+    {
+        this.props.changeTab(value);
     };
 
     navigateToProductBacklog = () =>
@@ -37,8 +38,7 @@ class GetProject extends Component {
 
     render()
     {
-        const {classes, project} = this.props;
-        const {value} = this.state;
+        const {classes, project, tab} = this.props;
 
         return (
             <FusePageSimple
@@ -65,7 +65,7 @@ class GetProject extends Component {
                 }
                 contentToolbar={
                     <Tabs
-                        value={value}
+                        value={tab}
                         onChange={this.handleChange}
                         indicatorColor="secondary"
                         textColor="secondary"
@@ -92,14 +92,14 @@ class GetProject extends Component {
                 }
                 content={
                     <div className="p-16 sm:p-24">
-                        {value === 0 &&
+                        {tab === 0 &&
                         (
                             <ProjectInformation/>
                         )}
-                        {value === 1 && (
+                        {tab === 1 && (
                             <ManageTeam/>
                         )}
-                        {value === 2 && (
+                        {tab === 2 && (
                             <ManageSprints/>
                         )}
                     </div>
@@ -112,14 +112,16 @@ class GetProject extends Component {
 function mapDispatchToProps(dispatch)
 {
     return bindActionCreators({
+        changeTab: Actions.changeTab
     }, dispatch);
 }
 
-function mapStateToProps({scrum})
+function mapStateToProps({fuse, scrum})
 {
     return {
         project: scrum.project,
-        id: scrum.id
+        id: scrum.id,
+        tab: fuse.tabs
     }
 }
 

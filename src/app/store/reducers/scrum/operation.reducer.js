@@ -3,7 +3,7 @@ import * as Actions from '../../actions';
 const initialState = {
     operation: "",
     success: false,
-    message : " "
+    message : ""
 };
 
 const operation = function (state = initialState, action)
@@ -20,15 +20,11 @@ const operation = function (state = initialState, action)
         }
         case Actions.ADD_PROJECT_ERROR:
         {
-            return {
-                ...initialState,
-                success: false,
-                error  : action.payload
-            };
+            return state;
         }
         default:
         {
-            return state
+            return state;
         }
     }
 };

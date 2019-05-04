@@ -13,8 +13,16 @@ import * as authActions from 'app/auth/store/actions';
 import * as Actions from 'app/store/actions/scrum';
 import Button from "@material-ui/core/Button/Button";
 import DeleteIcon from '@material-ui/icons/Delete';
+import Snackbar from "@material-ui/core/Snackbar/Snackbar";
+import SnackbarContent from "@material-ui/core/SnackbarContent/SnackbarContent";
+import IconButton from "@material-ui/core/IconButton/IconButton";
+import CloseIcon from '@material-ui/icons/Close';
+import green from '@material-ui/core/colors/green';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import SwapIcon from '@material-ui/icons/SwapHorizontalCircle';
+import classNames from 'classnames';
 
-const styles = {
+const styles = theme => ({
     card: {
         minWidth: 250,
         margin: 20
@@ -27,7 +35,8 @@ const styles = {
     title: {
         fontSize: 18,
         marginBottom: 12,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        cursor: 'pointer'
     },
     fullName: {
         fontSize: 16,
@@ -43,8 +52,18 @@ const styles = {
     },
     formControl: {
         minWidth: 250
-    }
-};
+    },
+    success: {
+        backgroundColor: green[600],
+    },
+    icon: {
+        fontSize: 20,
+    },
+    iconVariant: {
+        opacity: 0.9,
+        marginRight: theme.spacing.unit,
+    },
+});
 
 class ManageTeam extends Component
 {
@@ -53,6 +72,7 @@ class ManageTeam extends Component
         super(props);
 
         this.state = {
+            openSnackbar: false,
             scrumMaster: "",
             productOwner: "",
             member: "",
@@ -133,9 +153,22 @@ class ManageTeam extends Component
         this.props.submitAffect(data, this.props.match.params.id);
     };
 
+    handleCloseSnackbar = () =>
+    {
+        this.setState({ openSnackbar: false });
+    };
+
     componentDidMount()
     {
         this.props.readEmployees();
+    }
+
+    componentWillUpdate(nextProps, nextState)
+    {
+        if (nextProps.project !== this.props.project)
+        {
+            this.setState({openSnackbar: true});
+        }
     }
 
     render()
@@ -159,7 +192,7 @@ class ManageTeam extends Component
                                     </Typography>)}
                                 </Grid>
                             </CardContent>
-                            <CardActions className="flex justify-center">
+                            <CardActions className="flex justify-center" disableActionSpacing>
                                 <FormControl className={classes.formControl}>
                                     <InputLabel htmlFor="scrumMaster">Choose The Scrum Master</InputLabel>
                                     <Select
@@ -219,7 +252,7 @@ class ManageTeam extends Component
                                     </Typography>)}
                                 </Grid>
                             </CardContent>
-                            <CardActions className="flex justify-center">
+                            <CardActions className="flex justify-center" disableActionSpacing>
                                 <FormControl className={classes.formControl}>
                                     <InputLabel htmlFor="productOwner">Choose The Product Owner</InputLabel>
                                     <Select
@@ -283,7 +316,7 @@ class ManageTeam extends Component
                                         </Typography>
                                     </Grid>
                                 </CardContent>
-                                <CardActions className="flex justify-center">
+                                <CardActions className="flex justify-center" disableActionSpacing>
                                     <Button
                                         type="button"
                                         onClick={() => this.handleDeleteMember(member._id)}
@@ -299,7 +332,10 @@ class ManageTeam extends Component
                         <Card className={classes.addCard}>
                             <CardContent>
                                 <Grid container alignItems="center" direction="column">
-                                    <Typography className={classes.title} color="textPrimary">
+                                    <Typography
+                                        className={classes.title}
+                                        color="textPrimary"
+                                        onMouseDown={console.log("Add Member")}>
                                         Add Member
                                     </Typography>
                                 </Grid>
@@ -353,6 +389,36 @@ class ManageTeam extends Component
                         </Card>
                     </Grid>
                 </Grid>
+
+                <Snackbar
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'right',
+                    }}
+                    open={this.state.openSnackbar}
+                    autoHideDuration={1000}
+                    onClose={this.handleCloseSnackbar}
+                >
+                    <SnackbarContent
+                        className={classes.success}
+                        message={
+                            <span className="flex items-center">
+                                <CheckCircleIcon className={classNames(classes.icon, classes.iconVariant)} />
+                                Changes Saved !
+                            </span>
+                        }
+                        action={[
+                            <IconButton
+                                key="close"
+                                aria-label="Close"
+                                color="inherit"
+                                onClick={this.handleCloseSnackbar}
+                            >
+                                <CloseIcon />
+                            </IconButton>,
+                        ]}
+                    />
+                </Snackbar>
             </div>
         );
     }

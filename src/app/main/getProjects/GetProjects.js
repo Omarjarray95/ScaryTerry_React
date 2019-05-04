@@ -3,7 +3,7 @@ import {FusePageSimple} from '@fuse';
 import {bindActionCreators} from 'redux';
 import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
-import ContactsList from './ContactsList';
+import ContactsList from './ProjectsList';
 
 class GetProjects extends Component
 {

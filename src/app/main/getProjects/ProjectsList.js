@@ -35,7 +35,7 @@ const styles = theme => (
         }
     });
 
-class ContactsList extends Component {
+class ProjectsList extends Component {
 
     state = {
         selected: null
@@ -81,7 +81,7 @@ class ContactsList extends Component {
                             onClick  : (e, handleOriginal) => {
                                 if ( rowInfo )
                                 {
-                                    history.push('/projects/get/'+ rowInfo.original._id);
+                                    history.push('/projects/get/' + rowInfo.original._id);
                                 }
                             }
                         }
@@ -121,7 +121,7 @@ class ContactsList extends Component {
                         ),
                         }
                     ]}
-                    defaultPageSize={5}
+                    defaultPageSize={10}
                     noDataText="No Contacts Found."
                 />
         );
@@ -143,4 +143,4 @@ function mapStateToProps({scrum})
     }
 }
 
-export default withStyles(styles) (withRouter(connect(mapStateToProps, mapDispatchToProps) (ContactsList)));
+export default withStyles(styles) (withRouter(connect(mapStateToProps, mapDispatchToProps) (ProjectsList)));

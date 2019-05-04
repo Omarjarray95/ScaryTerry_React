@@ -269,7 +269,7 @@ class ShowProductBacklog extends Component {
                                             <Typography className="">{item.title}</Typography>
                                         </div>
                                         <div className="flex items-center">
-                                            <Typography className="font-bold">Priority:</Typography>
+                                            <Typography className="font-bold">Priority: </Typography>
                                             <Typography className="">{item.priority}</Typography>
                                         </div>
                                         <div className="flex items-center">
@@ -280,7 +280,7 @@ class ShowProductBacklog extends Component {
 
                                 <ExpansionPanelDetails>
                                     <div>
-                                        <Typography className="">{item.description}</Typography>
+                                        <Typography align="justify">{item.description}</Typography>
                                         <Button
                                             color="default"
                                             className="mt-8"

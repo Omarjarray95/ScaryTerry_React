@@ -1,7 +1,8 @@
 import projectsService from 'app/services/projectsService';
+import * as Actions from '../../../main/showSprintBacklog/store/actions';
 
 export const ADD_PROJECT_SUCCESS = 'ADD_PROJECT_SUCCESS';
-export const ADD_PROJECT_ERROR = 'ADD_PROJECT_SUCCESS';
+export const ADD_PROJECT_ERROR = 'ADD_PROJECT_ERROR';
 export const READ_PROJECTS = 'READ_PROJECTS';
 export const READ_PROJECT = 'READ_PROJECT';
 export const REQUEST_ERROR = 'REQUEST_ERROR';
@@ -198,6 +199,93 @@ export function deleteItem(item, pB)
             });
 }
 
+export function addUserStory(data, id)
+{
+    return (dispatch) =>
+        projectsService.addUserStory(data, id)
+            .then(() =>
+                {
+                    dispatch(Actions.getUserStories(id, 'Pending'));
+                    dispatch(Actions.getUserStories(id, 'In Progress'));
+                    dispatch(Actions.getUserStories(id, 'To Verify'));
+                    dispatch(Actions.getUserStories(id, 'Done'));
+                    dispatch(Actions.getSprintBacklog(id));
+                }
+            )
+            .catch(error =>
+            {
+                return dispatch({
+                    type   : REQUEST_ERROR,
+                    payload: error
+                });
+            });
+}
+
+export function updateUserStory(data, id, sprint)
+{
+    return (dispatch) =>
+        projectsService.updateUserStory(data, id)
+            .then(() =>
+                {
+                    dispatch(Actions.getUserStories(sprint, 'Pending'));
+                    dispatch(Actions.getUserStories(sprint, 'In Progress'));
+                    dispatch(Actions.getUserStories(sprint, 'To Verify'));
+                    dispatch(Actions.getUserStories(sprint, 'Done'));
+                    dispatch(Actions.getSprintBacklog(sprint));
+                }
+            )
+            .catch(error =>
+            {
+                return dispatch({
+                    type   : REQUEST_ERROR,
+                    payload: error
+                });
+            });
+}
+
+export function updateUserStoryState(id, state, sprint)
+{
+    return (dispatch) =>
+        projectsService.updateUserStoryState(id, state)
+            .then(() =>
+                {
+                    dispatch(Actions.getUserStories(sprint, 'Pending'));
+                    dispatch(Actions.getUserStories(sprint, 'In Progress'));
+                    dispatch(Actions.getUserStories(sprint, 'To Verify'));
+                    dispatch(Actions.getUserStories(sprint, 'Done'));
+                    dispatch(Actions.getSprintBacklog(sprint));
+                }
+            )
+            .catch(error =>
+            {
+                return dispatch({
+                    type   : REQUEST_ERROR,
+                    payload: error
+                });
+            });
+}
+
+export function readSprintProject(id)
+{
+    return (dispatch) =>
+        projectsService.getSprintProject(id)
+            .then((project) =>
+                {
+                    return dispatch({
+                        type: READ_PROJECT,
+                        payload: project
+                    });
+                }
+            )
+            .catch(error =>
+            {
+                return dispatch({
+                    type   : REQUEST_ERROR,
+                    payload: error
+                });
+            });
+}
+
 export function checkProjectTitle({title})
 {
     return (dispatch) =>
@@ -217,4 +305,15 @@ export function checkProjectTitle({title})
                     payload: res
                 });
             });
+}
+
+export function resetAddProject()
+{
+    return (dispatch) =>
+    {
+        return dispatch({
+            type   : ADD_PROJECT_ERROR,
+            payload: ""
+        });
+    }
 }

@@ -21,6 +21,7 @@ import Formsy from "formsy-react";
 import TextFieldFormsy from "../../../../@fuse/components/formsy/TextFieldFormsy";
 import * as Actions from 'app/store/actions/scrum';
 import moment from "moment";
+import history from "../../../../history";
 
 const styles = {
     card: {
@@ -172,6 +173,11 @@ class ManageSprints extends Component {
         this.props.submitDeleteSprint(id, this.props.match.params.id);
     };
 
+    handleNavigateToSprintBacklog = (id) =>
+    {
+        history.push('/projects/get/sprint/sprintbacklog/'+ id);
+    };
+
     componentDidMount()
     {
 
@@ -195,16 +201,24 @@ class ManageSprints extends Component {
                                     <Typography className={classes.fullName} color="textSecondary">
                                         {sprint.goal}
                                     </Typography>
+                                    <Button
+                                        type="button"
+                                        className="mb-8"
+                                        onClick={() => this.handleNavigateToSprintBacklog(sprint._id)}
+                                        variant="contained"
+                                        color="secondary">
+                                        Show Sprint Backlog
+                                    </Button>
                                     <Typography className="border-4 p-8" paragraph={true} align={"justify"}>
                                         {sprint.description}
                                     </Typography>
                                     <div className="flex flex-col mb-8" align="center">
-                                        <Typography className="font-bold">
+                                        {sprint.startDate && (<Typography className="font-bold">
                                             Supposed To Begin At
-                                        </Typography>
-                                        <Typography>
+                                        </Typography>)}
+                                        {sprint.startDate && (<Typography>
                                             {moment(sprint.startDate).format("DD MMMM YYYY").toString()}
-                                        </Typography>
+                                        </Typography>)}
                                     </div>
                                     <div className="flex flex-col" align="center">
                                         <Typography className="font-bold">
@@ -227,7 +241,7 @@ class ManageSprints extends Component {
                                 </Button>
                             </CardActions>
                         </Card>)))}
-                    <Tooltip title="Add" onClick={this.handleOpenSprintDialog}>
+                    <Tooltip title="Add"  disableFocusListener disableTouchListener onClick={this.handleOpenSprintDialog}>
                         <Fab color="primary">
                             <AddIcon />
                         </Fab>

@@ -4,6 +4,8 @@ export const READ_FIELDS = 'READ_FIELDS';
 export const REQUEST_ERROR = 'REQUEST_ERROR';
 export const FIELD_NAME_AVAILABLE = 'FIELD_NAME_AVAILABLE';
 export const FIELD_NAME_UNAVAILABLE = 'FIELD_NAME_UNAVAILABLE';
+export const FIELD_NAME1_AVAILABLE = '[FIELD]_NAME_AVAILABLE';
+export const FIELD_NAME1_UNAVAILABLE = '[FIELD]_NAME_UNAVAILABLE';
 
 export function readFields()
 {
@@ -42,6 +44,27 @@ export function checkFieldName({name})
             {
                 return dispatch({
                     type   : FIELD_NAME_UNAVAILABLE,
+                    payload: res
+                });
+            });
+}
+
+export function checkFieldName1({name})
+{
+    return (dispatch) =>
+        fieldsService.checkName(name)
+            .then((res) =>
+                {
+                    return dispatch({
+                        type: FIELD_NAME1_AVAILABLE,
+                        payload: res
+                    });
+                }
+            )
+            .catch(res =>
+            {
+                return dispatch({
+                    type   : FIELD_NAME1_UNAVAILABLE,
                     payload: res
                 });
             });
