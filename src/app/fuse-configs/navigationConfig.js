@@ -27,7 +27,31 @@ const navigationConfig = [
                     'exact': true
                 }
             ]
-        }]
+        },
+            {
+                'id'      : 'projects',
+                'title'   : 'Projects',
+                'type'    : 'collapse',
+                'icon'    : 'apps',
+                'children': [
+                    {
+                        'id'   : 'add-project',
+                        'title': 'Add New Project',
+                        'type' : 'item',
+                        'icon' : 'add_box',
+                        'url'  : '/projects/add',
+                        'exact': true
+                    },
+                    {
+                        'id'   : 'get-projects',
+                        'title': 'My Projects',
+                        'type' : 'item',
+                        'icon' : 'list',
+                        'url'  : '/projects/get',
+                        'exact': true
+                    }
+                ]
+            }]
     },
     {
         'id'      : 'issueshub',

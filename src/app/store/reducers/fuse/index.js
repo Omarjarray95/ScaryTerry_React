@@ -6,6 +6,7 @@ import message from './message.reducer';
 import dialog from './dialog.reducer';
 import routes from './routes.reducer';
 import socket from './socket.reducer';
+import tabs from './tabs.reducer';
 const fuseReducers = combineReducers({
     navigation,
     settings,
@@ -13,6 +14,7 @@ const fuseReducers = combineReducers({
     message,
     dialog,
     routes,
+    tabs
     socket
 });
 
