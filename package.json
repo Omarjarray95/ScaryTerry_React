@@ -25,7 +25,7 @@
         "material-ui-pickers": "2.2.1",
         "material-ui-popup-state": "1.2.0",
         "mobile-detect": "1.4.3",
-        "moment": "2.24.0",
+        "moment": "^2.24.0",
         "notistack": "0.4.2",
         "path-to-regexp": "3.0.0",
         "perfect-scrollbar": "1.4.0",
@@ -57,7 +57,9 @@
         "redux": "4.0.1",
         "redux-thunk": "2.3.0",
         "typeface-muli": "0.0.71",
-        "velocity-react": "1.4.1"
+        "velocity-react": "1.4.1",
+        "react-chat-window": "^1.1.1",
+        "socket.io-client": "^2.2.0"
     },
     "resolutions": {
         "react": "16.8.3",

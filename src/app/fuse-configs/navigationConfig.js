@@ -30,6 +30,22 @@ const navigationConfig = [
         }]
     },
     {
+        'id'      : 'issueshub',
+        'title'   : 'Issues HUB',
+        'type'    : 'item',
+        'icon'    : 'speaker_notes',
+        'url'  : '/issueshub',
+    }
+    ,
+    {
+        'id'      : 'calendar',
+        'title'   : 'My Calendar',
+        'type'    : 'item',
+        'icon'    : 'access_time',
+        'url'  : '/calendar',
+    }
+    ,
+    {
         'type': 'divider',
         'id'  : 'divider-1'
     },

@@ -9,6 +9,7 @@ export const TOGGLE_STARRED = '[TODO APP] TOGGLE STARRED';
 export const TOGGLE_COMPLETED = '[TODO APP] TOGGLE COMPLETED';
 export const TOGGLE_IMPORTANT = '[TODO APP] TOGGLE IMPORTANT';
 export const UPDATE_TODO = '[TODO APP] UPDATE TODO';
+export const ANSWER_TODO = '[TODO APP] ANSWER TODO';
 export const ADD_TODO = '[TODO APP] ADD TODO';
 export const REMOVE_TODO = '[TODO APP] REMOVE TODO';
 export const SET_SEARCH_TEXT = '[TODO APP] SET SEARCH TEXT';
@@ -32,7 +33,7 @@ export function getData(match)
 }
 
 export function getTodos(match)
-{   match.params['username']=localStorage.getItem('username');
+{   match.params['user']=localStorage.getItem('id');
 
     const request = axios.get('http://localhost:3001/impediments/react', {
         params: match.params
@@ -53,7 +54,7 @@ export function updateTodos()
     return (dispatch, getState) => {
 
         const {routeParams} = getState().todoApp.todos;
-        routeParams['username']=localStorage.getItem('username');
+        routeParams['user']=localStorage.getItem('id');
         const request = axios.get('http://localhost:3001/impediments/react', {
             params: routeParams
         });
@@ -108,7 +109,7 @@ export function toggleImportant(todo)
 }
 
 export function updateTodo(todo)
-{
+{   todo['user']=localStorage.getItem('id');
     const request = axios.post('http://localhost:3001/impediments/restupdate', todo);
 
     return (dispatch) =>
@@ -122,6 +123,23 @@ export function updateTodo(todo)
             }
         );
 }
+export function answerTodo(todo)
+{   todo['user']=localStorage.getItem('id');
+    const request = axios.post('http://localhost:3001/impediments/restanswer', todo);
+
+    return (dispatch) =>
+        request.then((response) => {
+                Promise.all([
+                    dispatch({
+                        type   : ANSWER_TODO
+                    })
+                ]).then(() => dispatch(updateTodos()))
+            }
+        );
+}
+
+
+
 
 export function openNewTodoDialog()
 {
@@ -153,9 +171,9 @@ export function closeEditTodoDialog()
 }
 
 export function addTodo(todo)
-{
-    const request = axios.post('/api/todo-app/new-todo', todo);
-
+{   todo['user']=localStorage.getItem('id');
+    const request = axios.post('http://localhost:3001/impediments/restadd', todo);
+    
     return (dispatch) =>
         request.then((response) => (
                 Promise.all([

@@ -32,7 +32,7 @@ class TodoSidebarHeader extends Component {
                 </div>
 
                 <FuseAnimate animation="transition.slideUpIn" delay={300}>
-                    <TextField
+                    <TextField hidden
                         id="account-selection"
                         select
                         label={this.state.selectedAccount}

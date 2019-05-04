@@ -28,6 +28,7 @@ import {connect} from 'react-redux';
 import moment from 'moment/moment';
 import _ from '@lodash';
 import * as Actions from './store/actions';
+import { updateTodos } from './store/actions';
 
 const newTodoState = {
     'id'       : '',
@@ -39,15 +40,18 @@ const newTodoState = {
     'starred'  : false,
     'important': false,
     'deleted'  : false,
-    'labels'   : []
+    'labels'   : [],
+     'answer':''
 };
+
 
 class TodoDialog extends Component {
 
     state = {
         form       : {...newTodoState},
-        labelMenuEl: null
+        labelMenuEl: null,
     };
+    
 
     componentDidUpdate(prevProps, prevState, snapshot)
     {
@@ -141,14 +145,15 @@ class TodoDialog extends Component {
     canBeSubmitted()
     {
         const {title} = this.state.form;
+        const {answer} = this.state.form;
         return (
-            title.length > 0
+            title.length > 0 || answer.length>0
         );
     }
 
     render()
     {
-        const {todoDialog, addTodo, updateTodo, removeTodo, labels} = this.props;
+        const {todoDialog, addTodo, updateTodo,answerTodo, removeTodo, labels} = this.props;
         const {form, labelMenuEl} = this.state;
         let startDate, dueDate;
 
@@ -157,209 +162,267 @@ class TodoDialog extends Component {
             startDate = moment(form.startDate).format(moment.HTML5_FMT.DATETIME_LOCAL_SECONDS);
             dueDate = moment(form.dueDate).format(moment.HTML5_FMT.DATETIME_LOCAL_SECONDS);
         }
+        if(todoDialog.type==='answer')
+        {   console.log( this.props.todoDialog.data)
 
-        return (
-            <Dialog {...todoDialog.props} onClose={this.closeTodoDialog} fullWidth maxWidth="sm">
-
-                <AppBar position="static" elevation={1}>
-                    <Toolbar className="flex w-full">
-                        <Typography variant="subtitle1" color="inherit">
-                            {todoDialog.type === 'new' ? 'New Todo' : 'Edit Todo'}
-                        </Typography>
-                    </Toolbar>
-                </AppBar>
-
-                <DialogContent classes={{root: "p-0"}}>
-
-                    <div className="mb-16">
-                        <div className="flex items-center justify-between p-12">
-
-                            <div className="flex">
-                                <Checkbox
-                                    tabIndex={-1}
-                                    checked={form.completed}
-                                    onChange={this.toggleCompleted}
-                                    onClick={(ev) => ev.stopPropagation()}
+            return (
+                <Dialog {...todoDialog.props} onClose={this.closeTodoDialog} fullWidth maxWidth="sm">
+    
+                    <AppBar position="static" elevation={1}>
+                        <Toolbar className="flex w-full">
+                            <Typography variant="subtitle1" color="inherit">
+                               Answer Issue
+                            </Typography>
+                        </Toolbar>
+                    </AppBar>
+    
+                    <DialogContent classes={{root: "p-0"}}>
+                        <div className="px-16 sm:px-24">
+                            <FormControl className="mt-8 mb-16" required fullWidth>
+                                <TextField style={{marginTop:'7%'}}
+                                    label="Your answer"
+                                    autoFocus
+                                    name="answer"
+                                    value={form.answer}
+                                    onChange={this.handleChange}
+                                    required
+                                    variant="outlined"
+                                    multiline
+                                    rows="6"
                                 />
-                            </div>
+                            </FormControl>
+                        </div>
+    
+                    </DialogContent>
+                    <DialogActions className="justify-between pl-8 sm:pl-16">
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={() => {
+                                    this.state.form.imp=this.props.todoDialog.data.id
+                                    answerTodo(this.state.form);
+                                    this.closeTodoDialog();
+                                    this.props.socket.compress(false).emit('answer', {imp:this.state.form.imp} );
 
-                            <div className="flex items-center justify-start" aria-label="Toggle star">
-                                <IconButton onClick={this.handleToggleImportant}>
-                                    {form.important ? (
-                                        <Icon style={{color: red[500]}}>error</Icon>
-                                    ) : (
-                                        <Icon>error_outline</Icon>
-                                    )}
-                                </IconButton>
+                                }}
+                                disabled={!this.canBeSubmitted()}
+                                style={{marginLeft:'75%',marginBottom:'5%'}}
+                            >
+                                Answer
+                            </Button>
+                        </DialogActions>
+                </Dialog>
+            );
 
-                                <IconButton onClick={this.handleToggleStarred}>
-                                    {form.starred ? (
-                                        <Icon style={{color: amber[500]}}>star</Icon>
-                                    ) : (
-                                        <Icon>star_outline</Icon>
-                                    )}
-                                </IconButton>
-                                <div>
-                                    <IconButton
-                                        aria-owns={labelMenuEl ? 'label-menu' : null}
-                                        aria-haspopup="true"
-                                        onClick={this.handleLabelMenuOpen}
-                                    >
-                                        <Icon>label</Icon>
+
+        }
+        else{
+            return (
+                <Dialog {...todoDialog.props} onClose={this.closeTodoDialog} fullWidth maxWidth="sm">
+    
+                    <AppBar position="static" elevation={1}>
+                        <Toolbar className="flex w-full">
+                            <Typography variant="subtitle1" color="inherit">
+                                {todoDialog.type === 'new' ? 'Report issue' : 'Edit issue'}
+                            </Typography>
+                        </Toolbar>
+                    </AppBar>
+    
+                    <DialogContent classes={{root: "p-0"}}>
+    
+                        <div className="mb-16">
+                            <div className="flex items-center justify-between p-12">
+    
+                                <div className="flex">
+                                    <Checkbox hidden
+                                        tabIndex={-1}
+                                        checked={form.completed}
+                                        onChange={this.toggleCompleted}
+                                        onClick={(ev) => ev.stopPropagation()}
+                                    />
+                                </div>
+    
+                                <div className="flex items-center justify-start" aria-label="Toggle star">
+                                    <IconButton hidden onClick={this.handleToggleImportant}>
+                                        {form.important ? (
+                                            <Icon style={{color: red[500]}}>error</Icon>
+                                        ) : (
+                                            <Icon>error_outline</Icon>
+                                        )}
                                     </IconButton>
-                                    <Menu
-                                        id="label-menu"
-                                        anchorEl={labelMenuEl}
-                                        open={Boolean(labelMenuEl)}
-                                        onClose={this.handleLabelMenuClose}
-                                    >
-                                        {labels.length > 0 && labels.map((label) => (
-                                            <MenuItem onClick={(ev) => this.handleToggleLabel(ev, label.id)} key={label.id}>
-                                                <ListItemIcon>
-                                                    <Icon className="mr-0" color="action">
-                                                        {form.labels.includes(label.id) ? 'check_box' : 'check_box_outline_blank'}
-                                                    </Icon>
-                                                </ListItemIcon>
-                                                <ListItemText primary={label.title} disableTypography={true}/>
-                                                <ListItemIcon>
-                                                    <Icon className="mr-0" style={{color: label.color}} color="action">
-                                                        label
-                                                    </Icon>
-                                                </ListItemIcon>
-                                            </MenuItem>
-                                        ))}
-                                    </Menu>
+    
+                                    <IconButton hidden onClick={this.handleToggleStarred}>
+                                        {form.starred ? (
+                                            <Icon style={{color: amber[500]}}>star</Icon>
+                                        ) : (
+                                            <Icon>star_outline</Icon>
+                                        )}
+                                    </IconButton>
+                                    <div>
+                                        <IconButton
+                                            aria-owns={labelMenuEl ? 'label-menu' : null}
+                                            aria-haspopup="true"
+                                            onClick={this.handleLabelMenuOpen}
+                                        >
+                                            <Icon>label</Icon>
+                                        </IconButton>
+                                        <Menu
+                                            id="label-menu"
+                                            anchorEl={labelMenuEl}
+                                            open={Boolean(labelMenuEl)}
+                                            onClose={this.handleLabelMenuClose}
+                                        >
+                                            {labels.length > 0 && labels.map((label) => (
+                                                <MenuItem onClick={(ev) => this.handleToggleLabel(ev, label.id)} key={label.id}>
+                                                    <ListItemIcon>
+                                                        <Icon className="mr-0" color="action">
+                                                            {form.labels.includes(label.id) ? 'check_box' : 'check_box_outline_blank'}
+                                                        </Icon>
+                                                    </ListItemIcon>
+                                                    <ListItemText primary={label.title} disableTypography={true}/>
+                                                    <ListItemIcon>
+                                                        <Icon className="mr-0" style={{color: label.color}} color="action">
+                                                            label
+                                                        </Icon>
+                                                    </ListItemIcon>
+                                                </MenuItem>
+                                            ))}
+                                        </Menu>
+                                    </div>
                                 </div>
                             </div>
+                            <Divider className="mx-24"/>
                         </div>
-                        <Divider className="mx-24"/>
-                    </div>
-
-                    {form.labels.length > 0 && (
-                        <div className="flex flex-wrap  px-16 sm:px-24 mb-16">
-                            {form.labels.map(label => (
-                                <Chip
-                                    avatar={(
-                                        <Avatar
-                                            classes={{colorDefault: "bg-transparent"}}>
-                                            <Icon
-                                                className="text-20"
-                                                style={{color: _.find(labels, {id: label}).color}}
-                                            >
-                                                label
-                                            </Icon>
-                                        </Avatar>
-                                    )}
-                                    label={_.find(labels, {id: label}).title}
-                                    onDelete={(ev) => this.handleToggleLabel(ev, label)}
-                                    className="mr-8 my-8"
-                                    classes={{label: "pl-4"}}
-                                    key={label}
+    
+                        {form.labels.length > 0 && (
+                            <div className="flex flex-wrap  px-16 sm:px-24 mb-16">
+                                {form.labels.map(label => (
+                                    <Chip
+                                        avatar={(
+                                            <Avatar
+                                                classes={{colorDefault: "bg-transparent"}}>
+                                                <Icon
+                                                    className="text-20"
+                                                    style={{color: _.find(labels, {id: label}).color}}
+                                                >
+                                                    label
+                                                </Icon>
+                                            </Avatar>
+                                        )}
+                                        label={_.find(labels, {id: label}).title}
+                                        onDelete={(ev) => this.handleToggleLabel(ev, label)}
+                                        className="mr-8 my-8"
+                                        classes={{label: "pl-4"}}
+                                        key={label}
+                                    />
+                                ))}
+                            </div>
+                        )}
+    
+                        <div className="px-16 sm:px-24">
+                            <FormControl className="mt-8 mb-16" required fullWidth>
+                                <TextField
+                                    label="Title"
+                                    autoFocus
+                                    name="title"
+                                    value={form.title}
+                                    onChange={this.handleChange}
+                                    required
+                                    variant="outlined"
                                 />
-                            ))}
+                            </FormControl>
+    
+                            <FormControl className="mt-8 mb-16" required fullWidth>
+                                <TextField
+                                    label="Notes"
+                                    name="notes"
+                                    multiline
+                                    rows="6"
+                                    value={form.notes}
+                                    onChange={this.handleChange}
+                                    variant="outlined"
+                                />
+                            </FormControl>
+                            <div className="flex">
+                                <TextField
+                                hidden
+                                    name="startDate"
+                                    label="Start Date"
+                                    type="datetime-local"
+                                    className="mt-8 mb-16 mr-8"
+                                    InputLabelProps={{
+                                        shrink: true
+                                    }}
+                                    inputProps={{
+                                        max: dueDate
+                                    }}
+                                    value={startDate}
+                                    onChange={this.handleChange}
+                                    variant="outlined"
+                                />
+                                <TextField
+                                hidden
+                                    name="dueDate"
+                                    label="Due Date"
+                                    type="datetime-local"
+                                    className="mt-8 mb-16 ml-8"
+                                    InputLabelProps={{
+                                        shrink: true
+                                    }}
+                                    inputProps={{
+                                        min: startDate
+                                    }}
+                                    value={dueDate}
+                                    onChange={this.handleChange}
+                                    variant="outlined"
+                                />
+                            </div>
                         </div>
+    
+                    </DialogContent>
+    
+                    {todoDialog.type === 'new' ? (
+                        <DialogActions className="justify-between pl-8 sm:pl-16">
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={() => {
+                                    addTodo(this.state.form);
+                                    this.closeTodoDialog();
+                                }}
+                                disabled={!this.canBeSubmitted()}
+                            >
+                                Add
+                            </Button>
+                        </DialogActions>
+                    ) : (
+                        <DialogActions className="justify-between pl-8 sm:pl-16">
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={() => {
+                                    updateTodo(this.state.form);
+                                    this.closeTodoDialog();
+                                }}
+                                disabled={!this.canBeSubmitted()}
+                            >
+                                Save
+                            </Button>
+                            <IconButton
+                                className="min-w-auto"
+                                onClick={() => {
+                                    removeTodo(this.state.form.id);
+                                    this.closeTodoDialog();
+                                }}
+                            >
+                                <Icon>delete</Icon>
+                            </IconButton>
+                        </DialogActions>
                     )}
-
-                    <div className="px-16 sm:px-24">
-                        <FormControl className="mt-8 mb-16" required fullWidth>
-                            <TextField
-                                label="Title"
-                                autoFocus
-                                name="title"
-                                value={form.title}
-                                onChange={this.handleChange}
-                                required
-                                variant="outlined"
-                            />
-                        </FormControl>
-
-                        <FormControl className="mt-8 mb-16" required fullWidth>
-                            <TextField
-                                label="Notes"
-                                name="notes"
-                                multiline
-                                rows="6"
-                                value={form.notes}
-                                onChange={this.handleChange}
-                                variant="outlined"
-                            />
-                        </FormControl>
-                        <div className="flex">
-                            <TextField
-                                name="startDate"
-                                label="Start Date"
-                                type="datetime-local"
-                                className="mt-8 mb-16 mr-8"
-                                InputLabelProps={{
-                                    shrink: true
-                                }}
-                                inputProps={{
-                                    max: dueDate
-                                }}
-                                value={startDate}
-                                onChange={this.handleChange}
-                                variant="outlined"
-                            />
-                            <TextField
-                                name="dueDate"
-                                label="Due Date"
-                                type="datetime-local"
-                                className="mt-8 mb-16 ml-8"
-                                InputLabelProps={{
-                                    shrink: true
-                                }}
-                                inputProps={{
-                                    min: startDate
-                                }}
-                                value={dueDate}
-                                onChange={this.handleChange}
-                                variant="outlined"
-                            />
-                        </div>
-                    </div>
-
-                </DialogContent>
-
-                {todoDialog.type === 'new' ? (
-                    <DialogActions className="justify-between pl-8 sm:pl-16">
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={() => {
-                                addTodo(this.state.form);
-                                this.closeTodoDialog();
-                            }}
-                            disabled={!this.canBeSubmitted()}
-                        >
-                            Add
-                        </Button>
-                    </DialogActions>
-                ) : (
-                    <DialogActions className="justify-between pl-8 sm:pl-16">
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={() => {
-                                updateTodo(this.state.form);
-                                this.closeTodoDialog();
-                            }}
-                            disabled={!this.canBeSubmitted()}
-                        >
-                            Save
-                        </Button>
-                        <IconButton
-                            className="min-w-auto"
-                            onClick={() => {
-                                removeTodo(this.state.form.id);
-                                this.closeTodoDialog();
-                            }}
-                        >
-                            <Icon>delete</Icon>
-                        </IconButton>
-                    </DialogActions>
-                )}
-            </Dialog>
-        );
+                </Dialog>
+            );
+        }
+       
     }
 }
 
@@ -370,15 +433,17 @@ function mapDispatchToProps(dispatch)
         closeNewTodoDialog : Actions.closeNewTodoDialog,
         addTodo            : Actions.addTodo,
         updateTodo         : Actions.updateTodo,
+        answerTodo         : Actions.answerTodo,
         removeTodo         : Actions.removeTodo
     }, dispatch);
 }
 
-function mapStateToProps({todoApp})
+function mapStateToProps({todoApp, fuse})
 {
     return {
         todoDialog: todoApp.todos.todoDialog,
-        labels    : todoApp.labels
+        labels    : todoApp.labels,
+        socket    : fuse.socket
     }
 }
 

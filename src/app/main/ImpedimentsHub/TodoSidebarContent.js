@@ -48,7 +48,7 @@ function TodoSidebarContent({classes, folders, filters, labels, openNewTodoDialo
                         color="primary"
                         className="w-full"
                     >
-                        ADD TASK
+                        REPORT ISSUE
                     </Button>
                 </div>
 
@@ -59,7 +59,7 @@ function TodoSidebarContent({classes, folders, filters, labels, openNewTodoDialo
                             <ListItem
                                 button
                                 component={NavLink}
-                                to={'/apps/todo/' + folder.handle} key={folder.id}
+                                to={'/issueshub/' + folder.handle} key={folder.id}
                                 activeClassName="active"
                                 className={classes.listItem}
                             >
@@ -76,7 +76,7 @@ function TodoSidebarContent({classes, folders, filters, labels, openNewTodoDialo
                             <ListItem
                                 button
                                 component={NavLink}
-                                to={'/apps/todo/filter/' + filter.handle}
+                                to={'/issueshub/filter/' + filter.handle}
                                 activeClassName="active"
                                 className={classes.listItem}
                                 key={filter.id}
@@ -95,7 +95,7 @@ function TodoSidebarContent({classes, folders, filters, labels, openNewTodoDialo
                             <ListItem
                                 button
                                 component={NavLink}
-                                to={'/apps/todo/label/' + label.handle}
+                                to={'/issueshub/label/' + label.handle}
                                 key={label.id}
                                 className={classes.listItem}
                             >

@@ -66,7 +66,7 @@ const todosReducer = function (state = initialState, action) {
             return {
                 ...state,
                 todoDialog: {
-                    type : 'edit',
+                    type : 'answer',
                     props: {
                         open: true
                     },
