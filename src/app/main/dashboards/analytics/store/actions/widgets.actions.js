@@ -14,102 +14,103 @@ export const GET_WIDGETS_TEST9 = '[ANALYTICS DASHBOARD APP] GET WIDGETS TEST9';
 export function getWidgetPunc() {
     // const request = axios.get('/api/analytics-dashboard-app/widgets');
     const request = axios.get('http://localhost:3001/motivation/userPunctualityNoteStats/2017-01-01/2020-01-01/5c926640db149e155096dfa9');
-
+    const requestPredict = axios.get('http://127.0.0.1:5000/');
     return (dispatch) =>
         request.then((response) => {
-
-            const dd = {
-                widget1: {
-                    chartType: 'line',
-                    datasets: {
-                        '2017': [
-                            {
-                                label: 'punctuality',
-                                data: response.data.result2017,
-                                fill: 'start'
-                            }
-                        ],
-                        '2018': [
-                            {
-                                label: 'punctuality',
-                                data: response.data.result2018,
-                                fill: 'start'
-                            }
-                        ],
-                        '2019': [
-                            {
-                                label: 'punctuality',
-                                data: response.data.result2019,
-                                fill: 'start'
-                            }
-                        ]
-                    },
-                    labels: ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAI', 'JUNUARY', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'],
-                    options: {
-                        spanGaps: false,
-                        legend: {
-                            display: false
-                        },
-                        maintainAspectRatio: false,
-                        layout: {
-                            padding: {
-                                top: 32,
-                                left: 32,
-                                right: 32
-                            }
-                        },
-                        elements: {
-                            point: {
-                                radius: 4,
-                                borderWidth: 2,
-                                hoverRadius: 4,
-                                hoverBorderWidth: 2
-                            },
-                            line: {
-                                tension: 0
-                            }
-                        },
-                        scales: {
-                            xAxes: [
+            requestPredict.then(doc => {
+                const dd = {
+                    widget1: {
+                        chartType: 'line',
+                        datasets: {
+                            '2017': [
                                 {
-                                    gridLines: {
-                                        display: false,
-                                        drawBorder: false,
-                                        tickMarkLength: 18
-                                    },
-                                    ticks: {
-                                        fontColor: '#ffffff'
-                                    }
+                                    label: 'punctuality',
+                                    data: response.data.result2017,
+                                    fill: 'start'
                                 }
                             ],
-                            yAxes: [
+                            '2018': [
                                 {
-                                    display: false,
-                                    ticks: {
-                                        min: 0,
-                                        max: 100,
-                                        stepSize: 0.5
-                                    }
+                                    label: 'punctuality',
+                                    data: response.data.result2018,
+                                    fill: 'start'
+                                }
+                            ],
+                            '2019': [
+                                {
+                                    label: 'punctuality',
+                                    data: response.data.result2019.concat(doc.data.result),
+                                    fill: 'start'
                                 }
                             ]
                         },
-                        plugins: {
-                            filler: {
-                                propagate: false
+                        labels: ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAI', 'JUNUARY', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'],
+                        options: {
+                            spanGaps: false,
+                            legend: {
+                                display: false
                             },
-                            xLabelsOnTop: {
-                                active: true
+                            maintainAspectRatio: false,
+                            layout: {
+                                padding: {
+                                    top: 32,
+                                    left: 32,
+                                    right: 32
+                                }
+                            },
+                            elements: {
+                                point: {
+                                    radius: 4,
+                                    borderWidth: 2,
+                                    hoverRadius: 4,
+                                    hoverBorderWidth: 2
+                                },
+                                line: {
+                                    tension: 0
+                                }
+                            },
+                            scales: {
+                                xAxes: [
+                                    {
+                                        gridLines: {
+                                            display: false,
+                                            drawBorder: false,
+                                            tickMarkLength: 18
+                                        },
+                                        ticks: {
+                                            fontColor: '#ffffff'
+                                        }
+                                    }
+                                ],
+                                yAxes: [
+                                    {
+                                        display: false,
+                                        ticks: {
+                                            min: 0,
+                                            max: 100,
+                                            stepSize: 0.5
+                                        }
+                                    }
+                                ]
+                            },
+                            plugins: {
+                                filler: {
+                                    propagate: false
+                                },
+                                xLabelsOnTop: {
+                                    active: true
+                                }
                             }
                         }
-                    }
 
+                    }
                 }
-            }
-            console.log(dd)
-            dispatch({
-                type: GET_WIDGETS,
-                payload: dd
-            })
+                console.log(dd)
+                dispatch({
+                    type: GET_WIDGETS,
+                    payload: dd
+                });
+            });
         }
         );
 }

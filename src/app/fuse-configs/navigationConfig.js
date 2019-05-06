@@ -53,22 +53,16 @@ const navigationConfig = [
             ]
         },
         {
-            'id'      : 'dashboards',
-            'title'   : 'Dashboards',
-            'type'    : 'collapse',
-            'icon'    : 'dashboard',
+            'id': 'dashboards',
+            'title': 'Dashboards',
+            'type': 'collapse',
+            'icon': 'dashboard',
             'children': [
                 {
-                    'id'   : 'analytics-dashboard',
+                    'id': 'analytics-dashboard',
                     'title': 'Analytics',
-                    'type' : 'item',
-                    'url'  : '/apps/dashboards/analytics'
-                },
-                {
-                    'id'   : 'project-dashboard',
-                    'title': 'Project',
-                    'type' : 'item',
-                    'url'  : '/apps/dashboards/project'
+                    'type': 'item',
+                    'url': '/apps/dashboards/analytics'
                 }
             ]
         }]

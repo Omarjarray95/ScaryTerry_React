@@ -88,7 +88,7 @@ class Widget7 extends Component {
                             </Select>
                         </FormControl>
                     </div>
-                    <Button size="small">OVERVIEW</Button>
+
                 </div>
             </Card>
         );
