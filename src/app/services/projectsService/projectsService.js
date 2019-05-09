@@ -79,6 +79,25 @@ class projectsService extends FuseUtils.EventEmitter
         });
     };
 
+    getTeamSuggestions = (id) =>
+    {
+        return new Promise((resolve, reject) =>
+        {
+            axios.get('http://localhost:3001/projects/generaterecommendations/' + id)
+                .then(response =>
+                {
+                    if ( response.status === 202 )
+                    {
+                        resolve(response.data);
+                    }
+                    else
+                    {
+                        reject(response.data);
+                    }
+                });
+        });
+    };
+
     addSprint = (data, id) =>
     {
         return new Promise((resolve, reject) =>
@@ -274,6 +293,25 @@ class projectsService extends FuseUtils.EventEmitter
         return new Promise((resolve, reject) =>
         {
             axios.get('http://localhost:3001/projects/getsprintproject/' + id)
+                .then(response =>
+                {
+                    if ( response.status === 202 )
+                    {
+                        resolve(response.data);
+                    }
+                    else
+                    {
+                        reject(response.data);
+                    }
+                });
+        });
+    };
+
+    addSkills = (data, id) =>
+    {
+        return new Promise((resolve, reject) =>
+        {
+            axios.post('http://localhost:3001/projects/affectskills/' + id, data)
                 .then(response =>
                 {
                     if ( response.status === 202 )

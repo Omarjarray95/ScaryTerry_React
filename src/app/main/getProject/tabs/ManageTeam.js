@@ -19,8 +19,13 @@ import IconButton from "@material-ui/core/IconButton/IconButton";
 import CloseIcon from '@material-ui/icons/Close';
 import green from '@material-ui/core/colors/green';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import SwapIcon from '@material-ui/icons/SwapHorizontalCircle';
 import classNames from 'classnames';
+import List from "@material-ui/core/List/List";
+import ListItem from "@material-ui/core/ListItem/ListItem";
+import ListItemText from "@material-ui/core/ListItemText/ListItemText";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction/ListItemSecondaryAction";
+import AddToGroupIcon from '@material-ui/icons/GroupAdd';
+import CheckIcon from '@material-ui/icons/Check';
 
 const styles = theme => ({
     card: {
@@ -29,14 +34,17 @@ const styles = theme => ({
     },
     addCard: {
         maxWidth: 260,
-        maxHeight: 150,
+        maxHeight: 308,
         margin: 20
     },
     title: {
         fontSize: 18,
-        marginBottom: 12,
+        marginBottom: 4,
         fontWeight: 'bold',
-        cursor: 'pointer'
+    },
+    subTitle: {
+        fontSize: 12,
+        marginBottom: 4,
     },
     fullName: {
         fontSize: 16,
@@ -62,6 +70,17 @@ const styles = theme => ({
     iconVariant: {
         opacity: 0.9,
         marginRight: theme.spacing.unit,
+    },
+    root: {
+        width: '100%',
+        backgroundColor: theme.palette.background.paper,
+        position: 'relative',
+        overflow: 'auto',
+        maxHeight: 132
+    },
+    ul: {
+        backgroundColor: 'inherit',
+        padding: 0,
     },
 });
 
@@ -135,6 +154,22 @@ class ManageTeam extends Component
         this.setState({addedMember: ""});
     };
 
+    handleAddFromSuggestions = (id) =>
+    {
+        var devmembers = [];
+        this.props.project.developmentTeam.map((member) =>
+            (
+                devmembers.push(member._id)
+            ));
+        devmembers.push(id);
+        var data = {
+            scrumMaster: this.props.project.scrumMaster ? this.props.project.scrumMaster._id : null,
+            productOwner: this.props.project.productOwner ? this.props.project.productOwner._id : null,
+            developmentTeam: devmembers
+        };
+        this.props.submitAffect(data, this.props.match.params.id);
+    };
+
     handleDeleteMember = (id) =>
     {
         var devmembers = [];
@@ -161,6 +196,7 @@ class ManageTeam extends Component
     componentDidMount()
     {
         this.props.readEmployees();
+        this.props.readSuggestions(this.props.match.params.id);
     }
 
     componentWillUpdate(nextProps, nextState)
@@ -173,7 +209,7 @@ class ManageTeam extends Component
 
     render()
     {
-        const { classes, project, employees } = this.props;
+        const { classes, project, employees, suggestions } = this.props;
 
         return (
             <div className="md:flex max-w-2xl">
@@ -334,11 +370,54 @@ class ManageTeam extends Component
                                 <Grid container alignItems="center" direction="column">
                                     <Typography
                                         className={classes.title}
-                                        color="textPrimary"
-                                        onMouseDown={console.log("Add Member")}>
+                                        color="textPrimary">
                                         Add Member
                                     </Typography>
+                                    <Typography
+                                        className={classes.subTitle}
+                                        color="textSecondary"
+                                        align="center">
+                                        (Below you can find the best suggestions to help you choose your development team)
+                                    </Typography>
                                 </Grid>
+                                <List className={classes.root}>
+                                    {suggestions.length > 0 && (suggestions.map(member => {
+                                        var b = true;
+                                        if (project.scrumMaster && (member[0]._id === project.scrumMaster._id))
+                                        {
+                                            b = false;
+                                        }
+                                        if (project.productOwner && (member[0]._id === project.productOwner._id))
+                                        {
+                                            b = false;
+                                        }
+                                        if (project.developmentTeam.length > 0)
+                                        {
+                                            project.developmentTeam.map((Devmember) =>
+                                            {
+                                                if (member[0]._id === Devmember._id)
+                                                {
+                                                    b = false;
+                                                }
+                                            });
+                                        }
+                                        console.log(b);
+                                        return <ListItem key={member[0]._id} dense button>
+                                            <ListItemText primary={member[0].firstName + " " + member[0].lastName}/>
+                                            <ListItemSecondaryAction>
+                                                {b === true ?
+                                                    (<IconButton
+                                                        aria-label="Add"
+                                                        onClick={() => this.handleAddFromSuggestions(member[0]._id)}>
+                                                        <AddToGroupIcon/>
+                                                    </IconButton>) :
+                                                    (<IconButton aria-label="Added" disabled>
+                                                    <CheckIcon/>
+                                                    </IconButton>)}
+                                            </ListItemSecondaryAction>
+                                        </ListItem>
+                                    }))}
+                                </List>
                             </CardContent>
                             <CardActions className="flex justify-center">
                                 <FormControl className={classes.formControl}>
@@ -428,6 +507,7 @@ function mapDispatchToProps(dispatch)
 {
     return bindActionCreators({
         readEmployees: authActions.readEmployees,
+        readSuggestions: Actions.getTeamSuggestions,
         submitAffect: Actions.affectTeam,
         readProject: Actions.readProject
     }, dispatch);
@@ -437,7 +517,8 @@ function mapStateToProps({scrum})
 {
     return {
         project: scrum.project,
-        employees: scrum.employees
+        employees: scrum.employees,
+        suggestions: scrum.suggestions
     }
 }
 

@@ -3,9 +3,9 @@ import {FusePageSimple} from '@fuse';
 import {bindActionCreators} from 'redux';
 import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
-import ProjectsList from './ProjectsList';
+import UsersList from './UsersList';
 
-class GetProjects extends Component
+class GetUsers extends Component
 {
     render()
     {
@@ -13,7 +13,7 @@ class GetProjects extends Component
             <React.Fragment>
                 <FusePageSimple
                     content={
-                        <ProjectsList/>
+                        <UsersList/>
                     }
                     sidebarInner
                     innerScroll
@@ -35,4 +35,4 @@ function mapStateToProps({})
     }
 }
 
-export default (withRouter(connect(mapStateToProps, mapDispatchToProps)(GetProjects)));
+export default (withRouter(connect(mapStateToProps, mapDispatchToProps)(GetUsers)));

@@ -22,6 +22,18 @@ const operation = function (state = initialState, action)
         {
             return state;
         }
+        case Actions.ADD_SKILL_SUCCESS:
+        {
+            return {
+                ...initialState,
+                success: true,
+                message: action.payload
+            };
+        }
+        case Actions.ADD_SKILL_ERROR:
+        {
+            return state;
+        }
         default:
         {
             return state;

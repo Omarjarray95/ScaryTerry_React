@@ -23,7 +23,7 @@ const navigationConfig = [
                     'title': 'Consult Users',
                     'type' : 'item',
                     'icon' : 'list',
-                    'url'  : '#',
+                    'url'  : '/users/get',
                     'exact': true
                 }
             ]
@@ -48,6 +48,30 @@ const navigationConfig = [
                         'type' : 'item',
                         'icon' : 'list',
                         'url'  : '/projects/get',
+                        'exact': true
+                    }
+                ]
+            },
+            {
+                'id'      : 'skills',
+                'title'   : 'Skills',
+                'type'    : 'collapse',
+                'icon'    : 'gavel',
+                'children': [
+                    {
+                        'id'   : 'add-skill',
+                        'title': 'Add New Skill',
+                        'type' : 'item',
+                        'icon' : 'add_box',
+                        'url'  : '/skills/add',
+                        'exact': true
+                    },
+                    {
+                        'id'   : 'get-skills',
+                        'title': 'Manage Skills',
+                        'type' : 'item',
+                        'icon' : 'list',
+                        'url'  : '/skills/get',
                         'exact': true
                     }
                 ]
