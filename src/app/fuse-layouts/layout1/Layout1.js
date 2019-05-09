@@ -12,6 +12,7 @@ import NavbarWrapperLayout1 from './components/NavbarWrapperLayout1';
 import classNames from 'classnames';
 import AppContext from 'app/AppContext';
 
+
 const styles = theme => ({
     root          : {
         position          : 'relative',
@@ -187,6 +188,7 @@ const Layout1 = ({classes, settings, children}) => {
 
                                             {renderRoutes(routes)}
                                             {children}
+                                            
 
                                             {layoutConfig.footer.display && layoutConfig.footer.position === 'below' && layoutConfig.footer.style !== 'fixed' && (
                                                 <FooterLayout1/>
