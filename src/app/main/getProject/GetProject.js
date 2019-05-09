@@ -1,9 +1,14 @@
 import React, {Component} from 'react';
 import {withStyles, Button, Tab, Tabs, Typography} from '@material-ui/core';
 import {FusePageSimple, FuseAnimate} from '@fuse';
-import TimelineTab from './tabs/TimelineTab';
-import PhotosVideosTab from './tabs/PhotosVideosTab';
-import AboutTab from './tabs/AboutTab';
+import ManageTeam from './tabs/ManageTeam';
+import ManageSprints from './tabs/ManageSprints';
+import ProjectInformation from './tabs/ProjectInformation';
+import connect from "react-redux/es/connect/connect";
+import {withRouter} from "react-router-dom";
+import {bindActionCreators} from "redux";
+import history from '../../../history';
+import * as Actions from 'app/store/actions/fuse';
 
 const styles = theme => ({
     layoutHeader : {
@@ -19,17 +24,21 @@ const styles = theme => ({
 class GetProject extends Component {
 
     state = {
-        value: 0
     };
 
-    handleChange = (event, value) => {
-        this.setState({value});
+    handleChange = (event, value) =>
+    {
+        this.props.changeTab(value);
+    };
+
+    navigateToProductBacklog = () =>
+    {
+        history.push('/projects/get/productbacklog/'+ this.props.project.productBacklog);
     };
 
     render()
     {
-        const {classes} = this.props;
-        const {value} = this.state;
+        const {classes, project, tab} = this.props;
 
         return (
             <FusePageSimple
@@ -41,19 +50,22 @@ class GetProject extends Component {
                     <div className="p-24 flex flex-1 flex-col items-center justify-center md:flex-row md:items-end">
                         <div className="flex flex-1 flex-col items-center justify-center md:flex-row md:items-center md:justify-start">
                             <FuseAnimate animation="transition.slideLeftIn" delay={300}>
-                                <Typography className="md:ml-24" variant="h4" color="inherit">John Doe</Typography>
+                                <Typography className="md:ml-24" variant="h4" color="inherit">{project.title}</Typography>
                             </FuseAnimate>
                         </div>
 
                         <div className="flex items-center justify-end">
-                            <Button className="mr-8 normal-case" variant="contained" color="secondary" aria-label="Follow">Follow</Button>
-                            <Button className="normal-case" variant="contained" color="primary" aria-label="Send Message">Send Message</Button>
+                            <Button className="mr-8 normal-case" variant="contained" color="secondary"
+                                    aria-label="Show Product Backlog"
+                                    onClick={this.navigateToProductBacklog}>
+                                Show Product Backlog
+                            </Button>
                         </div>
                     </div>
                 }
                 contentToolbar={
                     <Tabs
-                        value={value}
+                        value={tab}
                         onChange={this.handleChange}
                         indicatorColor="secondary"
                         textColor="secondary"
@@ -80,15 +92,15 @@ class GetProject extends Component {
                 }
                 content={
                     <div className="p-16 sm:p-24">
-                        {value === 0 &&
+                        {tab === 0 &&
                         (
-                            <AboutTab/>
+                            <ProjectInformation/>
                         )}
-                        {value === 1 && (
-                            <TimelineTab/>
+                        {tab === 1 && (
+                            <ManageTeam/>
                         )}
-                        {value === 2 && (
-                            <PhotosVideosTab/>
+                        {tab === 2 && (
+                            <ManageSprints/>
                         )}
                     </div>
                 }
@@ -97,4 +109,20 @@ class GetProject extends Component {
     };
 }
 
-export default withStyles(styles, {withTheme: true})(GetProject);
+function mapDispatchToProps(dispatch)
+{
+    return bindActionCreators({
+        changeTab: Actions.changeTab
+    }, dispatch);
+}
+
+function mapStateToProps({fuse, scrum})
+{
+    return {
+        project: scrum.project,
+        id: scrum.id,
+        tab: fuse.tabs
+    }
+}
+
+export default withStyles(styles) (withRouter(connect(mapStateToProps, mapDispatchToProps) (GetProject)));

@@ -35,10 +35,9 @@ const styles = theme => (
         }
     });
 
-class ContactsList extends Component {
+class ProjectsList extends Component {
 
     state = {
-        selected: null
     };
 
     getFilteredArray = (entities) =>
@@ -66,7 +65,7 @@ class ContactsList extends Component {
             return (
                 <div className="flex items-center justify-center h-full">
                     <Typography color="textSecondary" variant="h5">
-                        There are no contacts!
+                        No Projects Found.
                     </Typography>
                 </div>
             );
@@ -81,7 +80,7 @@ class ContactsList extends Component {
                             onClick  : (e, handleOriginal) => {
                                 if ( rowInfo )
                                 {
-                                    history.push('/projects/get/'+ rowInfo.original._id);
+                                    history.push('/projects/get/' + rowInfo.original._id);
                                 }
                             }
                         }
@@ -121,8 +120,8 @@ class ContactsList extends Component {
                         ),
                         }
                     ]}
-                    defaultPageSize={5}
-                    noDataText="No Contacts Found."
+                    defaultPageSize={10}
+                    noDataText="No Projects Found."
                 />
         );
     }
@@ -143,4 +142,4 @@ function mapStateToProps({scrum})
     }
 }
 
-export default withStyles(styles) (withRouter(connect(mapStateToProps, mapDispatchToProps) (ContactsList)));
+export default withStyles(styles) (withRouter(connect(mapStateToProps, mapDispatchToProps) (ProjectsList)));

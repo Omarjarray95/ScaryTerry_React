@@ -5,14 +5,17 @@ import navbar from './navbar.reducer';
 import message from './message.reducer';
 import dialog from './dialog.reducer';
 import routes from './routes.reducer';
-
+import socket from './socket.reducer';
+import tabs from './tabs.reducer';
 const fuseReducers = combineReducers({
     navigation,
     settings,
     navbar,
     message,
     dialog,
-    routes
+    routes,
+    tabs
+    socket
 });
 
 export default fuseReducers;

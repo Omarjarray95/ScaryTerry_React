@@ -7,12 +7,30 @@ import {bindActionCreators} from "redux";
 import connect from "react-redux/es/connect/connect";
 import {withRouter} from "react-router-dom";
 import * as Actions from 'app/store/actions/scrum';
+import * as fuseActions from 'app/store/actions/fuse';
 import Divider from '@material-ui/core/Divider';
 import moment from "moment";
+import DialogContent from "@material-ui/core/DialogContent/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
+import Dialog from "@material-ui/core/Dialog/Dialog";
+import DialogActions from "@material-ui/core/DialogActions/DialogActions";
+import withStyles from "@material-ui/core/es/styles/withStyles";
+import _ from '@lodash';
+import Checkbox from "@material-ui/core/Checkbox/Checkbox";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction/ListItemSecondaryAction";
 
-class AboutTab extends Component {
+const styles = theme => ({
+    root: {
+        width: '100%',
+        backgroundColor: theme.palette.background.paper,
+    }
+});
+
+class ProjectInformation extends Component {
 
     state = {
+        openSkillsDialog: false,
+        skills: []
     };
 
     getSprints = () =>
@@ -28,14 +46,68 @@ class AboutTab extends Component {
         return arr;
     };
 
+    handleCloseSkillsDialog = () =>
+    {
+        this.setState({openSkillsDialog: false});
+    };
+
+    handleOpenSkillsDialog = () =>
+    {
+        this.setState({openSkillsDialog: true});
+    };
+
+    handleSkillsChange = skill => () =>
+    {
+        const { skills } = this.state;
+        const currentIndex = _.find(skills, {_id: skill._id});
+        const newChecked = [...skills];
+
+        if (currentIndex === undefined)
+        {
+            newChecked.push(skill);
+        }
+        else
+        {
+            newChecked.splice(_.findIndex(newChecked, function(o) { return o._id === skill._id; }), 1);
+        }
+
+        this.setState({
+            skills: newChecked,
+        });
+    };
+
+    handleResetSkillsDialog = () =>
+    {
+        this.setState({ skills: [] });
+    };
+
+    handleSubmitSkills = () =>
+    {
+        var skills = [];
+        this.state.skills.map((skill) =>
+        {
+            skills.push(skill._id);
+        });
+        this.props.submitSkills(skills, this.props.match.params.id);
+    };
+
     componentDidMount()
     {
         this.props.readProject(this.props.match.params.id);
+        this.props.readSkills();
+    }
+
+    componentWillUpdate(nextProps, nextState)
+    {
+        if (nextProps.project && (nextProps.project !== this.props.project))
+        {
+            this.setState({skills: nextProps.project.skills});
+        }
     }
 
     render()
     {
-        const { project } = this.props;
+        const { classes, project, skills } = this.props;
         const sprints = this.getSprints();
 
         return (
@@ -74,7 +146,7 @@ class AboutTab extends Component {
 
                             <div className="mb-24">
                                 <Typography className="font-bold mb-4 text-15">About The Project</Typography>
-                                <Typography>{project.description}</Typography>
+                                <Typography align="justify">{project.description}</Typography>
                             </div>
 
                             {project.startDate && (<div className="mb-24">
@@ -100,6 +172,13 @@ class AboutTab extends Component {
                                 <Typography variant="subtitle1" color="inherit" className="flex-1">
                                     Sprints
                                 </Typography>
+                                <Button
+                                    className="normal-case"
+                                    color="inherit"
+                                    size="small"
+                                    onClick={() => {this.props.changeTab(2)}}>
+                                    Manage
+                                </Button>
                             </Toolbar>
                         </AppBar>
                         <CardContent>
@@ -125,7 +204,13 @@ class AboutTab extends Component {
                                 <Typography variant="subtitle1" color="inherit" className="flex-1">
                                     Scrum Team Members
                                 </Typography>
-                                <Button className="normal-case" color="inherit" size="small">Manage</Button>
+                                <Button
+                                    className="normal-case"
+                                    color="inherit"
+                                    size="small"
+                                    onClick={() => {this.props.changeTab(1)}}>
+                                    Manage
+                                </Button>
                             </Toolbar>
                         </AppBar>
                         <CardContent className="p-0">
@@ -232,7 +317,13 @@ class AboutTab extends Component {
                                 <Typography variant="subtitle1" color="inherit" className="flex-1">
                                     Skills Needed
                                 </Typography>
-                                <Button className="normal-case" color="inherit" size="small">Manage</Button>
+                                <Button
+                                    className="normal-case"
+                                    color="inherit"
+                                    size="small"
+                                    onClick={this.handleOpenSkillsDialog}>
+                                    Manage
+                                </Button>
                             </Toolbar>
                         </AppBar>
                         <CardContent className="p-0">
@@ -254,6 +345,37 @@ class AboutTab extends Component {
                             </List>
                         </CardContent>
                     </Card>
+
+                    <Dialog
+                        open={this.state.openSkillsDialog}
+                        onClose={this.handleCloseSkillsDialog}
+                        aria-labelledby="Form-Dialog-Skills"
+                    >
+                        <DialogTitle id="Form-Dialog-Skills">Manage Project's Required Skills</DialogTitle>
+                        <DialogContent>
+                            <List dense className={classes.root}>
+                                {this.props.skills.map(skill => (
+                                    <ListItem key={skill._id} button>
+                                        <ListItemText primary={skill.name} />
+                                        <ListItemSecondaryAction>
+                                            <Checkbox
+                                                onChange={this.handleSkillsChange(skill)}
+                                                checked={_.find(this.state.skills, {_id: skill._id}) !== undefined}
+                                            />
+                                        </ListItemSecondaryAction>
+                                    </ListItem>
+                                ))}
+                            </List>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={this.handleResetSkillsDialog} color="primary">
+                                Reset
+                            </Button>
+                            <Button onClick={this.handleSubmitSkills} color="primary">
+                                Add Skill To Project's Required Skills
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
                 </div>
             </div>
         );
@@ -263,15 +385,20 @@ class AboutTab extends Component {
 function mapDispatchToProps(dispatch)
 {
     return bindActionCreators({
-        readProject: Actions.readProject
+        readProject: Actions.readProject,
+        readSkills: Actions.readSkills,
+        submitSkills: Actions.addSkills,
+        changeTab: fuseActions.changeTab
     }, dispatch);
 }
 
-function mapStateToProps({scrum})
+function mapStateToProps({fuse, scrum})
 {
     return {
-        project: scrum.project
+        project: scrum.project,
+        skills: scrum.skills,
+        tab: fuse.tabs
     }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps) (AboutTab));
+export default withStyles(styles, { withTheme: true }) (withRouter(connect(mapStateToProps, mapDispatchToProps) (ProjectInformation)));

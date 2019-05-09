@@ -21,13 +21,16 @@ const navigationConfig = [
                 {
                     'id': 'read-users',
                     'title': 'Consult Users',
+
                     'type': 'item',
                     'icon': 'list',
-                    'url': '#',
+                    'url': '/users/get',
+
                     'exact': true
                 }
             ]
         },
+
         {
             'id': 'projects',
             'title': 'Projects',
@@ -53,6 +56,30 @@ const navigationConfig = [
             ]
         },
         {
+            'id': 'skills',
+            'title': 'Skills',
+            'type': 'collapse',
+            'icon': 'gavel',
+            'children': [
+                {
+                    'id': 'add-skill',
+                    'title': 'Add New Skill',
+                    'type': 'item',
+                    'icon': 'add_box',
+                    'url': '/skills/add',
+                    'exact': true
+                },
+                {
+                    'id': 'get-skills',
+                    'title': 'Manage Skills',
+                    'type': 'item',
+                    'icon': 'list',
+                    'url': '/skills/get',
+                    'exact': true
+                }
+            ]
+        },
+        {
             'id': 'dashboards',
             'title': 'Dashboards',
             'type': 'collapse',
@@ -67,6 +94,22 @@ const navigationConfig = [
             ]
         }]
     },
+    {
+        'id': 'issueshub',
+        'title': 'Issues HUB',
+        'type': 'item',
+        'icon': 'speaker_notes',
+        'url': '/issueshub',
+    }
+    ,
+    {
+        'id': 'calendar',
+        'title': 'My Calendar',
+        'type': 'item',
+        'icon': 'access_time',
+        'url': '/calendar',
+    }
+    ,
     {
         'type': 'divider',
         'id': 'divider-1'

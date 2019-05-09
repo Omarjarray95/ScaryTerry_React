@@ -13,10 +13,7 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
+import {showMessage} from "../../store/actions/fuse";
 
 const styles = theme => ({
     root: {
@@ -33,21 +30,15 @@ const styles = theme => ({
     },
 });
 
-function Transition(props)
-{
-    return <Slide direction="up" {...props} />;
-}
-
 class AddUsersForm extends Component
 {
     constructor(props)
     {
         super(props);
         this.state = {
-            canSubmit: true,
             showPassword: false,
             expandedEnterprise: false,
-            openPopOver: false,
+            message: "",
             username: "",
             password: "",
             role: "",
@@ -70,31 +61,62 @@ class AddUsersForm extends Component
 
     form = React.createRef();
 
+    showMessages = (message, operation) =>
+    {
+        this.props.showMessage({
+            message     : message,
+            autoHideDuration: 6000,
+            anchorOrigin: {
+                vertical  : 'bottom',
+                horizontal: 'right'
+            },
+            variant: operation
+        })
+    };
+
     validate = () =>
     {
-        var b = null;
-
-        if (this.state.username !== "" && this.state.password !== "" && this.state.role !== "" &&
-            this.state.firstName !== "" && this.state.lastName !== "" && this.props.name.status && this.state.enterprise !== "")
+        if (!this.props.name.status)
         {
-            b = true;
+            this.showMessages(this.props.name.message, 'error');
+            return false;
         }
-        else if (this.state.username !== "" && this.state.password !== "" && this.state.role !== "" && this.state.firstName !== ""
-            && this.state.lastName !== "" && this.props.name.status && this.state.enterpriseName !== "" && this.state.field !== "")
+        else if (!this.props.enterprisename.status)
         {
-            b = true;
+            this.showMessages(this.props.enterprisename.message, 'error');
+            return false;
         }
-        else if (this.state.username !== "" && this.state.password !== "" && this.state.role !== "" && this.state.firstName !== ""
-            && this.state.lastName !== "" && this.props.name.status && this.state.enterpriseName !== "" && this.state.fieldName !== "")
+        else if (!this.props.fieldname.status)
         {
-            b = true;
+            this.showMessages(this.props.fieldname.message, 'error');
+            return false;
         }
         else
         {
-            b = false;
+            if (this.state.enterprise === "")
+            {
+                if (this.state.enterpriseName === "")
+                {
+                    this.showMessages("You haven't choose an enterprise to your new user. Please pick an enterprise " +
+                        "or add it quickly in the settings panel.", 'error');
+                    return false;
+                }
+                else
+                {
+                    if (this.state.field === "")
+                    {
+                        if (this.state.fieldName === "")
+                        {
+                            this.showMessages("You haven't choose a field for your new enterprise. Please pick a field " +
+                                "or add it quickly in the settings panel.", 'error');
+                            return false;
+                        }
+                    }
+                }
+            }
         }
 
-        return b;
+        return true;
     };
 
     onSubmit = () =>
@@ -107,15 +129,14 @@ class AddUsersForm extends Component
                 role: this.state.role,
                 firstName: this.state.firstName,
                 lastName: this.state.lastName,
-                entreprise: this.state.enterprise,
+                entreprise: this.state.enterprise !== "" ? this.state.enterprise : null,
                 name: this.state.enterpriseName,
-                field: this.state.field,
+                field: this.state.field !== "" ? this.state.field : null,
                 fieldName: this.state.fieldName
             };
             this.props.submitRegister({user});
             this.reset();
             this.resetSettings();
-            this.setState({openPopOver: true});
         }
     };
 
@@ -129,11 +150,6 @@ class AddUsersForm extends Component
     handleShowPasswordChange = event =>
     {
         this.setState({showPassword: event.target.checked});
-    };
-
-    handleCloseDialog = event =>
-    {
-        this.setState({ openPopOver: false });
     };
 
     handleUsernameChange = event =>
@@ -175,33 +191,46 @@ class AddUsersForm extends Component
 
     reset = () =>
     {
-        this.setState({username: "", password: "", role: "", firstName: "", lastName: "", enterprise: ""})
+        this.setState({username: "", password: "", role: "", firstName: "", lastName: "", enterprise: ""});
         this.props.name.status = true;
     };
 
     resetSettings = () =>
     {
-        this.setState({enterpriseName: "", field: "", fieldName: ""})
+        this.setState({enterpriseName: "", field: "", fieldName: ""});
+        this.props.enterprisename.status = true;
+        this.props.fieldname.status = true;
     };
 
     handleEnterpriseNameChange = event =>
     {
         this.setState({enterpriseName: event.target.value});
-        //var name = event.target.value;
-        //this.props.verifyEnterpriseName({name});
+        var name = event.target.value;
+        this.props.verifyEnterpriseName({name});
     };
 
     handleFieldNameChange = event =>
     {
         this.setState({fieldName: event.target.value});
-        //var name = event.target.value;
-        //this.props.verifyFieldName({name});
+        var name = event.target.value;
+        this.props.verifyFieldName({name});
     };
 
     componentDidMount()
     {
         this.props.readEnterprises();
         this.props.readFields();
+    }
+
+    componentDidUpdate(prevProps, prevState)
+    {
+        if (this.props.register.success)
+        {
+            this.showMessages(this.props.register.message, 'success');
+            this.props.readEnterprises();
+            this.props.readFields();
+            this.props.resetRegister();
+        }
     }
 
     render()
@@ -253,6 +282,9 @@ class AddUsersForm extends Component
                         onChange={this.handleRoleChange}
                         required
                     >
+                        <MenuItem value="">
+                            <em>Choose The Role ...</em>
+                        </MenuItem>
                         <MenuItem value="Administrator" key="Administrator">Administrator</MenuItem>
                         <MenuItem value="Employee" key="Employee">Employee</MenuItem>
                         <MenuItem value="Client" key="Client">Client</MenuItem>
@@ -286,6 +318,9 @@ class AddUsersForm extends Component
                         value={this.state.enterprise}
                         onChange={this.handleEnterpriseChange}
                     >
+                        <MenuItem value="">
+                            <em>Choose The Enterprise ...</em>
+                        </MenuItem>
                         {this.props.enterprises.map((enterprise) =>
                             (
                                 <MenuItem value={enterprise._id} key={enterprise._id}>{enterprise.name}</MenuItem>
@@ -320,6 +355,9 @@ class AddUsersForm extends Component
                                 value={this.state.field}
                                 onChange={this.handleFieldChange}
                             >
+                                <MenuItem value="">
+                                    <em>Choose The Field ...</em>
+                                </MenuItem>
                                 {this.props.fields.map((field) =>
                                     (
                                         <MenuItem value={field._id} key={field._id}>{field.name}</MenuItem>
@@ -371,30 +409,10 @@ class AddUsersForm extends Component
                             color="primary"
                             className="my-16"
                             aria-label="LOG IN"
-                            disabled={!this.state.canSubmit}
                         >
                             Add User
                         </Button>
                     </div>
-
-                    <Dialog
-                        open={this.state.openPopOver}
-                        TransitionComponent={Transition}
-                        keepMounted
-                        onClose={this.handleCloseDialog}
-                        aria-labelledby="alert-dialog-slide-title"
-                        aria-describedby="alert-dialog-slide-description"
-                    >
-                        <DialogTitle id="alert-dialog-slide-title">
-                            {this.props.register.message}
-                        </DialogTitle>
-                        <DialogActions>
-                            <Button onClick={this.handleCloseDialog} color="primary">
-                                Close
-                            </Button>
-                        </DialogActions>
-                    </Dialog>
-
                 </Formsy>
         );
     }
@@ -408,7 +426,9 @@ function mapDispatchToProps(dispatch)
         verifyUsername: authActions.checkUsername,
         verifyEnterpriseName: Actions.checkEnterpriseName,
         verifyFieldName: Actions.checkFieldName,
-        submitRegister: authActions.submitRegister
+        showMessage: showMessage,
+        submitRegister: authActions.submitRegister,
+        resetRegister: authActions.resetRegister
     }, dispatch);
 }
 

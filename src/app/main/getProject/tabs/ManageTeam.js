@@ -13,21 +13,38 @@ import * as authActions from 'app/auth/store/actions';
 import * as Actions from 'app/store/actions/scrum';
 import Button from "@material-ui/core/Button/Button";
 import DeleteIcon from '@material-ui/icons/Delete';
+import Snackbar from "@material-ui/core/Snackbar/Snackbar";
+import SnackbarContent from "@material-ui/core/SnackbarContent/SnackbarContent";
+import IconButton from "@material-ui/core/IconButton/IconButton";
+import CloseIcon from '@material-ui/icons/Close';
+import green from '@material-ui/core/colors/green';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import classNames from 'classnames';
+import List from "@material-ui/core/List/List";
+import ListItem from "@material-ui/core/ListItem/ListItem";
+import ListItemText from "@material-ui/core/ListItemText/ListItemText";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction/ListItemSecondaryAction";
+import AddToGroupIcon from '@material-ui/icons/GroupAdd';
+import CheckIcon from '@material-ui/icons/Check';
 
-const styles = {
+const styles = theme => ({
     card: {
         minWidth: 250,
         margin: 20
     },
     addCard: {
         maxWidth: 260,
-        maxHeight: 150,
+        maxHeight: 308,
         margin: 20
     },
     title: {
         fontSize: 18,
-        marginBottom: 12,
-        fontWeight: 'bold'
+        marginBottom: 4,
+        fontWeight: 'bold',
+    },
+    subTitle: {
+        fontSize: 12,
+        marginBottom: 4,
     },
     fullName: {
         fontSize: 16,
@@ -43,16 +60,38 @@ const styles = {
     },
     formControl: {
         minWidth: 250
-    }
-};
+    },
+    success: {
+        backgroundColor: green[600],
+    },
+    icon: {
+        fontSize: 20,
+    },
+    iconVariant: {
+        opacity: 0.9,
+        marginRight: theme.spacing.unit,
+    },
+    root: {
+        width: '100%',
+        backgroundColor: theme.palette.background.paper,
+        position: 'relative',
+        overflow: 'auto',
+        maxHeight: 132
+    },
+    ul: {
+        backgroundColor: 'inherit',
+        padding: 0,
+    },
+});
 
-class TimelineTab extends Component
+class ManageTeam extends Component
 {
     constructor(props)
     {
         super(props);
 
         this.state = {
+            openSnackbar: false,
             scrumMaster: "",
             productOwner: "",
             member: "",
@@ -115,19 +154,62 @@ class TimelineTab extends Component
         this.setState({addedMember: ""});
     };
 
+    handleAddFromSuggestions = (id) =>
+    {
+        var devmembers = [];
+        this.props.project.developmentTeam.map((member) =>
+            (
+                devmembers.push(member._id)
+            ));
+        devmembers.push(id);
+        var data = {
+            scrumMaster: this.props.project.scrumMaster ? this.props.project.scrumMaster._id : null,
+            productOwner: this.props.project.productOwner ? this.props.project.productOwner._id : null,
+            developmentTeam: devmembers
+        };
+        this.props.submitAffect(data, this.props.match.params.id);
+    };
+
     handleDeleteMember = (id) =>
     {
-        console.log(id);
+        var devmembers = [];
+        this.props.project.developmentTeam.map((member) =>
+        {
+            if (member._id !== id)
+            {
+                devmembers.push(member._id);
+            }
+        });
+        var data = {
+            scrumMaster: this.props.project.scrumMaster ? this.props.project.scrumMaster._id : null,
+            productOwner: this.props.project.productOwner ? this.props.project.productOwner._id : null,
+            developmentTeam: devmembers
+        };
+        this.props.submitAffect(data, this.props.match.params.id);
+    };
+
+    handleCloseSnackbar = () =>
+    {
+        this.setState({ openSnackbar: false });
     };
 
     componentDidMount()
     {
         this.props.readEmployees();
+        this.props.readSuggestions(this.props.match.params.id);
+    }
+
+    componentWillUpdate(nextProps, nextState)
+    {
+        if (nextProps.project !== this.props.project)
+        {
+            this.setState({openSnackbar: true});
+        }
     }
 
     render()
     {
-        const { classes, project, employees } = this.props;
+        const { classes, project, employees, suggestions } = this.props;
 
         return (
             <div className="md:flex max-w-2xl">
@@ -146,7 +228,7 @@ class TimelineTab extends Component
                                     </Typography>)}
                                 </Grid>
                             </CardContent>
-                            <CardActions className="flex justify-center">
+                            <CardActions className="flex justify-center" disableActionSpacing>
                                 <FormControl className={classes.formControl}>
                                     <InputLabel htmlFor="scrumMaster">Choose The Scrum Master</InputLabel>
                                     <Select
@@ -206,7 +288,7 @@ class TimelineTab extends Component
                                     </Typography>)}
                                 </Grid>
                             </CardContent>
-                            <CardActions className="flex justify-center">
+                            <CardActions className="flex justify-center" disableActionSpacing>
                                 <FormControl className={classes.formControl}>
                                     <InputLabel htmlFor="productOwner">Choose The Product Owner</InputLabel>
                                     <Select
@@ -270,7 +352,7 @@ class TimelineTab extends Component
                                         </Typography>
                                     </Grid>
                                 </CardContent>
-                                <CardActions className="flex justify-center">
+                                <CardActions className="flex justify-center" disableActionSpacing>
                                     <Button
                                         type="button"
                                         onClick={() => this.handleDeleteMember(member._id)}
@@ -286,10 +368,56 @@ class TimelineTab extends Component
                         <Card className={classes.addCard}>
                             <CardContent>
                                 <Grid container alignItems="center" direction="column">
-                                    <Typography className={classes.title} color="textPrimary">
+                                    <Typography
+                                        className={classes.title}
+                                        color="textPrimary">
                                         Add Member
                                     </Typography>
+                                    <Typography
+                                        className={classes.subTitle}
+                                        color="textSecondary"
+                                        align="center">
+                                        (Below you can find the best suggestions to help you choose your development team)
+                                    </Typography>
                                 </Grid>
+                                <List className={classes.root}>
+                                    {suggestions.length > 0 && (suggestions.map(member => {
+                                        var b = true;
+                                        if (project.scrumMaster && (member[0]._id === project.scrumMaster._id))
+                                        {
+                                            b = false;
+                                        }
+                                        if (project.productOwner && (member[0]._id === project.productOwner._id))
+                                        {
+                                            b = false;
+                                        }
+                                        if (project.developmentTeam.length > 0)
+                                        {
+                                            project.developmentTeam.map((Devmember) =>
+                                            {
+                                                if (member[0]._id === Devmember._id)
+                                                {
+                                                    b = false;
+                                                }
+                                            });
+                                        }
+                                        console.log(b);
+                                        return <ListItem key={member[0]._id} dense button>
+                                            <ListItemText primary={member[0].firstName + " " + member[0].lastName}/>
+                                            <ListItemSecondaryAction>
+                                                {b === true ?
+                                                    (<IconButton
+                                                        aria-label="Add"
+                                                        onClick={() => this.handleAddFromSuggestions(member[0]._id)}>
+                                                        <AddToGroupIcon/>
+                                                    </IconButton>) :
+                                                    (<IconButton aria-label="Added" disabled>
+                                                    <CheckIcon/>
+                                                    </IconButton>)}
+                                            </ListItemSecondaryAction>
+                                        </ListItem>
+                                    }))}
+                                </List>
                             </CardContent>
                             <CardActions className="flex justify-center">
                                 <FormControl className={classes.formControl}>
@@ -340,6 +468,36 @@ class TimelineTab extends Component
                         </Card>
                     </Grid>
                 </Grid>
+
+                <Snackbar
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'right',
+                    }}
+                    open={this.state.openSnackbar}
+                    autoHideDuration={1000}
+                    onClose={this.handleCloseSnackbar}
+                >
+                    <SnackbarContent
+                        className={classes.success}
+                        message={
+                            <span className="flex items-center">
+                                <CheckCircleIcon className={classNames(classes.icon, classes.iconVariant)} />
+                                Changes Saved !
+                            </span>
+                        }
+                        action={[
+                            <IconButton
+                                key="close"
+                                aria-label="Close"
+                                color="inherit"
+                                onClick={this.handleCloseSnackbar}
+                            >
+                                <CloseIcon />
+                            </IconButton>,
+                        ]}
+                    />
+                </Snackbar>
             </div>
         );
     }
@@ -349,6 +507,7 @@ function mapDispatchToProps(dispatch)
 {
     return bindActionCreators({
         readEmployees: authActions.readEmployees,
+        readSuggestions: Actions.getTeamSuggestions,
         submitAffect: Actions.affectTeam,
         readProject: Actions.readProject
     }, dispatch);
@@ -358,8 +517,9 @@ function mapStateToProps({scrum})
 {
     return {
         project: scrum.project,
-        employees: scrum.employees
+        employees: scrum.employees,
+        suggestions: scrum.suggestions
     }
 }
 
-export default withStyles(styles) (withRouter(connect(mapStateToProps, mapDispatchToProps) (TimelineTab)));
+export default withStyles(styles) (withRouter(connect(mapStateToProps, mapDispatchToProps) (ManageTeam)));

@@ -66,6 +66,63 @@ class jwtService extends FuseUtils.EventEmitter {
         });
     };
 
+    getEmployees = () =>
+    {
+        return new Promise((resolve, reject) =>
+        {
+            axios.get('http://localhost:3001/users/getusers')
+                .then(response =>
+                {
+                    if ( response.status === 202 )
+                    {
+                        resolve(response.data);
+                    }
+                    else
+                    {
+                        reject(response.data);
+                    }
+                });
+        });
+    };
+
+    uploadImage = (data, id) =>
+    {
+        return new Promise((resolve, reject) =>
+        {
+            axios.post('http://localhost:3001/users/uploadimage/' + id, data)
+                .then(response =>
+                {
+                    if ( response.status === 202 )
+                    {
+                        resolve(response.data);
+                    }
+                    else
+                    {
+                        reject(response.data);
+                    }
+                });
+        });
+    };
+
+    deleteImage = (id) =>
+    {
+        return new Promise((resolve, reject) =>
+        {
+            axios.get('http://localhost:3001/users/deleteimage/' + id)
+                .then(response =>
+                {
+                    if ( response.status === 202 )
+                    {
+                        resolve(response.data);
+                    }
+                    else
+                    {
+                        reject(response.data);
+                    }
+                });
+        });
+    };
+
     checkUsername = (username) =>
     {
         return new Promise((resolve, reject) =>
@@ -82,25 +139,6 @@ class jwtService extends FuseUtils.EventEmitter {
                     {
                         res = { status: false, message: response.data };
                         reject(res);
-                    }
-                });
-        });
-    };
-
-    getEmployees = () =>
-    {
-        return new Promise((resolve, reject) =>
-        {
-            axios.get('http://localhost:3001/users/getusers')
-                .then(response =>
-                {
-                    if ( response.status === 202 )
-                    {
-                        resolve(response.data);
-                    }
-                    else
-                    {
-                        reject(response.data);
                     }
                 });
         });
@@ -127,6 +165,44 @@ class jwtService extends FuseUtils.EventEmitter {
                     else if ( response.status === 200 )
                     {
                         reject(response.data);
+                    }
+                    else
+                    {
+                        reject(response.data);
+                    }
+                });
+        });
+    };
+
+    affectSkill = (data, id) =>
+    {
+        return new Promise((resolve, reject) =>
+        {
+            axios.post('http://localhost:3001/users/affectskill/' + id, data)
+                .then(response =>
+                {
+                    if ( response.status === 202 )
+                    {
+                        resolve(response.data);
+                    }
+                    else
+                    {
+                        reject(response.data);
+                    }
+                });
+        });
+    };
+
+    deleteSkill = (id) =>
+    {
+        return new Promise((resolve, reject) =>
+        {
+            axios.get('http://localhost:3001/users/deleteskill/' + id)
+                .then(response =>
+                {
+                    if ( response.status === 202 )
+                    {
+                        resolve(response.data);
                     }
                     else
                     {

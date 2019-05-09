@@ -15,7 +15,8 @@ const initialState = {
     scrumMaster: {firstName: "", lastName: ""},
     developmentTeam: {firstName: "", lastName: ""},
     sprints: [],
-    state: ""
+    state: "",
+    productBacklog: {items: []}
 };
 
 const project = function (state = initialState, action)

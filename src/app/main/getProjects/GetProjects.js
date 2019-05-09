@@ -3,7 +3,7 @@ import {FusePageSimple} from '@fuse';
 import {bindActionCreators} from 'redux';
 import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
-import ContactsList from './ContactsList';
+import ProjectsList from './ProjectsList';
 
 class GetProjects extends Component
 {
@@ -13,7 +13,7 @@ class GetProjects extends Component
             <React.Fragment>
                 <FusePageSimple
                     content={
-                        <ContactsList/>
+                        <ProjectsList/>
                     }
                     sidebarInner
                     innerScroll
@@ -29,7 +29,7 @@ function mapDispatchToProps(dispatch)
     }, dispatch);
 }
 
-function mapStateToProps({contactsApp})
+function mapStateToProps({})
 {
     return {
     }

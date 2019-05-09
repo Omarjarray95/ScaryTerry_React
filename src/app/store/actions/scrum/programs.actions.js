@@ -26,7 +26,7 @@ export function readPrograms()
             });
 }
 
-export function checkProgramName({name})
+export function checkProgramName(name)
 {
     return (dispatch) =>
         programsService.checkName(name)
