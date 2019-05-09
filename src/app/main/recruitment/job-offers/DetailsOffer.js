@@ -100,7 +100,7 @@ class DetailsOffer extends Component {
 
                                             <div className="max-w-160">
 
-                                                <Typography color="textSecondary">{invoice._job.title}</Typography>
+                                                <Typography color="textSecondary">{invoice._job && invoice._job.title}</Typography>
 
                                                 {invoice.date_posted && (
                                                     <Typography color="textSecondary">
@@ -125,7 +125,7 @@ class DetailsOffer extends Component {
 
                                             <div className="max-w-160">
 
-                                            <Typography color="textSecondary">{invoice._job.title}</Typography>
+                                            <Typography color="textSecondary">{invoice._job && invoice._job.title}</Typography>
 
                                                 {invoice.date_posted && (
                                                     <Typography color="textSecondary">

@@ -22,6 +22,13 @@ const productsReducer = function (state = initialState, action) {
                 searchText: action.searchText
             };
         }
+        case Actions.HIRE:
+        {
+            return {
+                ...state,
+                data: action.payload
+            };
+        }
         default:
         {
             return state;

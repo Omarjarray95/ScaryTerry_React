@@ -8,6 +8,7 @@ import classNames from 'classnames';
 import _ from '@lodash';
 import ProductsTableHead from './ProductsTableHead';
 import * as Actions from './store/actions';
+import HireDialog from './HireDialog';
 
 class ProductsTable extends Component {
 
@@ -154,9 +155,9 @@ class ProductsTable extends Component {
                                             role="checkbox"
                                             aria-checked={isSelected}
                                             tabIndex={-1}
-                                            key={n.id}
+                                            key={n._id}
                                             selected={isSelected}
-                                            onClick={event => this.handleClick(n)}
+                                            // onClick={event => this.handleClick(n)}
                                         >
                                             <TableCell className="w-48 pl-4 sm:pl-12" padding="checkbox">
                                                 <Checkbox
@@ -167,14 +168,13 @@ class ProductsTable extends Component {
                                             </TableCell>
 
                                             <TableCell className="w-52" component="th" scope="row" padding="none">
-                                                {n.images.length > 0 ? (
-                                                    <img className="w-full block rounded" src={_.find(n.images, {id: n.featuredImageId}).url} alt={n.name}/>
-                                                ) : (
-                                                    <img className="w-full block rounded" src="assets/images/ecommerce/product-image-placeholder.png" alt={n.name}/>
-                                                )}
+                                                {n.firstName +" "+n.lastName}
                                             </TableCell>
-
-                                            <TableCell component="th" scope="row">
+                                            
+                                            <TableCell className="truncate" component="th" scope="row" padding="none">
+                                                <HireDialog id={n._id}></HireDialog>
+                                            </TableCell>
+                                            {/* <TableCell component="th" scope="row">
                                                 {n.name}
                                             </TableCell>
 
@@ -201,7 +201,7 @@ class ProductsTable extends Component {
                                                         <Icon className="text-red text-20">remove_circle</Icon>
                                                     )
                                                 }
-                                            </TableCell>
+                                            </TableCell> */}
                                         </TableRow>
                                     );
                                 })}
@@ -231,7 +231,8 @@ class ProductsTable extends Component {
 function mapDispatchToProps(dispatch)
 {
     return bindActionCreators({
-        getProducts: Actions.getProducts
+        getProducts: Actions.getProducts,
+        hire: Actions.hire
     }, dispatch);
 }
 

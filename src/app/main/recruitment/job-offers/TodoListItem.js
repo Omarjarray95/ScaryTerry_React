@@ -98,32 +98,32 @@ const TodoListItem = ({history,todo, labels, classes, openEditTodoDialog, toggle
                       
                 </div>
             </div>
-            {!user &&
+            {localStorage.getItem('role')==="Guest" &&
                 todo._id && <ResponsiveDialog id={todo._id}/>}
-                    
-            {user && (
+            
+            {localStorage.getItem('role')!=="Guest" && (
                 <React.Fragment>
-            <div className="px-8">
-                
-            
-
-                <IconButton onClick={(ev) => {
-                    ev.preventDefault();
-                    ev.stopPropagation();
-                    toggleImportant(todo)
-                }}>
-                    {todo.completed ? (
-                        <Icon style={{color: red[500]}}>error</Icon>
-                    ) : (
-                        <Icon>error_outline</Icon>
-                    )}
-                </IconButton>
-            
+                    <div className="px-8">
                         
-            </div>
-           
-            <DetailsOffer id={todo._id}></DetailsOffer>
-            </React.Fragment>
+                    
+
+                        <IconButton onClick={(ev) => {
+                            ev.preventDefault();
+                            ev.stopPropagation();
+                            toggleImportant(todo)
+                        }}>
+                            {todo.completed ? (
+                                <Icon style={{color: red[500]}}>error</Icon>
+                            ) : (
+                                <Icon>error_outline</Icon>
+                            )}
+                        </IconButton>
+                    
+                                
+                    </div>
+                
+                    <DetailsOffer id={todo._id}></DetailsOffer>
+                </React.Fragment>
             )}
         </ListItem>
 
