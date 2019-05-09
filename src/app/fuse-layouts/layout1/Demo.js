@@ -28,7 +28,7 @@ class Demo extends Component {
 //API PART
 async df_text_query(text){
 
-  const res = await axios.post('http://localhost:3001/chatbot/api/df_text_query',{text:text,user:localStorage.getItem('id')})
+  const res = await axios.post('http://localhost:3001/chatbot/api/df_text_query',{text:text,user:localStorage.getItem('id'),meeting:localStorage.getItem('meeting')})
     //const res = await axios.post('http://localhost:5000/api/df_text_query',{text:text})
     //https://chatbotbackend.serveo.net/ 
 for (let msg of res.data.fulfillmentMessages)

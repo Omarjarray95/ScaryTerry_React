@@ -14,7 +14,7 @@ const fuseReducers = combineReducers({
     message,
     dialog,
     routes,
-    tabs
+    tabs,
     socket
 });
 

@@ -62,6 +62,13 @@ const navigationConfig = [
     }
     ,
     {
+        'id'      : 'meetings',
+        'title'   : 'Meetings',
+        'type'    : 'item',
+        'icon'    : 'speaker_notes',
+        'url'  : '/meetings',
+    },
+    {
         'id'      : 'calendar',
         'title'   : 'My Calendar',
         'type'    : 'item',

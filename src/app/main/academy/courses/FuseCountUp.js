@@ -7,19 +7,23 @@ import classNames from 'classnames';
 const propTypes = {
     endDate   : PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
     onComplete: PropTypes.func,
-    color: PropTypes.string
+    color: PropTypes.string,
+    daily:PropTypes.bool,
+    hours:PropTypes.bool
 };
 
 const defaultProps = {
     endDate: moment().add(15, 'days'),
-    color:"textSecondary"
+    color:"textSecondary",
+    daily:true,
+    hours:true
 };
 
 const styles = theme => ({
     root: {}
 });
 
-class FuseCountdown extends Component {
+class FuseCountup extends Component {
 
     state = {
         endDate  : moment.isMoment(this.props.endDate) ? this.props.endDate : moment(this.props.endDate),
@@ -49,7 +53,7 @@ class FuseCountdown extends Component {
         const {endDate} = this.state;
 
         const currDate = moment();
-        const diff = endDate.diff(currDate, 'seconds');
+        const diff = currDate.diff(endDate, 'seconds');
         if ( diff < 0 )
         {
             this.complete();
@@ -82,7 +86,10 @@ class FuseCountdown extends Component {
 
         return (
             <div className={classNames(classes.root, "flex items-center", this.props.className)}>
-                <div className="flex flex-col items-center justify-center px-12">
+            {
+                this.props.daily?
+                (
+                    <div className="flex flex-col items-center justify-center px-12">
                     <Typography style={{color:this.props.color}} variant="h4" className="mb-4">
                         {countdown.days}
                     </Typography>
@@ -90,7 +97,16 @@ class FuseCountdown extends Component {
                         days
                     </Typography>
                 </div>
-                <div className="flex flex-col items-center justify-center px-12">
+                ):
+                (
+                    null
+                )
+            }
+
+            {
+                this.props.hours?
+                (
+                    <div className="flex flex-col items-center justify-center px-12">
                     <Typography style={{color:this.props.color}} variant="h4" className="mb-4">
                         {countdown.hours}
                     </Typography>
@@ -98,6 +114,12 @@ class FuseCountdown extends Component {
                         hours
                     </Typography>
                 </div>
+                ):
+                (
+                    null
+                )
+            }
+               
                 <div className="flex flex-col items-center justify-center px-12">
                     <Typography style={{color:this.props.color}} variant="h4" className="mb-4">
                         {countdown.minutes}
@@ -119,7 +141,7 @@ class FuseCountdown extends Component {
     }
 }
 
-FuseCountdown.propTypes = propTypes;
-FuseCountdown.defaultProps = defaultProps;
+FuseCountup.propTypes = propTypes;
+FuseCountup.defaultProps = defaultProps;
 
-export default withStyles(styles)(FuseCountdown);
+export default withStyles(styles)(FuseCountup);

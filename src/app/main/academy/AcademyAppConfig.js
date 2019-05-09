@@ -14,9 +14,14 @@ export const AcademyAppConfig = {
             })
         },
         {
-            path     : '/apps/academy/courses',
+            path     : '/meetings',
             component: FuseLoadable({
                 loader: () => import('./courses/Courses')
+            })
+        },        {
+            path     : '/meeting/:id',
+            component: FuseLoadable({
+                loader: () => import('./courses/Meeting')
             })
         },
         {
