@@ -38,7 +38,6 @@ const styles = theme => (
 class ProjectsList extends Component {
 
     state = {
-        selected: null
     };
 
     getFilteredArray = (entities) =>
@@ -66,7 +65,7 @@ class ProjectsList extends Component {
             return (
                 <div className="flex items-center justify-center h-full">
                     <Typography color="textSecondary" variant="h5">
-                        There are no contacts!
+                        No Projects Found.
                     </Typography>
                 </div>
             );
@@ -122,7 +121,7 @@ class ProjectsList extends Component {
                         }
                     ]}
                     defaultPageSize={10}
-                    noDataText="No Contacts Found."
+                    noDataText="No Projects Found."
                 />
         );
     }

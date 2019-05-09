@@ -9,7 +9,8 @@ const initialState = {
     }
 };
 
-const user = function (state = initialState, action) {
+const user = function (state = initialState, action)
+{
     switch ( action.type )
     {
         case Actions.SET_USER_DATA:

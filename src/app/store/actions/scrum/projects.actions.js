@@ -1,5 +1,6 @@
 import projectsService from 'app/services/projectsService';
 import * as Actions from '../../../main/showSprintBacklog/store/actions';
+import * as scrumActions from '../../../store/actions';
 
 export const ADD_PROJECT_SUCCESS = 'ADD_PROJECT_SUCCESS';
 export const ADD_PROJECT_ERROR = 'ADD_PROJECT_ERROR';
@@ -9,6 +10,7 @@ export const REQUEST_ERROR = 'REQUEST_ERROR';
 export const PROJECT_NAME_AVAILABLE = 'PROJECT_NAME_AVAILABLE';
 export const PROJECT_NAME_UNAVAILABLE = 'PROJECT_NAME_UNAVAILABLE';
 export const GET_PRODUCTBACKLOG = 'GET_PRODUCTBACKLOG';
+export const READ_SUGGESTIONS = 'READ_SUGGESTIONS';
 
 export function submitAddProject({project})
 {
@@ -82,6 +84,27 @@ export function affectTeam(data, id)
                     return dispatch({
                         type: READ_PROJECT,
                         payload: project
+                    });
+                }
+            )
+            .catch(error =>
+            {
+                return dispatch({
+                    type   : REQUEST_ERROR,
+                    payload: error
+                });
+            });
+}
+
+export function getTeamSuggestions(id)
+{
+    return (dispatch) =>
+        projectsService.getTeamSuggestions(id)
+            .then((suggestions) =>
+                {
+                    return dispatch({
+                        type: READ_SUGGESTIONS,
+                        payload: suggestions
                     });
                 }
             )
@@ -275,6 +298,24 @@ export function readSprintProject(id)
                         type: READ_PROJECT,
                         payload: project
                     });
+                }
+            )
+            .catch(error =>
+            {
+                return dispatch({
+                    type   : REQUEST_ERROR,
+                    payload: error
+                });
+            });
+}
+
+export function addSkills(data, id)
+{
+    return (dispatch) =>
+        projectsService.addSkills(data, id)
+            .then(() =>
+                {
+                    dispatch(scrumActions.readProject(id));
                 }
             )
             .catch(error =>
