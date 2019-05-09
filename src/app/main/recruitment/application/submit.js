@@ -20,8 +20,8 @@ class SubmitApplication extends Component {
         canSubmit: false,
         // data:this.props.jobOffer,
     };
-    componentWillMount(){
-        this.props.getOffer(this.props.match.params).then(data=>{
+    componentDidMount(){
+        this.props.getOffer(this.props.id).then(data=>{
             this.setState({data:this.props.jobOffer,});
         });
         // this.setState({data:this.props.jobOffer})
@@ -42,12 +42,13 @@ class SubmitApplication extends Component {
         this.setState({canSubmit: true});
     };
     onSubmit = (model) => {
-        model.offer = this.props.match.params.id;
+        model.offer = this.props.id;
         // model.applier = '5ca6f9a4a993a71790a7fc11';
         model.resume = this.state.resume;
         console.log(model);
         console.log("Hello");
         this.props.saveApplication(model);
+        this.props.close()
     };
     saveFile = (e) =>{
             this.setState({resume:e.target.files[0]})

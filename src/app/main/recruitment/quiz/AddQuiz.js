@@ -34,38 +34,28 @@ class FormsyDoc extends Component {
                         <div className="flex items-center mb-16">
                             <Icon className="text-18" color="action">home</Icon>
                             <Icon className="text-16" color="action">chevron_right</Icon>
-                            <Typography color="textSecondary">Components</Typography>
+                            <Typography color="textSecondary">Recruitments</Typography>
                             <Icon className="text-16" color="action">chevron_right</Icon>
-                            <Typography color="textSecondary">3rd Party Components</Typography>
+                            <Typography color="textSecondary">Quiz</Typography>
                         </div>
-                        <Typography variant="h6">Formsy</Typography>
+                        <Typography variant="h6">ADD QUIZ</Typography>
                     </div>
-                    <Button
-                        className="normal-case"
-                        variant="contained"
-                        component="a"
-                        href="https://github.com/formsy/formsy-react"
-                        target="_blank"
-                    >
-                        <Icon className="mr-4">link</Icon>
-                        Reference
-                    </Button>
                 </div>
             }
             content={
                 <div className="p-24 max-w-2xl">
 
                     <Typography className="mb-16" component="p">
-                        <code>formsy-react</code> is a form input builder and validator for React.
+                        <code>Quiz</code> is so important for the quality of our recruitments.
                     </Typography>
 
                     <Typography className="mb-16" component="p">
-                        HOCs are needed for formsy to work. We created for TextField, Select, RadioGroup, Checkbox under @fuse.
+                        So please try to pick carefully the Quiz you want to add.
                     </Typography>
 
                     <hr/>
 
-                    <Typography className="text-32 mt-32 mb-8" component="h2">Example Usages</Typography>
+                    <Typography className="text-32 mt-32 mb-8" component="h2">QUIZ</Typography>
 
                     {/* <FuseExample
                         className="mb-64"
@@ -78,13 +68,13 @@ class FormsyDoc extends Component {
                         <Forms skills={this.props.skills}/>
                     </div>
                     </FuseAnimate>
-                    <Typography className="text-32 mt-32 mb-8" component="h2">Demos</Typography>
+                    {/* <Typography className="text-32 mt-32 mb-8" component="h2">Demos</Typography>
 
                     <ul>
                         <li className="mb-8">
                             <Link to="/login">Login page</Link>
                         </li>
-                    </ul>
+                    </ul> */}
                 </div>
             }
         />
@@ -94,20 +84,18 @@ class FormsyDoc extends Component {
 function mapDispatchToProps(dispatch)
 {
     return bindActionCreators({
-        getProduct : Actions.getQuiz,
-        newProduct : Actions.newProduct,
         saveProduct: Actions.saveQuiz,
         getSkills: Actions.getSkills,
 
     }, dispatch);
 }
 
-function mapStateToProps({eCommerceApp})
+function mapStateToProps({recruitmentApp})
 {
     return {
-        skills:eCommerceApp.skills.data,
-        product: eCommerceApp.product
+        skills:recruitmentApp.skills.data,
+        product: recruitmentApp.product
     }
 }
 
-export default withReducer('eCommerceApp', reducer)(withRouter(connect(mapStateToProps, mapDispatchToProps)(FormsyDoc)));
+export default withReducer('recruitmentApp', reducer)(withRouter(connect(mapStateToProps, mapDispatchToProps)(FormsyDoc)));

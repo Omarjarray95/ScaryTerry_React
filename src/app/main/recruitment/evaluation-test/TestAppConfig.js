@@ -27,10 +27,17 @@ export const TestAppConfig = {
     
     routes  : [
         {
+            path    :'/test/result/:app',
+            component: FuseLoadable({
+                loader: ()=> import('./testResult')
+            })
+        },
+        {
             path     : '/test/:app',
             component: FuseLoadable({
                 loader: () => import('./test')
             })
-        }
+        },
+        
     ]
 };

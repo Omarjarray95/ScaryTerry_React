@@ -24,7 +24,7 @@ export function saveApplication(data)
         request.then((response) => {
             console.log(response);
                
-                dispatch(showMessage({message: 'Product Saved'}));
+                dispatch(showMessage({message: 'Application Saved'}));
                 return dispatch({
                     type   : SAVE_APPLICATION,
                     payload: response.data

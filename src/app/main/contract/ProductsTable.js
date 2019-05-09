@@ -6,32 +6,31 @@ import {bindActionCreators} from 'redux';
 import connect from 'react-redux/es/connect/connect';
 import classNames from 'classnames';
 import _ from '@lodash';
-import * as Actions from '../store/actions';
-import QuizzesTableHead from './QuizzesTableHead';
+import ProductsTableHead from './ProductsTableHead';
+import * as Actions from './store/actions';
 
-class SkillsTable extends Component {
+class ProductsTable extends Component {
 
     state = {
         order      : 'asc',
         orderBy    : null,
         selected   : [],
-        data       : this.props.quizzes,
+        data       : this.props.products,
         page       : 0,
         rowsPerPage: 10
     };
 
     componentDidMount()
     {
-        this.props.getQuizzes();
+        this.props.getProducts();
     }
 
     componentDidUpdate(prevProps, prevState)
     {
-        if ( !_.isEqual(this.props.quizzes, prevProps.quizzes)  )
+        if ( !_.isEqual(this.props.products, prevProps.products) || !_.isEqual(this.props.searchText, prevProps.searchText) )
         {
-            console.log(this.props.quizzes);
-            console.log(this.state.data);
-            this.setState({data:this.props.quizzes})
+            const data = this.getFilteredArray(this.props.products, this.props.searchText);
+            this.setState({data})
         }
     }
 
@@ -119,7 +118,8 @@ class SkillsTable extends Component {
                 <FuseScrollbars className="flex-grow overflow-x-auto">
 
                     <Table className="min-w-xl" aria-labelledby="tableTitle">
-                    <QuizzesTableHead
+
+                        <ProductsTableHead
                             numSelected={selected.length}
                             order={order}
                             orderBy={orderBy}
@@ -127,6 +127,7 @@ class SkillsTable extends Component {
                             onRequestSort={this.handleRequestSort}
                             rowCount={data.length}
                         />
+
                         <TableBody>
                             {_.orderBy(data, [
                                 (o) => {
@@ -153,46 +154,54 @@ class SkillsTable extends Component {
                                             role="checkbox"
                                             aria-checked={isSelected}
                                             tabIndex={-1}
-                                            key={n._id}
+                                            key={n.id}
                                             selected={isSelected}
                                             onClick={event => this.handleClick(n)}
                                         >
-                                            {/* <TableCell className="w-48 pl-4 sm:pl-12" padding="checkbox">
+                                            <TableCell className="w-48 pl-4 sm:pl-12" padding="checkbox">
                                                 <Checkbox
                                                     checked={isSelected}
                                                     onClick={event => event.stopPropagation()}
                                                     onChange={event => this.handleCheck(event, n.id)}
                                                 />
-                                            </TableCell> */}
+                                            </TableCell>
 
-                                            {/* <TableCell className="w-52" component="th" scope="row" padding="none">
+                                            <TableCell className="w-52" component="th" scope="row" padding="none">
                                                 {n.images.length > 0 ? (
                                                     <img className="w-full block rounded" src={_.find(n.images, {id: n.featuredImageId}).url} alt={n.name}/>
                                                 ) : (
                                                     <img className="w-full block rounded" src="assets/images/ecommerce/product-image-placeholder.png" alt={n.name}/>
                                                 )}
-                                            </TableCell> */}
+                                            </TableCell>
+
+                                            <TableCell component="th" scope="row">
+                                                {n.name}
+                                            </TableCell>
 
                                             <TableCell className="truncate" component="th" scope="row">
-                                                {n.question}
+                                                {n.categories.join(', ')}
                                             </TableCell>
 
-                                            <TableCell  component="th" scope="row">
-                                                {n.wrong.join(',\n ')}
-                                            </TableCell>
                                             <TableCell component="th" scope="row" align="right">
-                                                {n.correct}
+                                                <span>$</span>
+                                                {n.priceTaxIncl}
+                                            </TableCell>
+
+                                            <TableCell component="th" scope="row" align="right">
+                                                {n.quantity}
                                                 <i className={classNames("inline-block w-8 h-8 rounded ml-8", n.quantity <= 5 && "bg-red", n.quantity > 5 && n.quantity <= 25 && "bg-orange", n.quantity > 25 && "bg-green")}/>
                                             </TableCell>
 
                                             <TableCell component="th" scope="row" align="right">
-                                                {n.tags.map(skill=><div className={classNames("inline text-12 p-4 rounded truncate bg-blue-darker text-white")}>
-                                                        {skill.name}
-                                                    </div>)}
+                                                {n.active ?
+                                                    (
+                                                        <Icon className="text-green text-20">check_circle</Icon>
+                                                    ) :
+                                                    (
+                                                        <Icon className="text-red text-20">remove_circle</Icon>
+                                                    )
+                                                }
                                             </TableCell>
-
-                                
-                                
                                         </TableRow>
                                     );
                                 })}
@@ -222,16 +231,16 @@ class SkillsTable extends Component {
 function mapDispatchToProps(dispatch)
 {
     return bindActionCreators({
-        getQuizzes: Actions.getQuizzes
+        getProducts: Actions.getProducts
     }, dispatch);
 }
 
-function mapStateToProps({recruitmentApp})
+function mapStateToProps({eCommerceApp})
 {
     return {
-        quizzes : recruitmentApp.quizzes.data,
-
+        products  : eCommerceApp.products.data,
+        searchText: eCommerceApp.products.searchText
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SkillsTable);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ProductsTable));

@@ -19,6 +19,13 @@ import classNames from 'classnames';
 
 const rows = [
     {
+        id            : 'image',
+        align         : 'left',
+        disablePadding: true,
+        label         : '',
+        sort          : false
+    },
+    {
         id            : 'name',
         align         : 'left',
         disablePadding: false,
@@ -26,24 +33,31 @@ const rows = [
         sort          : true
     },
     {
-        id            : 'descritption',
+        id            : 'categories',
         align         : 'left',
         disablePadding: false,
-        label         : 'Descritption',
+        label         : 'Category',
         sort          : true
     },
     {
-        id            : 'projects',
+        id            : 'priceTaxIncl',
         align         : 'right',
         disablePadding: false,
-        label         : 'Projects',
+        label         : 'Price',
         sort          : true
     },
     {
-        id            : 'offers',
+        id            : 'quantity',
         align         : 'right',
         disablePadding: false,
-        label         : 'Job Offers',
+        label         : 'Quantity',
+        sort          : true
+    },
+    {
+        id            : 'active',
+        align         : 'right',
+        disablePadding: false,
+        label         : 'Active',
         sort          : true
     }
 ];
@@ -54,18 +68,11 @@ const styles = theme => ({
     }
 });
 
-class SkillsTableHead extends React.Component {
+class ProductsTableHead extends React.Component {
     state = {
         selectedProductsMenu: null
     };
-    deleteSkillHandler = () =>{
-        console.log(this.props.numSelected);
-        console.log(this.props.selectedSkills);
-        // here i have access to the id of the selected items ,
-        // i only have to make a delete action , and call it here
-        this.props.delete();
-        this.closeSelectedProductsMenu();
-    }
+
     createSortHandler = property => event => {
 
         this.props.onRequestSort(event, property);
@@ -111,7 +118,7 @@ class SkillsTableHead extends React.Component {
                                     <MenuList>
                                         <MenuItem
                                             onClick={() => {
-                                                this.deleteSkillHandler();
+                                                this.closeSelectedProductsMenu();
                                             }}
                                         >
                                             <ListItemIcon className={classes.icon}>
@@ -156,4 +163,4 @@ class SkillsTableHead extends React.Component {
     }
 }
 
-export default withStyles(styles, {withTheme: true})(SkillsTableHead);
+export default withStyles(styles, {withTheme: true})(ProductsTableHead);

@@ -21,11 +21,18 @@ export const RecruitmentAppConfig = {
             })
         },
         {
+            path     : '/recruitments/skills/add',
+            component: FuseLoadable({
+                loader: () => import('./skills/AddSkill')
+            })
+        },
+        {
             path     : '/recruitments/skills',
             component: FuseLoadable({
                 loader: () => import('./skills/Skills')
             })
         },
+        
         {
             path     : '/recruitments/quizzes',
             component: FuseLoadable({

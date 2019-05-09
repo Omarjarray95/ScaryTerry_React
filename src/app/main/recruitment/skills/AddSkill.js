@@ -108,7 +108,8 @@ class SimpleFormExample extends Component {
     onSubmit = (model) => {
         // const wrong = [model.wrong1,model.wrong2,model.wrong3];
         // model.wrong = wrong;
-        this.props.saveOffer(model,this.props.match);
+        this.props.saveOffer(model);
+        
     };
     handleChange = event => {
         this.setState({ name: event.target.value });
@@ -134,7 +135,7 @@ class SimpleFormExample extends Component {
         const {classes,saveProduct} = this.props;
         return (
             <div className="max-w-sm">
-                <Typography className="h2 mb-24">Add Job Offer Form</Typography>
+                <Typography className="h2 mb-24">Add Skill Form</Typography>
                 <Formsy
                     onValidSubmit={this.onSubmit}
                     onValid={this.enableButton}
@@ -143,7 +144,20 @@ class SimpleFormExample extends Component {
                     className="flex flex-col justify-center"
                 >
 
-                   
+                <TextFieldFormsy
+                        className="my-16"
+                        type="text"
+                        name="name"
+                        label="Describe this job Offer"
+                        validations={{
+                            minLength: 4
+                        }}
+                        validationErrors={{
+                            minLength: 'Min character length is 4'
+                        }}
+                        required
+                        variant="outlined"
+                    />
                     <TextFieldFormsy
                         className="my-16"
                         type="text"
@@ -158,58 +172,6 @@ class SimpleFormExample extends Component {
                         required
                         variant="outlined"
                     />
-                     
-                        <SelectFormsy
-                            className="my-16"
-                            name="requirements"
-                            label="Skills Related To The Quiz"
-                            variant="outlined"
-
-                            multiple
-                            required
-                            value={this.state.name}
-                            onChange={this.handleChange}
-                            input={<Input id="select-multiple-chip" />}
-                            renderValue={selected => (
-                            <div className={classes.chips}>
-                                {selected.map(value => (
-                                <Chip key={value} label={value} className={classes.chip} />
-                                ))}
-                            </div>
-                            )}
-                            MenuProps={MenuProps}
-                        >
-                            {data.map(skill => (
-                            <MenuItem key={skill._id} value={skill._id} style={getStyles(skill.name, this)}>
-                                {skill.name}
-                            </MenuItem>
-                            ))}
-                    </SelectFormsy>
-                    {/* Draft JS */}
-                    <SelectFormsy
-                            className="my-16"
-                            name="_job"
-                            label="Skills Related To The Quiz"
-                            variant="outlined"
-                            required
-                            value={this.state.job}
-                            onChange={this.handleChange2}
-                            input={<Input id="select-multiple-chip" />}
-                            renderValue={selected => (
-                            <div className={classes.chips}>
-                                
-                                <Chip key={selected} label={selected} className={classes.chip} />
-                                
-                            </div>
-                            )}
-                            MenuProps={MenuProps}
-                        >
-                            {jobs.map(job => (
-                            <MenuItem key={job._id} value={job._id} style={getStyles(job.title, this)}>
-                                {job.title}
-                            </MenuItem>
-                            ))}
-                    </SelectFormsy>
                     
                     <Button
                         type="submit"
@@ -238,7 +200,7 @@ SimpleFormExample.propTypes = {
           getSkills: Actions.getSkills,
           getProduct : Actions.getOffer,
           newProduct : Actions.newProduct,
-          saveOffer: Actions.saveOffer,
+          saveOffer: Actions.saveSkill,
             getJobs:Actions.getJobs,
       }, dispatch);
   }

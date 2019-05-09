@@ -27,7 +27,7 @@ export function saveQuiz(data)
         request.then((response) => {
             console.log(response);
                
-                dispatch(showMessage({message: 'Product Saved'}));
+                dispatch(showMessage({message: 'Quiz Saved'}));
                 return dispatch({
                     type   : SAVE_QUIZ,
                     payload: response.data

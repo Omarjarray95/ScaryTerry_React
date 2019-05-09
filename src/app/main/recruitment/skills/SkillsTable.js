@@ -8,6 +8,7 @@ import classNames from 'classnames';
 import _ from '@lodash';
 import SkillsTableHead from './SkillsTableHead';
 import * as Actions from '../store/actions';
+import { deleteSkill } from '../store/actions';
 
 class SkillsTable extends Component {
 
@@ -62,7 +63,7 @@ class SkillsTable extends Component {
     handleSelectAllClick = event => {
         if ( event.target.checked )
         {
-            this.setState(state => ({selected: this.state.data.map(n => n.id)}));
+            this.setState(state => ({selected: this.state.data.map(n => n._id)}));
             return;
         }
         this.setState({selected: []});
@@ -110,6 +111,12 @@ class SkillsTable extends Component {
 
     isSelected = id => this.state.selected.indexOf(id) !== -1;
 
+    deleteSkill = () =>{
+        console.log("to delete " + this.state.selected);
+        this.state.selected.forEach(skill => {
+            this.props.deleteSkill(skill);
+        });
+    }
     render()
     {
         const {order, orderBy, selected, rowsPerPage, page, data} = this.state;
@@ -128,6 +135,8 @@ class SkillsTable extends Component {
                             onSelectAllClick={this.handleSelectAllClick}
                             onRequestSort={this.handleRequestSort}
                             rowCount={data.length}
+                            selectedSkills={selected}
+                            delete={this.deleteSkill}
                         />
 
                         <TableBody>
@@ -148,7 +157,7 @@ class SkillsTable extends Component {
                             ], [order])
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map(n => {
-                                    const isSelected = this.isSelected(n.id);
+                                    const isSelected = this.isSelected(n._id);
                                     return (
                                         <TableRow
                                             className="h-64 cursor-pointer"
@@ -164,7 +173,7 @@ class SkillsTable extends Component {
                                                 <Checkbox
                                                     checked={isSelected}
                                                     onClick={event => event.stopPropagation()}
-                                                    onChange={event => this.handleCheck(event, n.id)}
+                                                    onChange={event => this.handleCheck(event, n._id)}
                                                 />
                                             </TableCell>
 
@@ -181,29 +190,20 @@ class SkillsTable extends Component {
                                             </TableCell>
 
                                             <TableCell className="truncate" component="th" scope="row">
-                                                {n.description}
+                                                {n.description  || <span>(There's no description)</span>}
                                             </TableCell>
 
                                             <TableCell component="th" scope="row" align="right">
-                                                <span>$</span>
-                                                {n.priceTaxIncl}
+                                                
+                                                {n.projects}
                                             </TableCell>
 
                                             <TableCell component="th" scope="row" align="right">
-                                                {n.quantity}
+                                                {n.offers}
                                                 <i className={classNames("inline-block w-8 h-8 rounded ml-8", n.quantity <= 5 && "bg-red", n.quantity > 5 && n.quantity <= 25 && "bg-orange", n.quantity > 25 && "bg-green")}/>
                                             </TableCell>
 
-                                            <TableCell component="th" scope="row" align="right">
-                                                {n.active ?
-                                                    (
-                                                        <Icon className="text-green text-20">check_circle</Icon>
-                                                    ) :
-                                                    (
-                                                        <Icon className="text-red text-20">remove_circle</Icon>
-                                                    )
-                                                }
-                                            </TableCell>
+                            
                                         </TableRow>
                                     );
                                 })}
@@ -233,7 +233,8 @@ class SkillsTable extends Component {
 function mapDispatchToProps(dispatch)
 {
     return bindActionCreators({
-        getSkills: Actions.getSkills
+        getSkills: Actions.getSkills,
+        deleteSkill: Actions.deleteSkill,
     }, dispatch);
 }
 

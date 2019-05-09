@@ -128,7 +128,7 @@ class SimpleFormExample extends Component {
         const {classes,saveProduct} = this.props;
         return (
             <div className="max-w-sm">
-                <Typography className="h2 mb-24">Example Formsy Form</Typography>
+                <Typography className="h2 mb-24">Quiz Form</Typography>
                 <Formsy
                     onValidSubmit={this.onSubmit}
                     onValid={this.enableButton}

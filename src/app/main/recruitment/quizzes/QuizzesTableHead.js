@@ -20,40 +20,40 @@ import classNames from 'classnames';
 const rows = [
    
     {
-        id            : 'name',
+        id            : 'Question',
         align         : 'left',
         disablePadding: false,
-        label         : 'Name',
+        label         : 'Question',
         sort          : true
     },
     {
-        id            : 'categories',
+        id            : 'Wrong Answers',
         align         : 'left',
         disablePadding: false,
-        label         : 'Category',
+        label         : 'Wrong Answers',
         sort          : true
     },
     {
-        id            : 'priceTaxIncl',
+        id            : 'Correct Answer',
         align         : 'right',
         disablePadding: false,
-        label         : 'Price',
+        label         : 'Correct Answer',
         sort          : true
     },
     {
-        id            : 'quantity',
+        id            : 'Skills',
         align         : 'right',
         disablePadding: false,
-        label         : 'Quantity',
+        label         : 'Skills',
         sort          : true
     },
-    {
-        id            : 'active',
-        align         : 'right',
-        disablePadding: false,
-        label         : 'Active',
-        sort          : true
-    }
+    // {
+    //     id            : 'active',
+    //     align         : 'right',
+    //     disablePadding: false,
+    //     label         : 'Active',
+    //     sort          : true
+    // }
 ];
 
 const styles = theme => ({
@@ -88,43 +88,7 @@ class QuizzesTableHead extends React.Component {
         return (
             <TableHead>
                 <TableRow className="h-64">
-                    <TableCell padding="checkbox" className="relative pl-4 sm:pl-12">
-                        <Checkbox
-                            indeterminate={numSelected > 0 && numSelected < rowCount}
-                            checked={numSelected === rowCount}
-                            onChange={onSelectAllClick}
-                        />
-                        {numSelected > 0 && (
-                            <div className={classNames("flex items-center justify-center absolute w-64 pin-t pin-l ml-68 h-64 z-10", classes.actionsButtonWrapper)}>
-                                <IconButton
-                                    aria-owns={selectedProductsMenu ? 'selectedProductsMenu' : null}
-                                    aria-haspopup="true"
-                                    onClick={this.openSelectedProductsMenu}
-                                >
-                                    <Icon>more_horiz</Icon>
-                                </IconButton>
-                                <Menu
-                                    id="selectedProductsMenu"
-                                    anchorEl={selectedProductsMenu}
-                                    open={Boolean(selectedProductsMenu)}
-                                    onClose={this.closeSelectedProductsMenu}
-                                >
-                                    <MenuList>
-                                        <MenuItem
-                                            onClick={() => {
-                                                this.closeSelectedProductsMenu();
-                                            }}
-                                        >
-                                            <ListItemIcon className={classes.icon}>
-                                                <Icon>delete</Icon>
-                                            </ListItemIcon>
-                                            <ListItemText inset primary="Remove"/>
-                                        </MenuItem>
-                                    </MenuList>
-                                </Menu>
-                            </div>
-                        )}
-                    </TableCell>
+                   
                     {rows.map(row => {
                         return (
                             <TableCell

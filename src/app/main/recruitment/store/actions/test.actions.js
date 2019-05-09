@@ -4,6 +4,7 @@ import {showMessage} from 'app/store/actions/fuse';
 
 export const GET_TEST = '[RECRUITMENT APP] GET TEST';
 export const SAVE_TEST = '[RECRUITMENT APP] SAVE TEST';
+export const VALIDATE_TEST = '[RECRUITMENT APP] VALIDATE TEST';
 
 export function getTest(test)
 {
@@ -52,4 +53,26 @@ export function saveTest(data)
                 });
             }
         );
+}
+
+export function validateTest(data) {
+    const request1 = axios.get('http://localhost:3001/tests/validate/'+data+'/quiz');
+    const request2 = axios.get('http://localhost:3001/tests/validate/'+data+'/code');
+    return (dispatch) => 
+        request1.then(response=>{
+            dispatch({
+                type: VALIDATE_TEST,
+                payload: response.data
+            });
+            request2.then(response=>{
+                console.log(response.data);
+            })
+            dispatch(showMessage({message:'Your Test Has been validated'}));
+        }).catch(err=>{
+            if(err.response.status===500){
+                const error = err.response;   
+                console.log(err.response);
+                dispatch(showMessage({message: err.response.data.message}));
+            }
+        });
 }

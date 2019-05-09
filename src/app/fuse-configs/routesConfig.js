@@ -7,7 +7,9 @@ import {AddUsersConfig} from 'app/main/addUsers/AddUsersConfig';
 import {AddProjectsConfig} from 'app/main/addProjects/AddProjectsConfig';
 import {RecruitmentAppConfig} from 'app/main/recruitment/RecruitmentAppConfig';
 import {TestAppConfig} from 'app/main/recruitment/evaluation-test/TestAppConfig';
+import {ContractsAppConfig} from 'app/main/contract/ContractsAppConfig';
 const routeConfigs = [
+    ContractsAppConfig,
     RecruitmentAppConfig,
     AddUsersConfig,
     AddProjectsConfig,

@@ -4,7 +4,7 @@ import {FuseUtils, FuseAnimate, FuseAnimateGroup} from '@fuse';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import _ from '@lodash';
-import TodoListItem from './TodoListItem';
+import TodoListItem from './contractsItem';
 
 function getFilteredArray(entities, searchText)
 {
@@ -43,7 +43,7 @@ const TodoList = ({history,todos, searchText, orderBy, orderDescending}) => {
             >
                 {
                     arr.map((todo) => (
-                            <TodoListItem history={history} todo={todo} key={todo._id}/>
+                            <TodoListItem history={history} todo={todo} key={todo.id}/>
                         )
                     )
                 }
@@ -56,10 +56,7 @@ function mapStateToProps({todoApp})
 {
     console.log(todoApp.todos.entities);
     return {
-        todos          : todoApp.todos.entities,
-        searchText     : todoApp.todos.searchText,
-        orderBy        : todoApp.todos.orderBy,
-        orderDescending: todoApp.todos.orderDescending
+        
     }
 }
 

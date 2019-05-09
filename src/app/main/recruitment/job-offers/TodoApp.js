@@ -34,6 +34,7 @@ class TodoApp extends Component {
     {
         return (
             <React.Fragment>
+                <React.Fragment>
                 <FusePageCarded
                     classes={{
                         root  : "w-full",
@@ -60,6 +61,8 @@ class TodoApp extends Component {
                     innerScroll
                 />
                 <TodoDialog/>
+                
+            </React.Fragment>
             </React.Fragment>
         )
     };
@@ -75,7 +78,9 @@ function mapDispatchToProps(dispatch)
 
 function mapStateToProps({todoApp})
 {
-    return {}
+    return {
+
+    }
 }
 
 export default withReducer('todoApp', reducer)(withRouter(connect(mapStateToProps, mapDispatchToProps)(TodoApp)));

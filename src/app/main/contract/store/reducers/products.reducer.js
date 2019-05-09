@@ -5,29 +5,22 @@ const initialState = {
     searchText: ''
 };
 
-const testReducer = function (state = initialState, action) {
+const productsReducer = function (state = initialState, action) {
     switch ( action.type )
     {
-        case Actions.GET_TEST:
+        case Actions.GET_PRODUCTS:
         {
             return {
                 ...state,
                 data: action.payload
             };
         }
-        case Actions.SAVE_TEST:
+        case Actions.SET_PRODUCTS_SEARCH_TEXT:
         {
             return {
                 ...state,
-                data: action.payload
+                searchText: action.searchText
             };
-        }
-        case Actions.VALIDATE_TEST:
-        {
-            return{
-                ...state,
-                result: action.payload
-            }
         }
         default:
         {
@@ -36,4 +29,4 @@ const testReducer = function (state = initialState, action) {
     }
 };
 
-export default testReducer;
+export default productsReducer;

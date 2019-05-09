@@ -17,13 +17,22 @@ const styles = theme => ({
     },
     group: {
       margin: `${theme.spacing.unit}px 0`,
-    },
+    }
   });
 
 class Quiz extends React.Component {
   state = {
     selectedValue: 'a',
+    data:[],
+    disabled:this.props.response!==undefined,
   };
+
+  componentDidMount(){
+    
+    let data = this.props.quiz.wrong;
+    data.push(this.props.quiz.correct);
+    this.setState({data});
+  }
 
   handleChange = event => {
     this.setState({ selectedValue: event.target.value }, function () {
@@ -35,8 +44,8 @@ class Quiz extends React.Component {
   };
 
   render() {
-    const { classes , quiz} = this.props;
-
+    const { classes , quiz,response,result} = this.props;
+    const {data,disabled} = this.state;
     return (
         <FuseAnimate animation="transition.slideRightIn" delay={300}>
 
@@ -51,10 +60,16 @@ class Quiz extends React.Component {
             onChange={this.handleChange}
           >
           {/* Try to do a map here and add a random stuff to order the RadioButtons */}
-            <FormControlLabel value={quiz.correct} control={<Radio />} label={quiz.correct} />
-            <FormControlLabel value={quiz.wrong[0]} control={<Radio />} label={quiz.wrong[0]} />
+            {data.map(q=>{
+              console.log(response.response == q);
+              const checked = result.correct == q || result.answer == q;
+              const correct = { color : checked ? (result.validate ? 'green' : (result.correct==q ? 'green' : 'red')) :''  };
+              return <FormControlLabel  disabled={disabled} value={q} control={<Radio style={correct} checked={checked}/>} label={q} />
+            
+            })}
+            {/* <FormControlLabel value={quiz.wrong[0]} control={<Radio />} label={quiz.wrong[0]} />
             <FormControlLabel value={quiz.wrong[1]} control={<Radio />} label={quiz.wrong[1]} />
-            <FormControlLabel value={quiz.wrong[2]} control={<Radio />} label={quiz.wrong[2]} />
+            <FormControlLabel value={quiz.wrong[2]} control={<Radio />} label={quiz.wrong[2]} /> */}
           </RadioGroup>
         </FormControl>
       </div>

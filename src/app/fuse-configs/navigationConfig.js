@@ -63,6 +63,14 @@ const navigationConfig = [
                                 'url':'/recruitments/quiz/add',
                                 'exact': true,
                             },
+                            {
+                                'id'   : 'get-quiz',
+                                'title': 'Get Quiz',
+                                'type' : 'item',
+                                'icon' : 'add_box',
+                                'url':'/recruitments/quizzes',
+                                'exact': true,
+                            },
                         ]
                     },
                     {
@@ -75,9 +83,27 @@ const navigationConfig = [
                         'exact': true,
                             
                         
-                    }
+                    },
+                    {
+                            
+                        'id'   : 'add-applier',
+                        'title': 'Appliers',
+                        'type' : 'item',
+                        'icon' : 'add_box',
+                        'url':'/recruitments/applier/add',
+                        'exact': true,
+                            
+                        
+                    },
                 ]
-            }]
+            }, {
+                'id'   : 'skills',
+                'title': 'Add Skill',
+                'type' : 'item',
+                'icon' : 'add_box',
+                'url':'/recruitments/skills',
+                'exact': true,
+            },]
     },
     {
         'type': 'divider',

@@ -8,11 +8,6 @@ import {connect} from 'react-redux';
 import classNames from 'classnames';
 import _ from '@lodash';
 import * as Actions from './store/actions';
-import TodoChip from './TodoChip';
-import { Redirect } from 'react-router-dom';
-import DetailsOffer from './DetailsOffer';
-import * as authActions from 'app/auth/store/actions';
-import ResponsiveDialog from './ResponsiveDialog';
 
 const styles = theme => ({
     todoItem: {
@@ -41,28 +36,23 @@ function redirect(url){
 
 }
 
-function details() {
-    
-}
-
-const TodoListItem = ({history,todo, labels, classes, openEditTodoDialog, toggleImportant, toggleStarred, toggleCompleted,user}) => {
+const TodoListItem = ({history,todo, labels, classes, openEditTodoDialog, toggleImportant, toggleStarred, toggleCompleted}) => {
     labels.forEach(element => {
         element.color = getRandomColor();
     });
     return (
        <ListItem
+            onClick={() => {
+                const url = '/recruitments/application/'+todo._id;
+                history.push(url);
+            }}
             dense
             disabled={todo.completed}
             button
             className={classNames(classes.todoItem, {"completed": todo.completed}, "border-solid border-b-1 py-16  px-0 sm:px-8")}
         >
-             <div 
-            // onClick={() => {
-            //     const url = '/recruitments/application/'+todo._id;
-            //     history.push(url);
-            // }}
-            
-            className="flex flex-1 flex-col relative overflow-hidden pl-8">
+             <div className="flex flex-1 flex-col relative overflow-hidden pl-8">
+
               {todo._job &&  <Typography
                     variant="subtitle1"
                     className="todo-title truncate"
@@ -79,16 +69,6 @@ const TodoListItem = ({history,todo, labels, classes, openEditTodoDialog, toggle
                 </Typography>
 
                 <div className={classNames(classes.labels, "flex mt-8")}>
-                    {todo && todo.requirements.map(skill =>{ console.log(skill); return (
-                        <TodoChip
-
-                            className="mr-4"
-                            title={_.find(labels, {_id:skill._id}).name}
-                            color={_.find(labels, {_id: skill._id}).color}
-                            key={skill._id}
-                        />
-                        
-                    )})}
                         <Typography
                             color="textPrimary"
                             className="todo-notes truncate"
@@ -98,15 +78,8 @@ const TodoListItem = ({history,todo, labels, classes, openEditTodoDialog, toggle
                       
                 </div>
             </div>
-            {!user &&
-                todo._id && <ResponsiveDialog id={todo._id}/>}
-                    
-            {user && (
-                <React.Fragment>
-            <div className="px-8">
-                
-            
 
+            <div className="px-8">
                 <IconButton onClick={(ev) => {
                     ev.preventDefault();
                     ev.stopPropagation();
@@ -118,33 +91,35 @@ const TodoListItem = ({history,todo, labels, classes, openEditTodoDialog, toggle
                         <Icon>error_outline</Icon>
                     )}
                 </IconButton>
-            
-                        
+                <IconButton onClick={(ev) => {
+                    ev.preventDefault();
+                    ev.stopPropagation();
+                    toggleStarred(todo)
+                }}>
+                    {todo.starred ? (
+                        <Icon style={{color: amber[500]}}>star</Icon>
+                    ) : (
+                        <Icon>star_outline</Icon>
+                    )}
+                </IconButton>
+               
             </div>
            
-            <DetailsOffer id={todo._id}></DetailsOffer>
-            </React.Fragment>
-            )}
+            
         </ListItem>
-
     );
 };
 
 function mapDispatchToProps(dispatch)
 {
     return bindActionCreators({
-        toggleCompleted   : Actions.toggleCompleted,
-        toggleImportant   : Actions.toggleImportant,
-        toggleStarred     : Actions.toggleStarred,
-        openEditTodoDialog: Actions.openEditTodoDialog
+       
     }, dispatch);
 }
 
 function mapStateToProps({todoApp})
 {
     return {
-        user: todoApp.user,
-        labels: todoApp.labels
     }
 }
 

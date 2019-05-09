@@ -4,11 +4,9 @@ import {FuseAnimate} from '@fuse';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
-import * as Actions from '../store/actions';
-import * as otherActions from '../job-offers/store/actions';
-import Dialog from './Dialog';
+import * as Actions from './store/actions';
 
-const SkillsHeader = ({setSearchText, searchText, mainTheme,openNewDialog}) => {
+const ProductsHeader = ({setSearchText, searchText, mainTheme}) => {
 
     return (
         <div className="flex flex-1 w-full items-center justify-between">
@@ -44,19 +42,13 @@ const SkillsHeader = ({setSearchText, searchText, mainTheme,openNewDialog}) => {
                         </Paper>
                     </FuseAnimate>
                 </MuiThemeProvider>
-              
+
             </div>
-            
             <FuseAnimate animation="transition.slideRightIn" delay={300}>
-                {/* <Button onClick={()=>{
-                    openNewDialog();
-                    console.log(openNewDialog());
-                    }
-                    } className="whitespace-no-wrap" variant="contained">
-                   
-                   
-                </Button> */}
-                <Dialog></Dialog>
+                <Button component={Link} to="/apps/e-commerce/products/new" className="whitespace-no-wrap" variant="contained">
+                    <span className="hidden sm:flex">Add New Product</span>
+                    <span className="flex sm:hidden">New</span>
+                </Button>
             </FuseAnimate>
         </div>
     );
@@ -65,16 +57,16 @@ const SkillsHeader = ({setSearchText, searchText, mainTheme,openNewDialog}) => {
 function mapDispatchToProps(dispatch)
 {
     return bindActionCreators({
-        // setSearchText: Actions.setProductsSearchText
-        openNewDialog: otherActions.openNewTodoDialog,
+        setSearchText: Actions.setProductsSearchText
     }, dispatch);
 }
 
-function mapStateToProps({recruitmentApp, fuse})
+function mapStateToProps({eCommerceApp, fuse})
 {
     return {
+        searchText: eCommerceApp.products.searchText,
         mainTheme : fuse.settings.mainTheme
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SkillsHeader);
+export default connect(mapStateToProps, mapDispatchToProps)(ProductsHeader);
