@@ -3,6 +3,7 @@ import {setInitialSettings} from 'app/store/actions/fuse';
 import _ from '@lodash';
 import store from 'app/store';
 import * as Actions from 'app/store/actions';
+import * as authActions from 'app/auth/store/actions';
 import firebase from 'firebase/app';
 import firebaseService from 'app/services/firebaseService';
 import auth0Service from 'app/services/auth0Service';
@@ -11,8 +12,115 @@ import jwtService from 'app/services/jwtService';
 export const SET_USER_DATA = '[USER] SET DATA';
 export const REMOVE_USER_DATA = '[USER] REMOVE DATA';
 export const USER_LOGGED_OUT = '[USER] LOGGED OUT';
+export const READ_EMPLOYEES = 'READ_EMPLOYEES';
+export const READ_USER = 'READ_USER';
+export const REQUEST_ERROR = 'REQUEST_ERROR';
 export const USERNAME_AVAILABLE = 'USERNAME_AVAILABLE';
 export const USERNAME_UNAVAILABLE = 'USERNAME_UNAVAILABLE';
+
+export function readEmployees()
+{
+    return (dispatch) =>
+        jwtService.getEmployees()
+            .then((employees) =>
+                {
+                    return dispatch({
+                        type: READ_EMPLOYEES,
+                        payload: employees
+                    });
+                }
+            )
+            .catch(error =>
+            {
+                return dispatch({
+                    type   : REQUEST_ERROR,
+                    payload: error
+                });
+            });
+}
+
+export function readUser(user)
+{
+    return (dispatch) =>
+    {
+        return dispatch({
+            type: READ_USER,
+            payload: user
+        });
+    };
+}
+
+export function addSkill(data, id)
+{
+    return (dispatch) =>
+        jwtService.affectSkill(data, id)
+            .then(() =>
+                {
+                    dispatch(authActions.readEmployees());
+                }
+            )
+            .catch(error =>
+            {
+                return dispatch({
+                    type   : REQUEST_ERROR,
+                    payload: error
+                });
+            });
+}
+
+export function uploadImage(data, id)
+{
+    return (dispatch) =>
+        jwtService.uploadImage(data, id)
+            .then(() =>
+                {
+                    dispatch(authActions.readEmployees());
+                }
+            )
+            .catch(error =>
+            {
+                return dispatch({
+                    type   : REQUEST_ERROR,
+                    payload: error
+                });
+            });
+}
+
+export function deleteImage(id)
+{
+    return (dispatch) =>
+        jwtService.deleteImage(id)
+            .then(() =>
+                {
+                    dispatch(authActions.readEmployees());
+                }
+            )
+            .catch(error =>
+            {
+                return dispatch({
+                    type   : REQUEST_ERROR,
+                    payload: error
+                });
+            });
+}
+
+export function deleteSkill(id)
+{
+    return (dispatch) =>
+        jwtService.deleteSkill(id)
+            .then(() =>
+                {
+                    dispatch(authActions.readEmployees());
+                }
+            )
+            .catch(error =>
+            {
+                return dispatch({
+                    type   : REQUEST_ERROR,
+                    payload: error
+                });
+            });
+}
 
 export function checkUsername({username})
 {

@@ -56,6 +56,7 @@ class FuseLayout extends Component {
         if ( !_.isEqual(this.props.location.pathname, prevProps.location.pathname) )
         {
             this.routeSettingsCheck();
+      //      this.props.setSocket();
         }
     }
 
@@ -97,7 +98,9 @@ function mapDispatchToProps(dispatch)
 {
     return bindActionCreators({
         setSettings  : Actions.setSettings,
-        resetSettings: Actions.resetSettings
+        resetSettings: Actions.resetSettings,
+        setSocket    : Actions.setSocket
+        
     }, dispatch);
 }
 

@@ -13,10 +13,9 @@ class AddUsers extends Component {
     {
         return (
             <FusePageSimple
-                content={<div className="p-24 max-w-2xl">
+                content={<div className="p-8 max-w-2xl">
                     <Typography className="text-32 mt-8 mb-8" component="h2" align={"center"}>Add New User</Typography>
                     <FuseExample
-                        className="mb-64"
                         component={require('./AddUsersForm.js').default}
                         raw={require('!raw-loader!./AddUsersForm.js')}
                     />

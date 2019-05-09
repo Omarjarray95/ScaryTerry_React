@@ -27,6 +27,17 @@ export function submitRegister({user})
             });
 }
 
+export function resetRegister()
+{
+    return (dispatch) =>
+    {
+        return dispatch({
+            type   : REGISTER_ERROR,
+            payload: ""
+        });
+    }
+}
+
 export function registerWithFirebase(model)
 {
     const {email, password, displayName} = model;

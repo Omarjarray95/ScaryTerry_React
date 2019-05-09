@@ -66,6 +66,63 @@ class jwtService extends FuseUtils.EventEmitter {
         });
     };
 
+    getEmployees = () =>
+    {
+        return new Promise((resolve, reject) =>
+        {
+            axios.get('http://localhost:3001/users/getusers')
+                .then(response =>
+                {
+                    if ( response.status === 202 )
+                    {
+                        resolve(response.data);
+                    }
+                    else
+                    {
+                        reject(response.data);
+                    }
+                });
+        });
+    };
+
+    uploadImage = (data, id) =>
+    {
+        return new Promise((resolve, reject) =>
+        {
+            axios.post('http://localhost:3001/users/uploadimage/' + id, data)
+                .then(response =>
+                {
+                    if ( response.status === 202 )
+                    {
+                        resolve(response.data);
+                    }
+                    else
+                    {
+                        reject(response.data);
+                    }
+                });
+        });
+    };
+
+    deleteImage = (id) =>
+    {
+        return new Promise((resolve, reject) =>
+        {
+            axios.get('http://localhost:3001/users/deleteimage/' + id)
+                .then(response =>
+                {
+                    if ( response.status === 202 )
+                    {
+                        resolve(response.data);
+                    }
+                    else
+                    {
+                        reject(response.data);
+                    }
+                });
+        });
+    };
+
     checkUsername = (username) =>
     {
         return new Promise((resolve, reject) =>
@@ -117,6 +174,44 @@ class jwtService extends FuseUtils.EventEmitter {
         });
     };
 
+    affectSkill = (data, id) =>
+    {
+        return new Promise((resolve, reject) =>
+        {
+            axios.post('http://localhost:3001/users/affectskill/' + id, data)
+                .then(response =>
+                {
+                    if ( response.status === 202 )
+                    {
+                        resolve(response.data);
+                    }
+                    else
+                    {
+                        reject(response.data);
+                    }
+                });
+        });
+    };
+
+    deleteSkill = (id) =>
+    {
+        return new Promise((resolve, reject) =>
+        {
+            axios.get('http://localhost:3001/users/deleteskill/' + id)
+                .then(response =>
+                {
+                    if ( response.status === 202 )
+                    {
+                        resolve(response.data);
+                    }
+                    else
+                    {
+                        reject(response.data);
+                    }
+                });
+        });
+    };
+
     signInWithToken = () => {
         return new Promise((resolve, reject) => {
             axios.get('/api/auth/access-token', {
@@ -145,7 +240,7 @@ class jwtService extends FuseUtils.EventEmitter {
     };
 
     setSession = (access_token, id, username, name, role) => {
-        if ( access_token && username && name && role )
+        if ( access_token && username && name && role && id )
         {
             localStorage.setItem('jwt_access_token', access_token);
             localStorage.setItem('id', id);
