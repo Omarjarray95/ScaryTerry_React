@@ -240,6 +240,7 @@ const navigationConfig = [
             'url'  : '#'
         }]
     }
-];
+]
+}];
 
 export default navigationConfig;
