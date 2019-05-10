@@ -30,6 +30,7 @@ import TextField from "@material-ui/core/TextField/TextField";
 import {showMessage} from "../../store/actions/fuse";
 import _ from '@lodash';
 import Avatar from "@material-ui/core/Avatar/Avatar";
+import history from '../../../history';
 
 const styles = theme => (
     {
@@ -319,6 +320,17 @@ class UsersList extends Component {
             <React.Fragment>
                 <ReactTable
                     className="-striped -highlight border-0"
+                    getTrProps={(state, rowInfo, column) => {
+                        return {
+                            className: "cursor-pointer",
+                            onClick  : (e, handleOriginal) => {
+                                if ( rowInfo )
+                                {
+                                    history.push('/apps/dashboards/analytics/' + rowInfo.original._id);
+                                }
+                            }
+                        }
+                    }}
                     data={data}
                     columns={[
                         {

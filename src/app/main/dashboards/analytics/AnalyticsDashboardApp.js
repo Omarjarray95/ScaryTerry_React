@@ -20,15 +20,15 @@ import reducer from './store/reducers';
 class AnalyticsDashboardApp extends Component {
 
     componentDidMount() {
-        this.props.getWidgetPunc();
-        this.props.getWidgetTest();
-        this.props.getWidgetTest2();
-        this.props.getWidgetTest3();
-        this.props.getWidgetTest5();
-        this.props.getWidgetTest6();
-        this.props.getWidgetTest7();
-        this.props.getWidgetTest8();
-        this.props.getWidgetTest9();
+        this.props.getWidgetPunc(this.props.match.params.id);
+        this.props.getWidgetTest(this.props.match.params.id);
+        this.props.getWidgetTest2(this.props.match.params.id);
+        this.props.getWidgetTest3(this.props.match.params.id);
+        this.props.getWidgetTest5(this.props.match.params.id);
+        this.props.getWidgetTest6(this.props.match.params.id);
+        this.props.getWidgetTest7(this.props.match.params.id);
+        this.props.getWidgetTest8(this.props.match.params.id);
+        this.props.getWidgetTest9(this.props.match.params.id);
     }
 
     render() {

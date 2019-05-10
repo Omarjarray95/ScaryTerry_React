@@ -11,10 +11,10 @@ export const GET_WIDGETS_TEST8 = '[ANALYTICS DASHBOARD APP] GET WIDGETS TEST8';
 export const GET_WIDGETS_TEST9 = '[ANALYTICS DASHBOARD APP] GET WIDGETS TEST9';
 
 //export function getWidgets() {
-export function getWidgetPunc() {
+export function getWidgetPunc(id) {
     // const request = axios.get('/api/analytics-dashboard-app/widgets');
-    const request = axios.get('http://localhost:3001/motivation/userPunctualityNoteStats/2017-01-01/2020-01-01/5c926640db149e155096dfa9');
-    const requestPredict = axios.get('http://127.0.0.1:5000/');
+    const request = axios.get('http://localhost:3001/motivation/userPunctualityNoteStats/2017-01-01/2020-01-01/'+id);
+    const requestPredict = axios.get('http://127.0.0.1:5000/'+id);
     return (dispatch) =>
         request.then((response) => {
             requestPredict.then(doc => {
@@ -114,9 +114,9 @@ export function getWidgetPunc() {
         }
         );
 }
-export function getWidgetTest() {
+export function getWidgetTest(id) {
     //const request = axios.get('/api/analytics-dashboard-app/widgets');
-    const request = axios.get('http://localhost:3001/performance/getPerformanceStats/2018-10-01/2019-05-01/5c926640db149e155096dfa9');
+    const request = axios.get('http://localhost:3001/performance/getPerformanceStats/2018-10-01/2019-05-01/'+id);
 
     return (dispatch) => {
         request.then((response) => {
@@ -177,9 +177,9 @@ export function getWidgetTest() {
     }
 
 }
-export function getWidgetTest2() {
+export function getWidgetTest2(id) {
 
-    const request = axios.get('http://localhost:3001/performance/getperformancevelocityStats/2018-10-03/2019-05-01/5c926640db149e155096dfa9');
+    const request = axios.get('http://localhost:3001/performance/getperformancevelocityStats/2018-10-03/2019-05-01/'+id);
 
     return (dispatch) => {
         request.then(response => {
@@ -251,7 +251,7 @@ export function getWidgetTest2() {
 
     }
 }
-export function getWidgetTest3() {
+export function getWidgetTest3(id) {
 
     //const request = axios.get('http://localhost:3001/motivation/userPunctualityNoteStats/2017-01-01/2020-01-01/5c926640db149e155096dfa9');
 
@@ -310,8 +310,8 @@ export function getWidgetTest3() {
         })
     }
 }
-export function getWidgetTest5() {
-    const request = axios.get('http://localhost:3001/performance/gettechCommperformanceStats/2018-10-01/2019-05-01/5c926640db149e155096dfa9');
+export function getWidgetTest5(id) {
+    const request = axios.get('http://localhost:3001/performance/gettechCommperformanceStats/2018-10-01/2019-05-01/'+id);
 
     return (dispatch) => {
         request.then(response => {
@@ -595,9 +595,9 @@ export function getWidgetTest6() {
         })
     }
 }
-export function getWidgetTest7() {
+export function getWidgetTest7(id) {
 
-    const request = axios.get('http://localhost:3001/motivation/getmotivationStats/5c926640db149e155096dfa9');
+    const request = axios.get('http://localhost:3001/motivation/getmotivationStats/'+id);
 
     return (dispatch) => {
         request.then(response => {
