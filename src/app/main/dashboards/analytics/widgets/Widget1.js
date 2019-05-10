@@ -42,7 +42,7 @@ class Widget1 extends Component {
 
                         <FuseAnimate delay={100}>
                             <div className="flex-col">
-                                <Typography className="h2">Punctuality</Typography>
+                                <Typography className="h2">Punctuality plus prediction</Typography>
                                 <Typography className="h5" color="textSecondary">tracking punctuality by month</Typography>
                             </div>
                         </FuseAnimate>

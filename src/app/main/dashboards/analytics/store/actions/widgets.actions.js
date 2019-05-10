@@ -44,7 +44,7 @@ export function getWidgetPunc(id) {
                                 }
                             ]
                         },
-                        labels: ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAI', 'JUNUARY', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'],
+                        labels: ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAI', 'JUNE', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'],
                         options: {
                             spanGaps: false,
                             legend: {
@@ -120,11 +120,16 @@ export function getWidgetTest(id) {
 
     return (dispatch) => {
         request.then((response) => {
+            var oft =1;
+            if(response.data.numberOfAllTasks !=0){
+            oft =response.data.numberOfAllTasksDone / response.data.numberOfAllTasks;
+            }
+
             const tt = {
                 widget2: {
                     conversion: {
                         value: response.data.numberOfAllTasks,
-                        ofTarget: -(Number((1 - (response.data.numberOfAllTasksDone / response.data.numberOfAllTasks)) * 100).toFixed(1))
+                        ofTarget: -(Number((1 - oft) * 100).toFixed(1))
                     },
                     chartType: 'bar',
                     datasets: [
@@ -183,11 +188,16 @@ export function getWidgetTest2(id) {
 
     return (dispatch) => {
         request.then(response => {
+            var oft =1;
+            if(response.data.allEstimated != 0){
+                oft =response.data.allDuration / response.data.allEstimated;
+            }
+            
             const tt = {
                 widget3: {
                     impressions: {
                         value: response.data.allDuration,
-                        ofTarget: -(Number((1 - (response.data.allDuration / response.data.allEstimated)) * 100).toFixed(1))
+                        ofTarget: -(Number((1 - oft) * 100).toFixed(1))
                     },
                     chartType: 'line',
                     datasets: [
@@ -319,7 +329,7 @@ export function getWidgetTest5(id) {
                 widget5: {
                     chartType: 'line',
                     datasets: {
-                        'Priority 1': [
+                        'importance 1': [
                             {
                                 label: 'communication',
                                 data: response.data.rcomm[0],
@@ -331,7 +341,7 @@ export function getWidgetTest5(id) {
                                 fill: 'start'
                             }
                         ],
-                        'Priority 2': [
+                        'importance 2': [
                             {
                                 label: 'communication',
                                 data: response.data.rcomm[1],
@@ -343,7 +353,7 @@ export function getWidgetTest5(id) {
                                 fill: 'start'
                             }
                         ],
-                        'Priority 3': [
+                        'importance 3': [
                             {
                                 label: 'communication',
                                 data: response.data.rcomm[2],
@@ -355,7 +365,7 @@ export function getWidgetTest5(id) {
                                 fill: 'start'
                             }
                         ],
-                        'Priority 4': [
+                        'importance 4': [
                             {
                                 label: 'communication',
                                 data: response.data.rcomm[3],
@@ -367,7 +377,7 @@ export function getWidgetTest5(id) {
                                 fill: 'start'
                             }
                         ],
-                        'Priority 5': [
+                        'importance 5': [
                             {
                                 label: 'communication',
                                 data: response.data.rcomm[4],

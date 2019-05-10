@@ -6,7 +6,7 @@ import _ from '@lodash';
 class Widget5 extends Component {
 
     state = {
-        dataset: 'Priority 1'
+        dataset: 'importance 1'
     };
 
     setDataSet = (dataset) => {
